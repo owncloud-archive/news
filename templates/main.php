@@ -50,10 +50,16 @@
 			autopaging: isAutoPaging()
 		}"
 		ng-controller="ItemController"
+		ng-hide="feedBusinessLayer.noFeeds()"
 		news-item-scroll
 		item-shortcuts
 		tabindex="-1">
 		<?php print_unescaped($this->inc("part.items")); ?>
 	</div>
+
+	<div id="app-content" ng-show="feedBusinessLayer.noFeeds()"
+		tabindex="-1">
+		<?php print_unescaped($this->inc("part.firsrun")); ?>
+	</div>	
 
 </div>
