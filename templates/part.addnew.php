@@ -9,7 +9,7 @@
 		oc-click-focus="{
 			selector: '.add-new-popup input[ng-model=feedUrl]'
 		}">+ <span><?php p($l->t('Add Website'))?></span></a>
-	<div class="add-new-popup">
+	<div class="add-new-popup" ng-show="feedBusinessLayer.noFeeds()">
 		<fieldset class="personalblock">
 			<p class="error">
 				<span ng-show="feedExistsError">

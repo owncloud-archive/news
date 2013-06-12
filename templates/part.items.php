@@ -1,3 +1,8 @@
+<div class="firstrun-tooltip" style="left: 100px; top: 10px; " ng-show="feedBusinessLayer.noFeeds()">
+	<?php p($l->t('Don\'t be shy, add a feed!')) ?>
+	<div class="firstrun-arrow.left"></div>
+</div>
+
 <ul>
 	<li class="feed_item"
 		ng-repeat="item in itemBusinessLayer.getAll() | orderBy:['-id'] "

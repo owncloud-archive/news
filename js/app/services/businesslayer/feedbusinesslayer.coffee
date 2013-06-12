@@ -81,7 +81,11 @@ FeedModel, NewLoading, _ExistsError, Utils, $rootScope, NewestItem)->
 		getNumberOfFeeds: ->
 			return @_feedModel.size()
 
+
+		noFeeds: ->
+			return @getNumberOfFeeds == 0
 		
+
 		isVisible: (feedId) ->
 			if @isActive(feedId) or @_showAll.getShowAll()
 				return true

@@ -18,6 +18,7 @@
 \OCP\Util::addStyle('news', 'settings');
 \OCP\Util::addStyle('news', 'addnew');
 \OCP\Util::addStyle('news', 'showall');
+\OCP\Util::addStyle('news', 'firstrun');
 
 ?>
 

@@ -8,7 +8,7 @@
 		}"></button>
 </div>
 
-<div id="app-settings-content">
+<div id="app-settings-content" ng-show="feedBusinessLayer.noFeeds()">
 	<fieldset class="personalblock">
 		<legend><strong><?php p($l->t('Import / Export OPML')); ?></strong></legend>
 		
