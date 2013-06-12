@@ -50,6 +50,6 @@ nbproject
 # Mac OS
 .DS_Store
 
-#SimplePie cache
+# SimplePie cache
 cache/*
 
