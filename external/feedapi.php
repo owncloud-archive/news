@@ -28,6 +28,8 @@ namespace OCA\News\External;
 use \OCA\AppFramework\Core\API;
 use \OCA\AppFramework\Controller\Controller;
 use \OCA\AppFramework\Http\Request;
+use \OCA\AppFramework\Http\JSONResponse;
+use \OCA\AppFramework\Http\Http;
 
 use \OCA\News\BusinessLayer\FeedBusinessLayer;
 use \OCA\News\BusinessLayer\FolderBusinessLayer;
@@ -57,6 +59,7 @@ class FeedAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function getAll() {
@@ -77,13 +80,14 @@ class FeedAPI extends Controller {
 				$this->itemBusinessLayer->getNewestItemId($userId);
 		} catch(BusinessLayerException $ex) {}
 
-		return new NewsAPIResult($result);
+		return new JSONResponse($result);
 	}
 
 
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function create() {
@@ -104,14 +108,14 @@ class FeedAPI extends Controller {
 					$this->itemBusinessLayer->getNewestItemId($userId);
 			} catch(BusinessLayerException $ex) {}
 
-			return new NewsAPIResult($result);
+			return new JSONResponse($result);
 
 		} catch(BusinessLayerExistsException $ex) {
-			return new NewsAPIResult(null, NewsAPIResult::EXISTS_ERROR,
-				$ex->getMessage());
+			return new JSONResponse(array('message' => $ex->getMessage()),
+				Http::STATUS_CONFLICT);
 		} catch(BusinessLayerException $ex) {
-			return new NewsAPIResult(null, NewsAPIResult::NOT_FOUND_ERROR,
-				$ex->getMessage());
+			return new JSONResponse(array('message' => $ex->getMessage()),
+				Http::STATUS_NOT_FOUND);
 		}
 	}
 
@@ -119,6 +123,7 @@ class FeedAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function delete() {
@@ -127,10 +132,10 @@ class FeedAPI extends Controller {
 
 		try {
 			$this->feedBusinessLayer->delete($feedId, $userId);
-			return new NewsAPIResult();
+			return new JSONResponse();
 		} catch(BusinessLayerException $ex) {
-			return new NewsAPIResult(null, NewsAPIResult::NOT_FOUND_ERROR,
-				$ex->getMessage());
+			return new JSONResponse(array('message' => $ex->getMessage()),
+				Http::STATUS_NOT_FOUND);
 		}
 	}
 
@@ -138,6 +143,7 @@ class FeedAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function read() {
@@ -146,13 +152,14 @@ class FeedAPI extends Controller {
 		$newestItemId = (int) $this->params('newestItemId');
 
 		$this->itemBusinessLayer->readFeed($feedId, $newestItemId, $userId);
-		return new NewsAPIResult();
+		return new JSONResponse();
 	}
 
 
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function move() {
@@ -162,10 +169,10 @@ class FeedAPI extends Controller {
 
 		try {
 			$this->feedBusinessLayer->move($feedId, $folderId, $userId);
-			return new NewsAPIResult();
+			return new JSONResponse();
 		} catch(BusinessLayerException $ex) {
-			return new NewsAPIResult(null, NewsAPIResult::NOT_FOUND_ERROR,
-				$ex->getMessage());
+			return new JSONResponse(array('message' => $ex->getMessage()),
+				Http::STATUS_NOT_FOUND);
 		}
 	}
 

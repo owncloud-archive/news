@@ -28,6 +28,8 @@ namespace OCA\News\External;
 use \OCA\AppFramework\Core\API;
 use \OCA\AppFramework\Controller\Controller;
 use \OCA\AppFramework\Http\Request;
+use \OCA\AppFramework\Http\JSONResponse;
+use \OCA\AppFramework\Http\Http;
 
 use \OCA\News\BusinessLayer\ItemBusinessLayer;
 use \OCA\News\BusinessLayer\BusinessLayerException;
@@ -48,6 +50,7 @@ class ItemAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function getAll() {
@@ -81,13 +84,14 @@ class ItemAPI extends Controller {
 			array_push($result['items'], $item->toAPI());
 		}
 
-		return new NewsAPIResult($result);
+		return new JSONResponse($result);
 	}
 
 
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function getUpdated() {
@@ -112,7 +116,7 @@ class ItemAPI extends Controller {
 			array_push($result['items'], $item->toAPI());
 		}
 
-		return new NewsAPIResult($result);
+		return new JSONResponse($result);
 	}
 
 
@@ -121,10 +125,10 @@ class ItemAPI extends Controller {
 		$itemId = (int) $this->params('itemId');
 		try {
 			$this->itemBusinessLayer->read($itemId, $isRead, $userId);
-			return new NewsAPIResult();
+			return new JSONResponse();
 		} catch(BusinessLayerException $ex){
-			return new NewsAPIResult(null, NewsAPIResult::NOT_FOUND_ERROR,
-				$ex->getMessage());
+			return new JSONResponse(array('message' => $ex->getMessage()),
+				Http::STATUS_NOT_FOUND);
 		}
 	}
 
@@ -135,10 +139,10 @@ class ItemAPI extends Controller {
 		$guidHash = $this->params('guidHash');
 		try {
 			$this->itemBusinessLayer->star($feedId, $guidHash, $isStarred, $userId);
-			return new NewsAPIResult();
+			return new JSONResponse();
 		} catch(BusinessLayerException $ex){
-			return new NewsAPIResult(null, NewsAPIResult::NOT_FOUND_ERROR,
-				$ex->getMessage());
+			return new JSONResponse(array('message' => $ex->getMessage()),
+				Http::STATUS_NOT_FOUND);
 		}
 	}
 
@@ -146,6 +150,7 @@ class ItemAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function read() {
@@ -156,6 +161,7 @@ class ItemAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function unread() {
@@ -166,6 +172,7 @@ class ItemAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function star() {
@@ -176,6 +183,7 @@ class ItemAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function unstar() {
@@ -186,6 +194,7 @@ class ItemAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function readAll() {
@@ -193,7 +202,7 @@ class ItemAPI extends Controller {
 		$newestItemId = (int) $this->params('newestItemId');
 
 		$this->itemBusinessLayer->readAll($newestItemId, $userId);
-		return new NewsAPIResult();
+		return new JSONResponse();
 	}
 
 
@@ -209,13 +218,14 @@ class ItemAPI extends Controller {
 			}
 		}
 
-		return new NewsAPIResult();
+		return new JSONResponse();
 	}
 
 
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function readMultiple() {
@@ -226,6 +236,7 @@ class ItemAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function unreadMultiple() {
@@ -246,13 +257,14 @@ class ItemAPI extends Controller {
 			}
 		}
 
-		return new NewsAPIResult();
+		return new JSONResponse();
 	}
 
 
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function starMultiple() {
@@ -263,6 +275,7 @@ class ItemAPI extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
+	 * @CSRFExemption
 	 * @Ajax
 	 */
 	public function unstarMultiple() {

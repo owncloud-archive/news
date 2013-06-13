@@ -27,6 +27,7 @@ namespace OCA\News\External;
 
 use \OCA\AppFramework\Http\Request;
 use \OCA\AppFramework\Http\JSONResponse;
+use \OCA\AppFramework\Http\Http;
 use \OCA\AppFramework\Utility\ControllerTestUtility;
 
 use \OCA\News\BusinessLayer\BusinessLayerException;
@@ -68,7 +69,8 @@ class ItemAPITest extends ControllerTestUtility {
 
 
 	private function assertDefaultAnnotations($methodName){
-		$annotations = array('IsAdminExemption', 'IsSubAdminExemption', 'Ajax');
+		$annotations = array('IsAdminExemption', 'IsSubAdminExemption',
+			'Ajax', 'CSRFExemption');
 		$this->assertAnnotations($this->itemAPI, $methodName, $annotations);
 	}
 
@@ -228,9 +230,8 @@ class ItemAPITest extends ControllerTestUtility {
 
 		$response = $this->itemAPI->read();
 
-		$this->assertNull($response->getData());
-		$this->assertNull($response->getMessage());
-		$this->assertEquals(NewsAPIResult::OK, $response->getStatusCode());
+		$this->assertEmpty($response->getData());
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
 
@@ -253,9 +254,9 @@ class ItemAPITest extends ControllerTestUtility {
 
 		$response = $this->itemAPI->read();
 
-		$this->assertNull($response->getData());
-		$this->assertEquals($this->msg, $response->getMessage());
-		$this->assertEquals(NewsAPIResult::NOT_FOUND_ERROR, $response->getStatusCode());
+		$data = $response->getData();
+		$this->assertEquals($this->msg, $data['message']);
+		$this->assertEquals(Http::STATUS_NOT_FOUND, $response->getStatus());
 	}
 
 
@@ -282,9 +283,8 @@ class ItemAPITest extends ControllerTestUtility {
 
 		$response = $this->itemAPI->unread();
 
-		$this->assertNull($response->getData());
-		$this->assertNull($response->getMessage());
-		$this->assertEquals(NewsAPIResult::OK, $response->getStatusCode());
+		$this->assertEmpty($response->getData());
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
 
@@ -307,9 +307,9 @@ class ItemAPITest extends ControllerTestUtility {
 
 		$response = $this->itemAPI->unread();
 
-		$this->assertNull($response->getData());
-		$this->assertEquals($this->msg, $response->getMessage());
-		$this->assertEquals(NewsAPIResult::NOT_FOUND_ERROR, $response->getStatusCode());
+		$data = $response->getData();
+		$this->assertEquals($this->msg, $data['message']);
+		$this->assertEquals(Http::STATUS_NOT_FOUND, $response->getStatus());
 	}
 
 
@@ -338,9 +338,8 @@ class ItemAPITest extends ControllerTestUtility {
 
 		$response = $this->itemAPI->star();
 
-		$this->assertNull($response->getData());
-		$this->assertNull($response->getMessage());
-		$this->assertEquals(NewsAPIResult::OK, $response->getStatusCode());
+		$data = $response->getData();
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
 
@@ -364,9 +363,9 @@ class ItemAPITest extends ControllerTestUtility {
 
 		$response = $this->itemAPI->star();
 
-		$this->assertNull($response->getData());
-		$this->assertEquals($this->msg, $response->getMessage());
-		$this->assertEquals(NewsAPIResult::NOT_FOUND_ERROR, $response->getStatusCode());
+		$data = $response->getData();
+		$this->assertEquals($this->msg, $data['message']);
+		$this->assertEquals(Http::STATUS_NOT_FOUND, $response->getStatus());
 	}
 
 
@@ -395,9 +394,8 @@ class ItemAPITest extends ControllerTestUtility {
 
 		$response = $this->itemAPI->unstar();
 
-		$this->assertNull($response->getData());
-		$this->assertNull($response->getMessage());
-		$this->assertEquals(NewsAPIResult::OK, $response->getStatusCode());
+		$this->assertEmpty($response->getData());
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
 
@@ -421,9 +419,9 @@ class ItemAPITest extends ControllerTestUtility {
 
 		$response = $this->itemAPI->unstar();
 
-		$this->assertNull($response->getData());
-		$this->assertEquals($this->msg, $response->getMessage());
-		$this->assertEquals(NewsAPIResult::NOT_FOUND_ERROR, $response->getStatusCode());
+		$data = $response->getData();
+		$this->assertEquals($this->msg, $data['message']);
+		$this->assertEquals(Http::STATUS_NOT_FOUND, $response->getStatus());
 	}
 
 
@@ -450,9 +448,8 @@ class ItemAPITest extends ControllerTestUtility {
 
 		$response = $this->itemAPI->readAll();
 
-		$this->assertNull($response->getData());
-		$this->assertNull($response->getMessage());
-		$this->assertEquals(NewsAPIResult::OK, $response->getStatusCode());
+		$this->assertEmpty($response->getData());
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
 
@@ -481,7 +478,7 @@ class ItemAPITest extends ControllerTestUtility {
 				$this->equalTo(true),
 				$this->equalTo($this->user));
 		$response = $this->itemAPI->readMultiple();
-		$this->assertEquals(NewsAPIResult::OK, $response->getStatusCode());
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
 
@@ -534,7 +531,7 @@ class ItemAPITest extends ControllerTestUtility {
 				$this->equalTo(false),
 				$this->equalTo($this->user));
 		$response = $this->itemAPI->unreadMultiple();
-		$this->assertEquals(NewsAPIResult::OK, $response->getStatusCode());
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
 
@@ -573,7 +570,7 @@ class ItemAPITest extends ControllerTestUtility {
 				$this->equalTo(true),
 				$this->equalTo($this->user));
 		$response = $this->itemAPI->starMultiple();
-		$this->assertEquals(NewsAPIResult::OK, $response->getStatusCode());
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
 
@@ -647,7 +644,7 @@ class ItemAPITest extends ControllerTestUtility {
 				$this->equalTo(false),
 				$this->equalTo($this->user));
 		$response = $this->itemAPI->unstarMultiple();
-		$this->assertEquals(NewsAPIResult::OK, $response->getStatusCode());
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
 
