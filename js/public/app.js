@@ -958,7 +958,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
         };
 
         FeedBusinessLayer.prototype.noFeeds = function() {
-          return this.getNumberOfFeeds === 0;
+          return this.getNumberOfFeeds() === 0;
         };
 
         FeedBusinessLayer.prototype.isVisible = function(feedId) {

@@ -57,9 +57,9 @@
 		<?php print_unescaped($this->inc("part.items")); ?>
 	</div>
 
-	<div id="app-content" ng-show="feedBusinessLayer.noFeeds()"
-		tabindex="-1">
-		<?php print_unescaped($this->inc("part.firsrun")); ?>
+	<div id="app-content" ng-controller="ItemController"
+		ng-show="feedBusinessLayer.noFeeds()">
+		<?php print_unescaped($this->inc("part.firstrun")); ?>
 	</div>	
 
 </div>

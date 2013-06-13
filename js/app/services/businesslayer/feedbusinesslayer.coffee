@@ -83,7 +83,7 @@ FeedModel, NewLoading, _ExistsError, Utils, $rootScope, NewestItem)->
 
 
 		noFeeds: ->
-			return @getNumberOfFeeds == 0
+			return @getNumberOfFeeds() == 0
 		
 
 		isVisible: (feedId) ->
