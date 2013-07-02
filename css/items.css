@@ -263,19 +263,32 @@
 			background-color: #dadada;
 			border: 1px solid #ccc;
 			margin: 7px 0 14px 0;
-			background-image: linear-gradient(top, rgb(215,215,215) 0%, rgb(220,220,220) 100%);
-			background-image: -o-linear-gradient(top, rgb(215,215,215) 0%, rgb(220,220,220) 100%);
-			background-image: -moz-linear-gradient(top, rgb(215,215,215) 0%, rgb(220,220,220) 100%);
-			background-image: -webkit-linear-gradient(top, rgb(215,215,215) 0%, rgb(220,220,220) 100%);
-			background-image: -ms-linear-gradient(top, rgb(215,215,215) 0%, rgb(220,220,220) 100%);
 			overflow-y: auto;
 		}
+			.feed_item .body pre::-webkit-scrollbar {
+				height: 10px;
+			}
+
+			.feed_item .body pre::-webkit-scrollbar-thumb {
+				background: #333;
+			}
+
+			.feed_item .body pre::-webkit-scrollbar-track-piece {
+				background: #ddd;
+			}
 
 			.feed_item .body code,
 			.feed_item .body pre {
 				font-family: monospace;
 				font-size: 16px;
 			}
+
+		.feed_item .body blockquote {
+			border-left: 1px solid rgb(210,210,210);
+			margin: 25px 0;
+			padding: 0 0 0 15px;
+			font-style: italic;
+		}
 
 	.feed_item .body > *:last-child {
 		margin-bottom: 0;
