@@ -1,7 +1,12 @@
 README
 ======
+|travis-ci|_
 
 The News app is a an RSS/Atom feed aggregator. It is based on the library SimplePie.
+
+.. |travis-ci| image:: https://travis-ci.org/owncloud/news.png
+.. _travis-ci: https://travis-ci.org/owncloud/news
+
 
 Maintainers
 -----------
@@ -38,7 +43,7 @@ Before you install the app check that the following requirements are met:
 - `You use a browser that supports the FileReader API <https://developer.mozilla.org/en/docs/DOM/FileReader#Browser_compatibility>`_
 - You can use a cron or webcron to call Background Jobs in ownCloud
 - You have installed **php-curl** and activated it in the **php.ini**
-- Install ownCloud **5.0.6** (important!)
+- Install ownCloud **5.0.6+** (important!)
 
 Should you have upgraded from a prior version, disable the CSS and JavaScript caching by adding this to :file:`owncloud/config/config.php`::
 
@@ -149,9 +154,21 @@ Performance Notices
 -------------------
 * Use MySQL or PostgreSQL for better database performance
 
-Known Problems
---------------
-* **Feeds are not updated anymore**: `this is a bug in the core backgroundjob system <https://github.com/owncloud/core/issues/3221>`_ deleting the :file:`owncloud/data/cron.lock` file gets the cron back up running
+Frequent Problems
+-----------------
+
+All feeds are not updated anymore
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`This is a bug in the core backgroundjob system <https://github.com/owncloud/core/issues/3221>`_ deleting the :file:`owncloud/data/cron.lock` file gets the cron back up running
+
+All feeds are not updated and theres no cron.lock
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* Check if the cronjob exists with **crontab -u www-data -e** (replace www-data with your httpd user)
+* Check the file permissions of the **cron.php** file and if **www-data** (or whatever your httpd user is called like) can read and execute that script
+* Check if the cronjob is ever executed by placing an **error_log('updating')** in the `background job file <https://github.com/owncloud/news/blob/master/backgroundjob/task.php#L37>`_. If the cronjob runs, there should be an updating log statement in your httpd log.
+* If there is no **updating** statement in your logs check if your cronjob is executed by executing a different script
+* If your cron works fine but owncloud's cronjobs are never executed, file a bug in `core <https://github.com/owncloud/core/>`_
+
 
 Configuration
 -------------
