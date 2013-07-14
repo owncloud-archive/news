@@ -8,9 +8,12 @@
 		href="#"
 		oc-click-focus="{
 			selector: '.add-new-popup input[ng-model=feedUrl]'
-		}">+ <span><?php p($l->t('Add Website'))?></span></a>
-	<div class="add-new-popup">
-		<fieldset class="personalblock">
+		}"
+ 	>+ <span><?php p($l->t('Add Website'))?></span></a>
+
+	<div class="add-new-popup" ng-show="feedBusinessLayer.noFeeds()">
+	
+		<fieldset class="personalblock" focus()>
 			<p class="error">
 				<span ng-show="feedExistsError">
 					<?php p($l->t('Error: address exists already!')); ?>

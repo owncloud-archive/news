@@ -1,3 +1,23 @@
+#nofeeds-message {
+  color: #888888;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 10em 0 0 5em;
+  position: absolute;
+  text-shadow: 0 1px 0 #FFFFFF;
+}
+
+#add-new-tooltip {
+  top: 0px;
+  position: absolute;
+}
+
+#settings-tooltip {
+  bottom: 0px;
+  position: absolute;
+}
+
+
 /*
 Tooltips style from https://github.com/usablica/intro.js
 Created by Afshin Mehrabani (https://github.com/afshinm)
@@ -19,11 +39,12 @@ Created by Afshin Mehrabani (https://github.com/afshinm)
 }
 
 .firstrun-tooltip {
-  position: absolute;
+  font-size: 1.2em;
   padding: 10px;
   background-color: white;
-  min-width: 200px;
+  min-width: 150px;
   max-width: 300px;
+  height: 20px;
   border-radius: 3px;
   box-shadow: 0 1px 10px rgba(0,0,0,.4);
   -webkit-transition: opacity 0.1s ease-out;
