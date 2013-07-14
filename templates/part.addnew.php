@@ -13,7 +13,7 @@
 
 	<div class="add-new-popup" ng-show="feedBusinessLayer.noFeeds()">
 	
-		<fieldset class="personalblock" focus()>
+		<fieldset class="personalblock">
 			<p class="error">
 				<span ng-show="feedExistsError">
 					<?php p($l->t('Error: address exists already!')); ?>
