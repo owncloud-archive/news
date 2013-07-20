@@ -21,10 +21,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ###
 
 
-# Used to forward clicks to another element via jquery selector
-# The expression which can be passed looks like this {selector:'#opml-upload'}
-# The element where to which the click was fowarded must not be a child element
-# otherwise this will end in endless recursion
+# Used to hide elements on click via jquery fadeOut effect
+# If a selector is passed as an option, then the effect is applied on
+# on that selector, otherwise the effect is applied on the element itself
+# example 1) <button  ... hide-on-click="{selector: '#tooltip'}" ... >
+#		hides the 'tooltip' element
+# example 2) <button  ... hide-on-click ...>
+#		hides the button itself
 angular.module('News').directive 'hideOnClick', ->
 
 	return (scope, elm, attr) ->
