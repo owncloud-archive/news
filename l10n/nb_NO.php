@@ -10,7 +10,7 @@
 "All articles" => "Alle artikler",
 "from" => "fra",
 "by" => "av",
-"Cant play audio format" => "Kan ikke spille av lydformat",
+"Download" => "Last ned",
 "Keep unread" => "Merk som ulest",
 "Collapse" => "Skjul",
 "Delete folder" => "Slett mappe",

@@ -21,7 +21,7 @@
 "Mark read" => "Oznacz jako przeczytane",
 "from" => "z",
 "by" => "przez",
-"Cant play audio format" => "Nie mogę odtworzyć formatu audio",
+"Download" => "Pobierz",
 "Keep unread" => "Pozostaw nieprzeczytane",
 "Delete website" => "Usuń adres strony",
 "Collapse" => "Zwiń",

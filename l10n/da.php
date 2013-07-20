@@ -14,7 +14,7 @@
 "All articles" => "Alle artikler",
 "from" => "fra",
 "by" => "af",
-"Cant play audio format" => "Kan ikke afspille lydformatet",
+"Download" => "Download",
 "Keep unread" => "Behold ulæste",
 "Delete website" => "Slet hjemmeside",
 "Collapse" => "Sammenfold",

@@ -9,7 +9,7 @@
 "Unread articles" => "Bài chưa đọc",
 "All articles" => "Mọi bài viết",
 "by" => "bởi",
-"Cant play audio format" => "Không thể chạy định dạng audio này",
+"Download" => "Tải về",
 "Keep unread" => "Giữ chưa đọc",
 "Collapse" => "Thu gọn",
 "Delete folder" => "Xóa thư mục",

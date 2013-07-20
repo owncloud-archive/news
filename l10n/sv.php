@@ -21,7 +21,7 @@
 "Mark read" => "Markera som läst",
 "from" => "från",
 "by" => "av",
-"Cant play audio format" => "Kan inte spela ljudformat",
+"Download" => "Ladda ner",
 "Keep unread" => "Behåll som oläst",
 "Delete website" => "Ta bort webbsajt",
 "Collapse" => "Dölj",

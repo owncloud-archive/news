@@ -21,7 +21,7 @@
 "Mark read" => "Jelöljük meg olvasottként",
 "from" => "innen:",
 "by" => "általa:",
-"Cant play audio format" => "Ez az hangformátum nem játszható le",
+"Download" => "Letöltés",
 "Keep unread" => "Maradjon olvasatlan",
 "Delete website" => "A honlap törlése",
 "Collapse" => "Összecsukás",

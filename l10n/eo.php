@@ -21,7 +21,7 @@
 "Mark read" => "Marki kiel legita",
 "from" => "el",
 "by" => "de",
-"Cant play audio format" => "Ne eblas ludi sonan dosierformon",
+"Download" => "Elŝuti",
 "Keep unread" => "Lasi legota",
 "Delete website" => "Forigi TTT-ejon",
 "Collapse" => "Maletendi",

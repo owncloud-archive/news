@@ -21,7 +21,7 @@
 "Mark read" => "Označit jako přečtené",
 "from" => "z",
 "by" => "sdílí",
-"Cant play audio format" => "Nelze přehrát formát zvuku",
+"Download" => "Stáhnout",
 "Keep unread" => "Ponechat nepřečteno",
 "Delete website" => "Smazat webovou stránku",
 "Collapse" => "Svinout",

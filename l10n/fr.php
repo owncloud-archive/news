@@ -21,7 +21,7 @@
 "Mark read" => "Marquer comme lu",
 "from" => "de",
 "by" => "par",
-"Cant play audio format" => "Impossible de jouer ce format audio",
+"Download" => "Télécharger",
 "Keep unread" => "Garder non lu",
 "Delete website" => "Supprimer cette page web",
 "Collapse" => "Replier",

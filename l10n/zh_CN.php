@@ -21,7 +21,7 @@
 "Mark read" => "标记已读",
 "from" => "来源",
 "by" => "被",
-"Cant play audio format" => "无法播放此音频格式",
+"Download" => "下载",
 "Keep unread" => "保持未读",
 "Delete website" => "删除网站",
 "Collapse" => "折叠",

@@ -21,7 +21,7 @@
 "Mark read" => "Marca come letto",
 "from" => "da",
 "by" => "da",
-"Cant play audio format" => "Impossibile riprodurre il formato audio",
+"Download" => "Scarica",
 "Keep unread" => "Mantieni non letto",
 "Delete website" => "Elimina sito web",
 "Collapse" => "Contrai",

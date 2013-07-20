@@ -12,7 +12,7 @@
 "All articles" => "Semua artikel",
 "from" => "dari",
 "by" => "oleh",
-"Cant play audio format" => "Tidak dapat memainkan format audio",
+"Download" => "Unduh",
 "Keep unread" => "Biarkan belum terbaca",
 "Collapse" => "Tutup",
 "Delete folder" => "Hapus map",

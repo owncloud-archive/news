@@ -21,7 +21,7 @@
 "Mark read" => "Märgi loetuks",
 "from" => "kohast",
 "by" => "lisas",
-"Cant play audio format" => "Helivormingut ei saa esitada",
+"Download" => "Lae alla",
 "Keep unread" => "Hoia kui lugemata",
 "Delete website" => "Kustuta veebileht",
 "Collapse" => "Sulge",

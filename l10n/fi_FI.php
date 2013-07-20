@@ -21,7 +21,7 @@
 "Mark read" => "Merkitse luetuksi",
 "from" => "Syöte:",
 "by" => " Kirjoittaja:",
-"Cant play audio format" => "Äänimuodon toistaminen ei onnistu",
+"Download" => "Lataa",
 "Keep unread" => "Pidä lukemattomana",
 "Delete website" => "Poista verkkosivusto",
 "Collapse" => "Kutista näkymää",
