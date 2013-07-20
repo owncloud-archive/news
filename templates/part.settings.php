@@ -1,11 +1,16 @@
 <div id="app-settings-header">
 <button name="app settings" 
 		class="settings-button"
+		hide-on-click="{
+			selector: '#settings-tooltip'
+		}"
+
 		oc-click-slide-toggle="{
 			selector: '#app-settings-content',
 			hideOnFocusLost: true,
 			cssClass: 'opened'
-		}"></button>
+		}"
+		></button>
 </div>
 
 <div id="app-settings-content" ng-show="feedBusinessLayer.noFeeds()">

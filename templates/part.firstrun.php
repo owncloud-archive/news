@@ -1,13 +1,13 @@
-<div id ="add-new-tooltip">
+<div id ="add-new-tooltip" hide-on-click>
 	<div class="firstrun-tooltip">
-		<?php p($l->t('Add a feed!')) ?>
+		<?php p($l->t('Add a website')) ?>
 		<div class="firstrun-arrow left"></div>
 	</div>
 </div>
 
-<div id ="settings-tooltip">
+<div id ="settings-tooltip" hide-on-click>
 	<div class="firstrun-tooltip">
-		<?php p($l->t('Or import your feeds from another reader!')) ?>
+		<?php p($l->t('Or import your feeds from another reader')) ?>
 		<div class="firstrun-arrow left"></div>
 	</div>
 </div>
