@@ -116,7 +116,7 @@ msgstr "от"
 
 #: templates/part.items.php:37
 msgid "by"
-msgstr "до свидания"
+msgstr "автор"
 
 #: templates/part.items.php:44
 msgid "Download"
