@@ -111,21 +111,33 @@ class FeedFetcher implements IFeedFetcher {
 	}
 
 
+	private function decodeTwice($string) {
+		return html_entity_decode(
+			html_entity_decode($string, ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'UTF-8'
+		);
+	}
+
+
 	protected function buildItem($simplePieItem) {
 		$item = new Item();
 		$item->setStatus(0);
 		$item->setUnread();
-		$item->setUrl(html_entity_decode($simplePieItem->get_permalink(),
-			ENT_COMPAT, 'UTF-8'));
+		$item->setUrl($this->decodeTwice($simplePieItem->get_permalink()));
+		
 		// unescape content because angularjs helps against XSS
-		$item->setTitle(html_entity_decode($simplePieItem->get_title(),
-			ENT_COMPAT, 'UTF-8'));
+		$item->setTitle($this->decodeTwice($simplePieItem->get_title()));
 		$guid = $simplePieItem->get_id();
 		$item->setGuid($guid);
 		$item->setGuidHash(md5($guid));
-		$item->setBody(str_replace('<a', '<a target="_blank"',
-		// escape XSS
-		$this->purifier->purify($simplePieItem->get_content())));
+
+		// links should always open in a new window
+		$item->setBody(
+			str_replace(
+				'<a', '<a target="_blank"',	$this->purifier->purify(
+					$simplePieItem->get_content()
+				)
+			)
+		);
 
 		// pubdate is not required. if not given use the current date
 		$date = $simplePieItem->get_date('U');
@@ -139,13 +151,11 @@ class FeedFetcher implements IFeedFetcher {
 
 		$author = $simplePieItem->get_author();
 		if ($author !== null) {
-			$name = html_entity_decode($author->get_name(),
-				ENT_COMPAT, 'UTF-8' );
+			$name = $this->decodeTwice($author->get_name());
 			if ($name) {
 				$item->setAuthor($name);
 			} else {
-				$item->setAuthor(html_entity_decode($author->get_email()),
-					ENT_COMPAT, 'UTF-8' );
+				$item->setAuthor($this->decodeTwice($author->get_email()));
 			}
 		}
 
@@ -167,7 +177,7 @@ class FeedFetcher implements IFeedFetcher {
 		$feed = new Feed();
 
 		// unescape content because angularjs helps against XSS
-		$title = html_entity_decode($simplePieFeed->get_title(),
+		$title = $this->decodeTwice($simplePieFeed->get_title(),
 			ENT_COMPAT, 'UTF-8' );
 
 		// if there is no title use the url
