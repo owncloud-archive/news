@@ -115,6 +115,18 @@ class FeedAPITest extends ControllerTestUtility {
 	}
 
 
+	public function testGetAllFromUsersAnnotations(){
+		$annotations = array('Ajax', 'CSRFExemption', 'API');
+		$this->assertAnnotations($this->feedAPI, 'getAllFromAllUsers', $annotations);
+	}
+
+
+	public function testUpdateAnnotations(){
+		$annotations = array('Ajax', 'CSRFExemption', 'API');
+		$this->assertAnnotations($this->feedAPI, 'update', $annotations);
+	}
+
+
 	public function testGetAll() {
 		$feeds = array(
 			new Feed()
@@ -439,4 +451,57 @@ class FeedAPITest extends ControllerTestUtility {
 		$this->assertEquals($this->msg, $data['message']);
 		$this->assertEquals(Http::STATUS_NOT_FOUND, $response->getStatus());
 	}
+
+
+	public function testGetAllFromAllUsers(){
+		$feed = new Feed();
+		$feed->setUrl(3);
+		$feed->setId(1);
+		$feed->setUserId('john');
+		$feeds = array($feed);
+		$this->feedBusinessLayer->expects($this->once())
+			->method('findAllFromAllUsers')
+			->will($this->returnValue($feeds));
+		$response = $this->feedAPI->getAllFromAllUsers();
+		$this->assertTrue($response instanceof JSONResponse);
+		$this->assertEquals('{"feeds":[{"id":1,"userId":"john"}]}', $response->render());
+	}
+
+
+	public function testUpdate() {
+		$feedId = 3;
+		$userId = 'hi';
+		$request = new Request(array('params' => array(
+			'feedId' => $feedId,
+			'userId' => $userId
+		)));
+		$this->feedAPI = new FeedAPI(
+			$this->api,
+			$request,
+			$this->folderBusinessLayer,
+			$this->feedBusinessLayer,
+			$this->itemBusinessLayer
+		);
+		$this->feedBusinessLayer->expects($this->once())
+			->method('update')
+			->with($this->equalTo($feedId), $this->equalTo($userId));
+
+		$this->feedAPI->update();
+	}
+
+
+	public function testUpdateNotFound() {
+		$this->feedBusinessLayer->expects($this->once())
+			->method('update')
+			->will($this->throwException(new BusinessLayerException($this->msg)));
+
+		$response = $this->feedAPI->update();
+
+		$data = $response->getData();
+		$this->assertEquals($this->msg, $data['message']);
+		$this->assertEquals(Http::STATUS_NOT_FOUND, $response->getStatus());
+
+	}
+
+
 }
