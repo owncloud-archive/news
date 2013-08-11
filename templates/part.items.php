@@ -19,18 +19,18 @@
 			</ul>
 		</div>
 
-		<h1 class="item_heading">{{ item.title|ocRemoveTags:['em', 'b', 'i'] }}</h1>
+		<h1 class="item_heading">{{ item.title }}</h1>
 		<h1 class="item_title">
 			<a ng-click="itemBusinessLayer.setRead(item.id)"
-				target="_blank" ng-href="{{ item.url|ocSanitizeURL }}">
-				{{ item.title|ocRemoveTags:['em', 'b', 'i'] }}
+				target="_blank" ng-href="{{ item.url }}">
+				{{ item.title }}
 			</a>
 		</h1>
 
 		<h2 class="item_author">
 			<span ng-show="itemBusinessLayer.noFeedActive() && feedBusinessLayer.getFeedLink(item.feedId)">
 				<?php p($l->t('from')) ?>
-				<a 	target="_blank" ng-href="{{ feedBusinessLayer.getFeedLink(item.feedId)|ocSanitizeURL }}"
+				<a 	target="_blank" ng-href="{{ feedBusinessLayer.getFeedLink(item.feedId) }}"
 					class="from_feed">{{ itemBusinessLayer.getFeedTitle(item.id) }}</a>
 			</span>
 			<span ui-if="item.author">

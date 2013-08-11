@@ -198,7 +198,7 @@ class FeedAPI extends Controller {
 			));
 		}
 
-		return  new JSONResponse($result);
+		return new JSONResponse($result);
 	}
 
 
@@ -209,14 +209,16 @@ class FeedAPI extends Controller {
 	 */
 	public function update() {
 		$userId = $this->params('userId');
-		$feedId = $this->params('feedId');
+		$feedId = (int) $this->params('feedId');
 
 		try {
 			$this->feedBusinessLayer->update($feedId, $userId);
-		} catch(BusinessLayerException $ex) {
-			return new JSONResponse(array('message' => $ex->getMessage()),
-				Http::STATUS_NOT_FOUND);
+		// ignore update failure (feed could not be reachable etc, we dont care)
+		} catch(\Exception $ex) {
+			$this->api->log('Could not update feed ' . $ex->getMessage(),
+					'debug');
 		}
+		return new JSONResponse();
 
 	}
 

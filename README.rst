@@ -4,6 +4,8 @@ README
 
 The News app is a an RSS/Atom feed aggregator. It offers a `RESTful API <https://github.com/owncloud/news/wiki/API-1.2>`_ for app developers. The source code is `available on GitHub <https://github.com/owncloud/news>`_
 
+For further developer and user documentation please visit `the wiki <https://github.com/owncloud/news/wiki>`_
+
 .. |travis-ci| image:: https://travis-ci.org/owncloud/news.png
 .. _travis-ci: https://travis-ci.org/owncloud/news
 
@@ -115,53 +117,11 @@ Keyboard shortcuts
 * **Star item and jump to next one**: h
 * **Open current item**: o
 
-Mobile Clients
---------------
-
-Official
-~~~~~~~~
-* **Platform**: Android, iOS, Windows Phone (PhoneGap), FirefoxOS
-* **Status**: In development
-* **Author**: `Bernhard Posselt <https://github.com/Raydiation>`_
-* **Link (source)**: `https://github.com/owncloud/news-mobile <https://github.com/owncloud/news-mobile>`_
-* **License**: AGPL
-* **Bugtracker**: `https://github.com/owncloud/news-mobile/issues <https://github.com/owncloud/news-mobile/issues>`_
-
-Unofficial
-~~~~~~~~~~
-* **Platform**: Android
-* **Status**: Beta
-* **Author**: `David Luhmer <https://github.com/David-Development>`_
-* **Link (source)**: `Owncloud News Reader <http://david-luhmer.de/wordpress/?p=126>`_
-* **Google play Store**: `buy the App <https://play.google.com/store/apps/details?id=de.luhmer.owncloudnewsreader>`_
-* **License**: AGPL
-* **Bugtracker**: `https://github.com/owncloud/News-Android-App/issues <https://github.com/owncloud/News-Android-App/issues>`_
-
-----------------
-
-* **Platform**: Blackberry 10
-* **Status**: Beta
-* **Author**: `Adam Pigg <http://www.piggz.co.uk/>`_
-* **Link (source)**: `Own News <https://gitorious.org/ownnews/ownnews>`_
-* **Blackberry World**: coming soon
-* **License**: GPL
-
-----------------
-
-* **Platform**: iOS
-* **Status**: Beta
-* **Author**: `Peter Hedlund <http://peterandlinda.com/>`_
-* **Link (source)**: `iOCNews <https://github.com/phedlund/iOCNews>`_
-* **Apple App Store**: coming soon
-* **Bugtracker**: `https://github.com/phedlund/iOCNews/issues <https://github.com/phedlund/iOCNews/issues>`_
-* **License**: BSD
-
-Desktop Clients
----------------
 
 Performance Notices
 -------------------
 * Use MySQL or PostgreSQL for better database performance
+* Use the `updater script for large installations to thread the update <https://github.com/owncloud/news/wiki/Cron-1.2>`_
 
 Frequent Problems
 -----------------
@@ -170,6 +130,8 @@ All feeds are not updated anymore
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 `This is a bug in the core backgroundjob system <https://github.com/owncloud/core/issues/3221>`_ deleting the :file:`owncloud/data/cron.lock` file gets the cron back up running
 
+Another way to fix this is to run a custom `updater script <https://github.com/owncloud/news/wiki/Cron-1.2>`_
+
 All feeds are not updated and theres no cron.lock
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 * Check if the cronjob exists with **crontab -u www-data -e** (replace www-data with your httpd user)
@@ -177,7 +139,7 @@ All feeds are not updated and theres no cron.lock
 * Check if the cronjob is ever executed by placing an **error_log('updating')** in the `background job file <https://github.com/owncloud/news/blob/master/backgroundjob/task.php#L37>`_. If the cronjob runs, there should be an updating log statement in your httpd log.
 * If there is no **updating** statement in your logs check if your cronjob is executed by executing a different script
 * If your cron works fine but owncloud's cronjobs are never executed, file a bug in `core <https://github.com/owncloud/core/>`_
-
+* Try the `updater script <https://github.com/owncloud/news/wiki/Cron-1.2>`_
 
 Configuration
 -------------
@@ -185,7 +147,7 @@ This will be in a separate config file in the future but for now you can tweak t
 
 :file:`dependencyinjection/dicontainer.php`
 
-* To use a custom update/cron script you need to disable the cronjob which is run by ownCloud by default:
+* To use a custom update/cron script you need to disable the cronjob which is run by ownCloud by default::
 
     $this['useCronUpdates'] = false;
 
@@ -210,54 +172,4 @@ in the **js/** directory
     feedUpdateInterval: 1000*60*3  # miliseconds
 
 
-Building the package
---------------------
-To build the app simply run::
 
-    make
-
-Then build the package with::
-
-    make dist
-
-The package lies in the **build/** directory and is ready to be uploaded to `the App-Store <http://apps.owncloud.com>`_
-
-Running tests
--------------
-All tests
-~~~~~~~~~
-To run them execute::
-
-    make test
-
-PHP Unit tests
-~~~~~~~~~~~~~~
-To run them execute::
-
-    make unit-tests
-
-Integration tests
-~~~~~~~~~~~~~~~~~
-To run them execute::
-
-    make integration-tests
-
-Acceptance tests
-~~~~~~~~~~~~~~~~
-.. note:: For acceptance tests, a user with the name **test** and password **test** must exist!
-
-To change the url under which ownCloud is installed, set the environment variable $OWNCLOUD_HOST::
-
-    export OWNCLOUD_HOST="localhost/core"
-
-Otherwise it defaults to **localhost/owncloud**,
-
-To run them execute::
-
-    make acceptance-tests
-
-JavaScript unit tests
-~~~~~~~~~~~~~~~~~~~~~
-To run them execute::
-
-    make javascript-tests

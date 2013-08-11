@@ -486,20 +486,23 @@ class FeedAPITest extends ControllerTestUtility {
 			->method('update')
 			->with($this->equalTo($feedId), $this->equalTo($userId));
 
-		$this->feedAPI->update();
+		$response = $this->feedAPI->update();
+		$this->assertTrue($response instanceof JSONResponse);
 	}
 
 
-	public function testUpdateNotFound() {
+	public function testUpdateError() {
 		$this->feedBusinessLayer->expects($this->once())
 			->method('update')
-			->will($this->throwException(new BusinessLayerException($this->msg)));
+			->will($this->throwException(new \Exception($this->msg)));
+		$this->api->expects($this->once())
+			->method('log')
+			->with($this->equalTo('Could not update feed ' . $this->msg),
+				$this->equalTo('debug'));
 
 		$response = $this->feedAPI->update();
 
-		$data = $response->getData();
-		$this->assertEquals($this->msg, $data['message']);
-		$this->assertEquals(Http::STATUS_NOT_FOUND, $response->getStatus());
+		$this->assertTrue($response instanceof JSONResponse);
 
 	}
 

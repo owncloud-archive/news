@@ -3,174 +3,170 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Agustin Ferrario <agustin.ferrario@hotmail.com.ar>, 2012
-# cjtess <claudio.tessone@gmail.com>, 2013
-# cjtess <claudio.tessone@gmail.com>, 2012
-# Javier Victor Mariano Bruno <koryyyy@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-09 06:01-0400\n"
-"PO-Revision-Date: 2013-08-07 12:21+0000\n"
+"POT-Creation-Date: 2013-08-07 07:55-0400\n"
+"PO-Revision-Date: 2013-08-07 09:02+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
-"Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/owncloud/language/es_AR/)\n"
+"Language-Team: German (Austria) (http://www.transifex.com/projects/p/owncloud/language/de_AT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_AR\n"
+"Language: de_AT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: appinfo/app.php:52
 msgid "News"
-msgstr "Noticias"
+msgstr ""
 
 #: businesslayer/feedbusinesslayer.php:95
 msgid "Can not add feed: Exists already"
-msgstr "No es posible agregar fuente: Ya existe"
+msgstr ""
 
 #: businesslayer/feedbusinesslayer.php:133
 msgid "Can not add feed: URL does not exist or has invalid xml"
-msgstr "No es posible agregar fuente: No existe o tiene un xml inválido"
+msgstr ""
 
 #: businesslayer/folderbusinesslayer.php:66
 msgid "Can not add folder: Exists already"
-msgstr "No es posible agregar carpeta: Ya existe"
+msgstr ""
 
 #: templates/main.php:26
 #, php-format
 msgid "Undo deletion of %s"
-msgstr "Deshacer borrado de %s"
+msgstr ""
 
 #: templates/part.addnew.php:11
 msgid "Add Website"
-msgstr "Agregar sitio web"
+msgstr ""
 
 #: templates/part.addnew.php:16
 msgid "Error: address exists already!"
-msgstr "Error: ¡la dirección ya existe!"
+msgstr ""
 
 #: templates/part.addnew.php:19
 msgid "Error: folder exists already"
-msgstr "Error: ¡la carpeta ya existe!"
+msgstr ""
 
 #: templates/part.addnew.php:26
 msgid "Address"
-msgstr "Dirección"
+msgstr ""
 
 #: templates/part.addnew.php:30 templates/part.addnew.php:33
 msgid "Add"
-msgstr "Agregar"
+msgstr ""
 
 #: templates/part.addnew.php:37 templates/part.addnew.php:45
 msgid "New folder"
-msgstr "Nueva Carpeta"
+msgstr ""
 
 #: templates/part.addnew.php:38
 msgid "Folder"
-msgstr "Carpeta"
+msgstr ""
 
 #: templates/part.addnew.php:43
 msgid "Choose folder"
-msgstr "Seleccionar carpeta"
+msgstr ""
 
 #: templates/part.addnew.php:55
 msgid "Folder name"
-msgstr "Nombre de la carpeta"
+msgstr ""
 
 #: templates/part.addnew.php:58
 msgid "Back to folder selection"
-msgstr "Volver a la selección de carpeta"
+msgstr ""
 
 #: templates/part.addnew.php:63
 msgid "Create folder"
-msgstr "Crear carpeta"
+msgstr ""
 
 #: templates/part.feed.starred.php:11
 msgid "Starred"
-msgstr "Favoritos"
+msgstr ""
 
 #: templates/part.feed.unread.php:10
 msgid "Unread articles"
-msgstr "Articulos sin leer"
+msgstr ""
 
 #: templates/part.feed.unread.php:17
 msgid "All articles"
-msgstr "Todos los articulos"
+msgstr ""
 
 #: templates/part.feed.unread.php:26 templates/part.listfeed.php:49
 #: templates/part.listfolder.php:43
 msgid "Mark read"
-msgstr "Marcar como leído"
+msgstr ""
 
 #: templates/part.items.php:32
 msgid "from"
-msgstr "de"
+msgstr ""
 
 #: templates/part.items.php:37
 msgid "by"
-msgstr "por"
+msgstr ""
 
 #: templates/part.items.php:44
 msgid "Download"
-msgstr "Descargar"
+msgstr ""
 
 #: templates/part.items.php:57
 msgid "Keep unread"
-msgstr "Mantener como no leido"
+msgstr ""
 
 #: templates/part.listfeed.php:37 templates/part.listfeed.php:55
 msgid "Delete website"
-msgstr "Borrar sitio web."
+msgstr ""
 
 #: templates/part.listfolder.php:14
 msgid "Collapse"
-msgstr "Colapsar"
+msgstr ""
 
 #: templates/part.listfolder.php:32 templates/part.listfolder.php:48
 msgid "Delete folder"
-msgstr "Borrar carpeta"
+msgstr ""
 
 #: templates/part.listfolder.php:54
 msgid "Rename folder"
-msgstr "Renombrar carpeta"
+msgstr ""
 
 #: templates/part.settings.php:13
 msgid "Import / Export OPML"
-msgstr "Importar / Exportar OPML"
+msgstr ""
 
 #: templates/part.settings.php:17 templates/part.settings.php:19
 #: templates/part.settings.php:47 templates/part.settings.php:49
 msgid "Import"
-msgstr "Importar"
+msgstr ""
 
 #: templates/part.settings.php:23 templates/part.settings.php:27
 #: templates/part.settings.php:30 templates/part.settings.php:32
 msgid "Export"
-msgstr "Exportar"
+msgstr ""
 
 #: templates/part.settings.php:36
 msgid "Error when importing: file does not contain valid OPML"
-msgstr "Error al importar: el archivo no contiene OPML válido"
+msgstr ""
 
 #: templates/part.settings.php:42
 msgid "Import Google Reader JSON"
-msgstr "Importar JSON de Google Reader"
+msgstr ""
 
 #: templates/part.settings.php:43
 msgid ""
 "To import starred and shared articles from Google \n"
 "\t\t\tReader please upload the .json files from the Google Takeout archive"
-msgstr "Para importar artículos favoritos y compartidos de Google Reader, cargá los archivos .json del archivo de Google Takeout"
+msgstr ""
 
 #: templates/part.settings.php:53
 msgid "Error when importing: file does not contain valid JSON"
-msgstr "Error al importar: el archivo no contiene JSON válido"
+msgstr ""
 
 #: templates/part.showall.php:5
 msgid "Show all"
-msgstr "Mostrar todo"
+msgstr ""
 
 #: templates/part.showall.php:11
 msgid "Show only unread"
-msgstr "Mostrar únicamente los no leidos"
+msgstr ""
