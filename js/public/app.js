@@ -1103,6 +1103,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
           }
         };
 
+        FeedBusinessLayer.prototype.initialized = function() {
+          return this._persistence.initialized();
+        };
+
         FeedBusinessLayer.prototype.getNumberOfFeeds = function() {
           return this._feedModel.size();
         };
@@ -2653,7 +2657,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 (function() {
   angular.module('News').factory('Persistence', [
-    'Request', 'FeedLoading', 'AutoPageLoading', 'NewLoading', 'Config', 'ActiveFeed', '$rootScope', function(Request, FeedLoading, AutoPageLoading, NewLoading, Config, ActiveFeed, $rootScope) {
+    'Request', 'FeedLoading', 'AutoPageLoading', 'NewLoading', 'Config', 'ActiveFeed', '$rootScope', '$q', function(Request, FeedLoading, AutoPageLoading, NewLoading, Config, ActiveFeed, $rootScope, $q) {
       var Persistence;
 
       Persistence = (function() {
@@ -2674,13 +2678,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
           var _this = this;
 
+          this.deferred = $q.defer();
           this.getActiveFeed(function() {
             return _this.getItems(_this._activeFeed.getType(), _this._activeFeed.getId());
           });
           this.getAllFolders();
           this.getAllFeeds();
           this.userSettingsRead();
-          return this.userSettingsLanguage();
+          this.userSettingsLanguage();
+          return this.deferred.promise;
         };
 
         /*

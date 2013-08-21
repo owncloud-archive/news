@@ -77,14 +77,15 @@ FeedModel, NewLoading, _ExistsError, Utils, $rootScope, NewestItem)->
 						item.setRead()
 				@_persistence.setFeedRead(feedId, newestItemId)
 
+		initialized: ->
+			return @_persistence.initialized()
 
 		getNumberOfFeeds: ->
 			return @_feedModel.size()
 
-
 		noFeeds: ->
 			return @getNumberOfFeeds() == 0
-		
+			
 
 		isVisible: (feedId) ->
 			if @isActive(feedId) or @_showAll.getShowAll()
