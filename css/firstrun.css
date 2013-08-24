@@ -39,12 +39,12 @@ Created by Afshin Mehrabani (https://github.com/afshinm)
 }
 
 .firstrun-tooltip {
-  font-size: 1.2em;
+  font-size: 16px;
   padding: 10px;
   background-color: white;
   min-width: 150px;
-  max-width: 300px;
-  height: 20px;
+  max-width: 400px;
+  height: 44px;
   border-radius: 3px;
   box-shadow: 0 1px 10px rgba(0,0,0,.4);
   -webkit-transition: opacity 0.1s ease-out;

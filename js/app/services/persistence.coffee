@@ -39,13 +39,17 @@ $rootScope, $q) ->
 			###
 
 			@deferred = $q.defer()
-	
+
 			# items can only be loaded after the active feed is known
 			@getActiveFeed =>
 				@getItems(@_activeFeed.getType(), @_activeFeed.getId())
-			
+
 			@getAllFolders()
-			@getAllFeeds()
+
+			successCallback = => 
+				@deferred.resolve()
+
+			@getAllFeeds(successCallback)
 			@userSettingsRead()
 			@userSettingsLanguage()
 

@@ -37,7 +37,7 @@ angular.module('News', ['OC', 'ui']).config ($provide) ->
 angular.module('News').run ['Persistence', 'Config',
 (Persistence, Config) ->
 
-	Persistence.init()
+#	Persistence.init()
 
 	setInterval ->
 		Persistence.getAllFeeds(null, false)
