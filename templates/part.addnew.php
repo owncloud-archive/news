@@ -11,7 +11,9 @@
 		}"
  	>+ <span><?php p($l->t('Add Website'))?></span></a>
 
-	<div class="add-new-popup" ng-show="feedBusinessLayer.noFeeds()">
+	<div class="add-new-popup" 
+		ng-controller="InitController"
+		ng-show="initialized && feedBusinessLayer.noFeeds()">
 	
 		<fieldset class="personalblock">
 			<p class="error" ng-show="feedExistsError || folderExistsError">

@@ -232,7 +232,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Alessandro Cosentino
-@copyright 2012 Alessandro Cosentino cosenal@gmail.com
+@copyright 2013 Alessandro Cosentino cosenal@gmail.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -782,6 +782,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
           this._$scope = _$scope;
           this._persistence = _persistence;
           this._feedBusinessLayer = _feedBusinessLayer;
+          this._$scope.initialized = false;
           this._$scope.feedBusinessLayer = this._feedBusinessLayer;
           successCallback = function() {
             return _this._$scope.initialized = true;

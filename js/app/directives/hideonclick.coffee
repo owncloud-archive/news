@@ -3,7 +3,7 @@
 ownCloud - News
 
 @author Alessandro Cosentino
-@copyright 2012 Alessandro Cosentino cosenal@gmail.com
+@copyright 2013 Alessandro Cosentino cosenal@gmail.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE

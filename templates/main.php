@@ -45,20 +45,21 @@
 
 	</div>
 
-	<div id="app-content" ng-class="{
-			loading: isLoading(),
-			autopaging: isAutoPaging()
-		}"
-		ng-controller="ItemController"
-		news-item-scroll
-		item-shortcuts
-		tabindex="-1">
-		<?php print_unescaped($this->inc("part.items")); ?>
-	</div>
-
-	<div id="app-content" ng-controller="InitController"
-		ng-show="initialized && feedBusinessLayer.noFeeds()">
-		<?php print_unescaped($this->inc("part.firstrun")); ?>
-	</div>	
+	<span ng-controller="InitController">
+		<div id="app-content" ng-class="{
+				loading: isLoading(),
+				autopaging: isAutoPaging()
+			}"
+			ng-controller="ItemController"
+			ng-hide="initialized && feedBusinessLayer.noFeeds()"
+			news-item-scroll
+			item-shortcuts
+			tabindex="-1">
+			<?php print_unescaped($this->inc("part.items")); ?>
+		</div>
+		<div id="app-content" ng-show="initialized && feedBusinessLayer.noFeeds()">
+			<?php print_unescaped($this->inc("part.firstrun")); ?>
+		</div>	
+	</span>	
 
 </div>

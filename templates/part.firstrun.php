@@ -15,3 +15,4 @@
 <div id="nofeeds-message">
 	<?php p($l->t('Welcome to the ownCloud News app!')) ?>
 </div>
+

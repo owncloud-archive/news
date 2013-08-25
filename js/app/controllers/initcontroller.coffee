@@ -29,6 +29,7 @@ angular.module('News').controller 'InitController',
 
 		constructor: (@_$scope, @_persistence, @_feedBusinessLayer) ->
 
+			@_$scope.initialized = false
 			@_$scope.feedBusinessLayer = @_feedBusinessLayer
 
 			successCallback = =>
