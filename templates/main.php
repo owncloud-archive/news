@@ -21,7 +21,7 @@
 
 ?>
 
-<div id="app" ng-app="News" ng-cloak>
+<div id="app" ng-app="News" ng-cloak ng-controller="AppController">
 	<div id="undo-container">
 		<div undo-notification id="undo">
 			<a href="#"><?php p($l->t('Undo deletion of %s', '{{ getCaption() }}')); ?></a>
@@ -45,21 +45,19 @@
 
 	</div>
 
-	<span ng-controller="InitController">
-		<div id="app-content" ng-class="{
-				loading: isLoading(),
-				autopaging: isAutoPaging()
-			}"
-			ng-controller="ItemController"
-			ng-hide="initialized && feedBusinessLayer.noFeeds()"
-			news-item-scroll
-			item-shortcuts
-			tabindex="-1">
-			<?php print_unescaped($this->inc("part.items")); ?>
-		</div>
-		<div id="app-content" ng-show="initialized && feedBusinessLayer.noFeeds()">
-			<?php print_unescaped($this->inc("part.firstrun")); ?>
-		</div>	
-	</span>	
+	<div id="app-content" ng-class="{
+			loading: isLoading(),
+			autopaging: isAutoPaging()
+		}"
+		ng-controller="ItemController"
+		ui-if="initialized && !feedBusinessLayer.noFeeds()"
+		news-item-scroll
+		item-shortcuts
+		tabindex="-1">
+		<?php print_unescaped($this->inc("part.items")); ?>
+	</div>
+	<div id="app-content" ui-if="initialized && feedBusinessLayer.noFeeds()">
+		<?php print_unescaped($this->inc("part.firstrun")); ?>
+	</div>	
 
 </div>
