@@ -59,13 +59,13 @@ if($version[0] > 5 || ($version[0] >= 5 && $version[1] >= 80)) {
 			autopaging: isAutoPaging()
 		}"
 		ng-controller="ItemController"
-		ui-if="initialized && !feedBusinessLayer.noFeeds()"
+		ng-show="initialized && !feedBusinessLayer.noFeeds()"
 		news-item-scroll
 		item-shortcuts
 		tabindex="-1">
 		<?php print_unescaped($this->inc("part.items")); ?>
 	</div>
-	<div id="app-content" ui-if="initialized && feedBusinessLayer.noFeeds()">
+	<div id="firstrun" ng-show="initialized && feedBusinessLayer.noFeeds()">
 		<?php print_unescaped($this->inc("part.firstrun")); ?>
 	</div>	
 
