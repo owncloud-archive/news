@@ -1,18 +1,4 @@
-<div id ="add-new-tooltip" hide-on-click>
-	<div class="firstrun-tooltip">
-		<?php p($l->t('Add a website')) ?>
-		<div class="firstrun-arrow left"></div>
-	</div>
-</div>
-
-<div id ="settings-tooltip" hide-on-click>
-	<div class="firstrun-tooltip">
-		<?php p($l->t('Or import your feeds from another reader')) ?>
-		<div class="firstrun-arrow left"></div>
-	</div>
-</div>
-
-<div id="nofeeds-message">
-	<?php p($l->t('Welcome to the ownCloud News app!')) ?>
+<div id="firstrun">
+	<h1 class="message"><?php p($l->t('Welcome to the ownCloud News app!')) ?></h1>
 </div>
 
