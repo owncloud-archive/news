@@ -60,7 +60,7 @@ if($version[0] > 5 || ($version[0] >= 5 && $version[1] >= 80)) {
 		}"
 		ng-controller="ItemController"
 		ng-show="initialized && !feedBusinessLayer.noFeeds()"
-		news-item-scroll
+		news-item-scroll="true"
 		item-shortcuts
 		tabindex="-1">
 		<?php print_unescaped($this->inc("part.items")); ?>
