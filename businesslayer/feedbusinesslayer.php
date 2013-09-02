@@ -6,7 +6,7 @@
 * @author Alessandro Cosentino
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -36,6 +36,8 @@ use \OCA\News\Utility\Fetcher;
 use \OCA\News\Utility\FetcherException;
 use \OCA\News\Utility\ImportParser;
 
+use \OCA\News\Utility\ArticleEnhancer\Enhancer;
+
 class FeedBusinessLayer extends BusinessLayer {
 
 	private $feedFetcher;
@@ -44,12 +46,14 @@ class FeedBusinessLayer extends BusinessLayer {
 	private $timeFactory;
 	private $importParser;
 	private $autoPurgeMinimumInterval;
+	private $enhancer;
 
 	public function __construct(FeedMapper $feedMapper, Fetcher $feedFetcher,
 		                        ItemMapper $itemMapper, API $api,
 		                        TimeFactory $timeFactory,
 		                        ImportParser $importParser,
-		                        $autoPurgeMinimumInterval){
+		                        $autoPurgeMinimumInterval,
+		                        Enhancer $enhancer){
 		parent::__construct($feedMapper);
 		$this->feedFetcher = $feedFetcher;
 		$this->itemMapper = $itemMapper;
@@ -57,6 +61,7 @@ class FeedBusinessLayer extends BusinessLayer {
 		$this->timeFactory = $timeFactory;
 		$this->importParser = $importParser;
 		$this->autoPurgeMinimumInterval = $autoPurgeMinimumInterval;
+		$this->enhancer = $enhancer;
 	}
 
 	/**
@@ -83,20 +88,21 @@ class FeedBusinessLayer extends BusinessLayer {
 	 * @param string $feedUrl the url to the feed
 	 * @param int $folderId the folder where it should be put into, 0 for root folder
 	 * @param string $userId for which user the feed should be created
-	 * @throws BusinessLayerExistsException if the feed exists already
+	 * @throws BusinessLayerConflictException if the feed exists already
 	 * @throws BusinessLayerException if the url points to an invalid feed
 	 * @return Feed the newly created feed
 	 */
 	public function create($feedUrl, $folderId, $userId){
 		// first try if the feed exists already
 		try {
-			$this->mapper->findByUrlHash(md5($feedUrl), $userId);
-			throw new BusinessLayerExistsException(
-				$this->api->getTrans()->t('Can not add feed: Exists already'));
-		} catch(DoesNotExistException $ex){}
-
-		try {
 			list($feed, $items) = $this->feedFetcher->fetch($feedUrl);
+
+			// try again if feed exists depending on the reported link
+			try {
+				$this->mapper->findByUrlHash($feed->getUrlHash(), $userId);
+				throw new BusinessLayerConflictException(
+					$this->api->getTrans()->t('Can not add feed: Exists already'));
+			} catch(DoesNotExistException $ex){}
 
 			// insert feed
 			$feed->setFolderId($folderId);
@@ -118,6 +124,7 @@ class FeedBusinessLayer extends BusinessLayer {
 					continue;
 				} catch(DoesNotExistException $ex){
 					$unreadCount += 1;
+					$item = $this->enhancer->enhance($item, $feed->getLink());
 					$this->itemMapper->insert($item);
 				}
 			}
@@ -183,6 +190,8 @@ class FeedBusinessLayer extends BusinessLayer {
 					try {
 						$this->itemMapper->findByGuidHash($item->getGuidHash(), $feedId, $userId);
 					} catch(DoesNotExistException $ex){
+						$item = $this->enhancer->enhance($item, 
+							$existingFeed->getLink());
 						$this->itemMapper->insert($item);
 					}
 				}

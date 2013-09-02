@@ -3,7 +3,7 @@
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -23,6 +23,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 angular.module('News').factory 'unreadCountFormatter', ->
 	return (unreadCount) ->
-		if unreadCount > 99
-				unreadCount = '99+'
+		if unreadCount > 999
+				unreadCount = '999+'
 		return unreadCount

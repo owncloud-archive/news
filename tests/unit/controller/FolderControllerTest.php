@@ -6,7 +6,7 @@
 * @author Alessandro Copyright
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -34,7 +34,7 @@ use \OCA\AppFramework\Db\MultipleObjectsReturnedException;
 use \OCA\News\Db\Folder;
 use \OCA\News\Db\Feed;
 use \OCA\News\BusinessLayer\BusinessLayerException;
-use \OCA\News\BusinessLayer\BusinessLayerExistsException;
+use \OCA\News\BusinessLayer\BusinessLayerConflictException;
 
 require_once(__DIR__ . "/../../classloader.php");
 
@@ -256,7 +256,7 @@ class FolderControllerTest extends ControllerTestUtility {
 
 	public function testCreateReturnsErrorForInvalidCreate(){
 		$msg = 'except';
-		$ex = new BusinessLayerExistsException($msg);
+		$ex = new BusinessLayerConflictException($msg);
 		$this->api->expects($this->once())
 			->method('getUserId')
 			->will($this->returnValue($this->user));
@@ -342,7 +342,7 @@ class FolderControllerTest extends ControllerTestUtility {
 
 	public function testRenameReturnsErrorForInvalidCreate(){
 		$msg = 'except';
-		$ex = new BusinessLayerExistsException($msg);
+		$ex = new BusinessLayerConflictException($msg);
 		$this->folderBusinessLayer->expects($this->once())
 			->method('rename')
 			->will($this->throwException($ex));

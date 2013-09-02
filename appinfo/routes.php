@@ -6,7 +6,7 @@
 * @author Alessandro Cosentino
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -233,7 +233,7 @@ $this->create('news_api_version', '/api/v1-2/version')->get()->action(
 	}
 );
 
-$this->create('news_api_cleanup', '/api/v1-2/cleanUp')->get()->action(
+$this->create('news_api_cleanup', '/api/v1-2/cleanup')->get()->action(
 	function($params) {
 		return App::main('NewsAPI', 'cleanUp', $params, new DIContainer());
 	}
@@ -275,6 +275,13 @@ $this->create('news_api_folders_read', '/api/v1-2/folders/{folderId}/read')->put
 /**
  * Feed API
  */
+$this->create('news_api_cors', '/api/v1-2/{path}')->method('options')->action(
+	function($params) {
+		return App::main('NewsAPI', 'cors', $params, new DIContainer());
+	}
+)->requirements(array('path', '.+'));
+
+
 $this->create('news_api_feeds_get_all', '/api/v1-2/feeds')->get()->action(
 	function($params) {
 		return App::main('FeedAPI', 'getAll', $params, new DIContainer());

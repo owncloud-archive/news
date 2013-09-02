@@ -6,7 +6,7 @@
 * @author Alessandro Cosentino
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -25,7 +25,10 @@
 
 namespace OCA\News\DependencyInjection;
 
+use \OC\Files\View;
+
 use \OCA\AppFramework\DependencyInjection\DIContainer as BaseContainer;
+use \OCA\AppFramework\Middleware\MiddlewareDispatcher;
 
 use \OCA\News\Controller\PageController;
 use \OCA\News\Controller\FolderController;
@@ -48,13 +51,19 @@ use \OCA\News\External\FolderAPI;
 use \OCA\News\External\FeedAPI;
 use \OCA\News\External\ItemAPI;
 
+use \OCA\News\Utility\Config;
 use \OCA\News\Utility\Fetcher;
 use \OCA\News\Utility\FeedFetcher;
 use \OCA\News\Utility\TwitterFetcher;
 use \OCA\News\Utility\OPMLExporter;
 use \OCA\News\Utility\ImportParser;
 use \OCA\News\Utility\Updater;
+use \OCA\News\Utility\SimplePieFileFactory;
 
+use \OCA\News\Utility\ArticleEnhancer\Enhancer;
+use \OCA\News\Utility\ArticleEnhancer\CyanideAndHappinessEnhancer;
+
+use \OCA\News\Middleware\CORSMiddleware;
 
 require_once __DIR__ . '/../3rdparty/htmlpurifier/library/HTMLPurifier.auto.php';
 
@@ -71,14 +80,29 @@ class DIContainer extends BaseContainer {
 		/**
 		 * Configuration values
 		 */
-		$this['autoPurgeMinimumInterval'] = 60; // seconds, used to define how
-		                                        // long deleted folders and feeds
-		                                        // should still be kept for an
-		                                        // undo actions
-		$this['autoPurgeCount'] = 200;  // number of allowed unread articles per feed
-		$this['simplePieCacheDuration'] = 30*60;  // seconds
-		$this['feedFetcherTimeout'] = 60; // seconds
-		$this['useCronUpdates'] = true;
+		$this['configView'] = $this->share(function($c) {
+			$view = new View('/news/config');
+			if (!$view->file_exists('')) {
+				$view->mkdir('');
+			}
+
+			return $view;
+		});
+
+		$this['Config'] = $this->share(function($c) {
+			$config = new Config($c['configView'], $c['API']);
+			$config->read('config.ini', true);
+			return $config;
+		});
+
+		// set by config class from config file
+		// look up defaults in utility/config.php
+		$this['autoPurgeMinimumInterval'] = $this['Config']->getAutoPurgeMinimumInterval();
+		$this['autoPurgeCount'] = $this['Config']->getAutoPurgeCount();
+		$this['simplePieCacheDuration'] = $this['Config']->getSimplePieCacheDuration();
+		$this['feedFetcherTimeout'] = $this['Config']->getFeedFetcherTimeout();
+		$this['useCronUpdates'] = $this['Config']->getUseCronUpdates();
+
 
 		$this['simplePieCacheDirectory'] = $this->share(function($c) {
 			$directory = $c['API']->getSystemValue('datadirectory') .
@@ -88,7 +112,6 @@ class DIContainer extends BaseContainer {
 				mkdir($directory, 0770, true);
 			}
 			return $directory;
-
 		});
 
 		$this['HTMLPurifier'] = $this->share(function($c) {
@@ -103,7 +126,9 @@ class DIContainer extends BaseContainer {
 			$config->set('Cache.SerializerPath', $directory);
 			$config->set('HTML.SafeIframe', true);
 			$config->set('URI.SafeIframeRegexp',
-				'%^http://(www.youtube(?:-nocookie)?.com/embed/|player.vimeo.com/video/)%'); //allow YouTube and Vimeo
+				'%^(?:https?:)?//(' . 
+				'www.youtube(?:-nocookie)?.com/embed/|' .
+				'player.vimeo.com/video/)%'); //allow YouTube and Vimeo
 			return new \HTMLPurifier($config);
 		});
 
@@ -167,7 +192,8 @@ class DIContainer extends BaseContainer {
 				$c['API'],
 				$c['TimeFactory'],
 				$c['ImportParser'],
-				$c['autoPurgeMinimumInterval']);
+				$c['autoPurgeMinimumInterval'],
+				$c['Enhancer']);
 		});
 
 		$this['ItemBusinessLayer'] = $this->share(function($c){
@@ -223,6 +249,29 @@ class DIContainer extends BaseContainer {
 		/**
 		 * Utility
 		 */
+		$this['Enhancer'] = $this->share(function($c){
+			$enhancer = new Enhancer();
+
+			// register fetchers in order
+			// the most generic enhancer should be the last one
+			$enhancer->registerEnhancer('explosm.net', $c['CyanideAndHappinessEnhancer']);
+
+			return $enhancer;
+		});
+
+		$this['DefaultEnhancer'] = $this->share(function($c){
+			return new DefaultEnhancer();
+		});
+
+		$this['CyanideAndHappinessEnhancer'] = $this->share(function($c){
+			return new CyanideAndHappinessEnhancer(
+				$c['SimplePieFileFactory'],
+				$c['HTMLPurifier'],
+				$c['feedFetcherTimeout']
+			);
+		});
+
+
 		$this['Fetcher'] = $this->share(function($c){
 			$fetcher = new Fetcher();
 
@@ -250,6 +299,7 @@ class DIContainer extends BaseContainer {
 			return new TwitterFetcher($c['FeedFetcher']);
 		});
 
+
 		$this['ImportParser'] = $this->share(function($c){
 			return new ImportParser($c['TimeFactory'], $c['HTMLPurifier']);
 		});
@@ -267,6 +317,26 @@ class DIContainer extends BaseContainer {
 			                   $c['FeedBusinessLayer'],
 			                   $c['ItemBusinessLayer']);
 		});
+
+		$this['SimplePieFileFactory'] = $this->share(function($c){
+			return new SimplePieFileFactory();
+		});
+
+
+		/** 
+		 * Middleware
+		 */
+		$this['MiddlewareDispatcher'] = $this->share(function($c){
+			$dispatcher = new MiddlewareDispatcher();
+			$dispatcher->registerMiddleware($c['HttpMiddleware']);
+			$dispatcher->registerMiddleware($c['SecurityMiddleware']);
+			$dispatcher->registerMiddleware($c['CORSMiddleware']);
+			return $dispatcher;
+		});
+
+		$this['CORSMiddleware'] = $this->share(function($c){
+			return new CORSMiddleware($c['Request']);
+		});		
 
 	}
 }

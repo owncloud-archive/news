@@ -6,7 +6,7 @@
 * @author Alessandro Cosentino
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -25,6 +25,7 @@
 
 namespace OCA\News\External;
 
+use \OCA\AppFramework\Http\Request;
 use \OCA\AppFramework\Http\JSONResponse;
 use \OCA\AppFramework\Utility\ControllerTestUtility;
 
@@ -87,7 +88,41 @@ class NewsAPITest extends ControllerTestUtility {
 	public function testCleanUp(){
 		$this->updater->expects($this->once())
 			->method('cleanUp');
-		$this->newsAPI->cleanUp();
+		$response = $this->newsAPI->cleanUp();
+		$this->assertTrue($response instanceof JSONResponse);
+	}
+
+
+	public function testCorsAnnotations(){
+		$annotations = array('IsAdminExemption', 'IsSubAdminExemption',
+			'Ajax', 'CSRFExemption', 'IsLoggedInExemption');
+		$this->assertAnnotations($this->newsAPI, 'cors', $annotations);
+	}
+
+
+	public function testCors() {
+		$this->request = new Request(array('server' => array()));
+		$this->newsAPI = new NewsAPI($this->api, $this->request, $this->updater);
+		$response = $this->newsAPI->cors();
+
+		$headers = $response->getHeaders();
+
+		$this->assertEquals('*', $headers['Access-Control-Allow-Origin']);
+		$this->assertEquals('PUT, POST, GET, DELETE', $headers['Access-Control-Allow-Methods']);
+		$this->assertEquals('true', $headers['Access-Control-Allow-Credentials']);
+		$this->assertEquals('Authorization, Content-Type', $headers['Access-Control-Allow-Headers']);
+		$this->assertEquals('1728000', $headers['Access-Control-Max-Age']);
+	}
+
+
+	public function testCorsUsesOriginIfGiven() {
+		$this->request = new Request(array('server' => array('HTTP_ORIGIN' => 'test')));
+		$this->newsAPI = new NewsAPI($this->api, $this->request, $this->updater);
+		$response = $this->newsAPI->cors();
+
+		$headers = $response->getHeaders();
+
+		$this->assertEquals('test', $headers['Access-Control-Allow-Origin']);
 	}
 
 

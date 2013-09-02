@@ -6,7 +6,7 @@
 * @author Alessandro Cosentino
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -29,6 +29,8 @@ use \OCA\AppFramework\Core\API;
 use \OCA\AppFramework\Controller\Controller;
 use \OCA\AppFramework\Http\Request;
 use \OCA\AppFramework\Http\JSONResponse;
+use \OCA\AppFramework\Http\Response;
+use \OCA\AppFramework\Http\Http;
 
 use \OCA\News\Utility\Updater;
 
@@ -52,7 +54,8 @@ class NewsAPI extends Controller {
 	 */
 	public function version() {
 		$version = $this->api->getAppValue('installed_version');
-		return new JSONResponse(array('version' => $version));
+		$response = new JSONResponse(array('version' => $version));
+		return $response;
 	}
 
 
@@ -63,6 +66,35 @@ class NewsAPI extends Controller {
 	 */
 	public function cleanUp() {
 		$this->updater->cleanUp();
+		return new JSONResponse();
 	}
+
+
+	/**
+	 * @IsAdminExemption
+	 * @IsSubAdminExemption
+	 * @CSRFExemption
+	 * @IsLoggedInExemption
+	 * @Ajax
+	 */
+	public function cors() {
+		// needed for webapps access due to cross origin request policy
+		if(isset($this->request->server['HTTP_ORIGIN'])) {
+			$origin = $this->request->server['HTTP_ORIGIN'];
+		} else {
+			$origin = '*';
+		}
+
+		$response = new Response();
+		$response->addHeader('Access-Control-Allow-Origin', $origin);
+		$response->addHeader('Access-Control-Allow-Methods', 
+			'PUT, POST, GET, DELETE');
+		$response->addHeader('Access-Control-Allow-Credentials', 'true');
+		$response->addHeader('Access-Control-Max-Age', '1728000');
+		$response->addHeader('Access-Control-Allow-Headers', 
+			'Authorization, Content-Type');
+		return $response;
+	}
+
 
 }
