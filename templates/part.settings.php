@@ -5,7 +5,8 @@
 			selector: '#app-settings-content',
 			hideOnFocusLost: true,
 			cssClass: 'opened'
-		}"></button>
+		}"
+		></button>
 </div>
 
 <div id="app-settings-content">
