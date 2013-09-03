@@ -1,10 +1,6 @@
 <div id="app-settings-header">
 <button name="app settings" 
 		class="settings-button"
-		hide-on-click="{
-			selector: '#settings-tooltip'
-		}"
-
 		oc-click-slide-toggle="{
 			selector: '#app-settings-content',
 			hideOnFocusLost: true,
@@ -13,7 +9,7 @@
 		></button>
 </div>
 
-<div id="app-settings-content" ng-show="feedBusinessLayer.noFeeds()">
+<div id="app-settings-content">
 	<fieldset class="personalblock">
 		<legend><strong><?php p($l->t('Import / Export OPML')); ?></strong></legend>
 		

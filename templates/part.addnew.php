@@ -9,9 +9,7 @@
 		oc-click-focus="{
 			selector: '.add-new-popup input[ng-model=feedUrl]'
 		}"
-		hide-on-click="{
-			selector: '#add-new-tooltip'
-		}"
+		ng-class="{opened: initialized && feedBusinessLayer.noFeeds()}"
  	>+ <span><?php p($l->t('Add Website'))?></span></a>
 
 	<div class="add-new-popup"

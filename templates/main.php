@@ -48,7 +48,8 @@ if($version[0] > 5 || ($version[0] >= 5 && $version[1] >= 80)) {
 			<?php print_unescaped($this->inc('part.showall')); ?>
 		</ul>
 
-		<div id="app-settings" ng-controller="SettingsController">
+		<div id="app-settings" ng-controller="SettingsController"
+			ng-class="{open: initialized && feedBusinessLayer.noFeeds()}">
 			<?php print_unescaped($this->inc('part.settings')) ?>
 		</div>
 
