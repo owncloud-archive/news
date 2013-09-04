@@ -48,6 +48,18 @@ class AttachementCaching {
 		foreach ($bodyXml->xpath('//img') as $imgElement) {
 			$imgSrc = $imgElement->attributes()->src;
 
+
+			// check if it is an absolute URL
+			if(!filter_var($imgSrc, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+				$itemURL = parse_url($item->getUrl() );
+				$imgURL = parse_url($imgSrc);
+
+				if( $imgURL["path"][0] != "/" )
+					$imgSrc = $itemURL["scheme"]."://".$itemURL["host"] . $itemURL["path"] . "/" . $imgURL["path"];
+				else
+					$imgSrc = $itemURL["scheme"]."://".$itemURL["host"] . $imgURL["path"];		
+			}
+
 			$filename = basename($imgSrc);
 			$filename = strtolower(trim(preg_replace('/[^A-Za-z0-9-.]+/', '-', $filename)));
 
@@ -66,17 +78,31 @@ class AttachementCaching {
 			if( !file_put_contents( $filePath . $filename , file_get_contents($imgSrc) ) ) continue;
 
 			// compress the file
+			$image = imagecreatefromjpeg($filePath . $filename);
+
+			$imgInfo = getimagesize($filePath . $filename);
+			$width = $imgInfo[0];
+			$height = $imgInfo[1];
+
+			if($width > 500) {
+				$newwidth=500;
+				$newheight=($height/$width)*500;
+				$tmp=imagecreatetruecolor($newwidth,$newheight);
+				imagecopyresampled($tmp,$image,0,0,0,0,$newwidth,$newheight,$width,$height);
+				$image = $tmp;
+			}
+
 			$imgInfo = getimagesize($filePath . $filename);
 			if ($imgInfo['mime'] == 'image/jpeg') {
-				$image = imagecreatefromjpeg($filePath . $filename);
 				imagejpeg($image, $filePath . $filename, 55);
 			} elseif ($imgInfo['mime'] == 'image/png') {
-				$image = imagecreatefrompng($filePath. $filename);
 				unlink($filePath . $filename);
 				$filename = substr($filename, 0, -4) . ".jpg";
 				imagejpeg($image, $filePath . $filename, 70);
 				//imagepng($image, $this->imgCacheDir . $item->guidHash . "/0" . basename($imgSrc), 9);
 			}
+			imagedestroy($image);
+			imagedestroy($tmp);
 
 			$imgElement->attributes()->src = '/owncloud/index.php/apps/news/api/v1-2/items/'.$item->getFeedId().'/'.$secretId.'/'.$filename;
 		}
