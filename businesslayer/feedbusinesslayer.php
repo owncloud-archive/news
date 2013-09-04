@@ -54,13 +54,10 @@ class FeedBusinessLayer extends BusinessLayer {
 		                        ItemMapper $itemMapper, API $api,
 		                        TimeFactory $timeFactory,
 		                        ImportParser $importParser,
-<<<<<<< HEAD
 		                        AttachementCaching $attachementCaching,
-		                        $autoPurgeMinimumInterval){
-=======
 		                        $autoPurgeMinimumInterval,
 		                        Enhancer $enhancer){
->>>>>>> master
+
 		parent::__construct($feedMapper);
 		$this->feedFetcher = $feedFetcher;
 		$this->itemMapper = $itemMapper;
