@@ -6,7 +6,7 @@
 * @author Alessandro Cosentino
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -121,7 +121,7 @@ class Item extends Entity implements IAPI {
 
 	public function setUrl($url) {
 		$url = trim($url);
-		if(strpos($url, 'http') === 0) {
+		if(strpos($url, 'http') === 0 || strpos($url, 'magnet') === 0) {
 			parent::setUrl($url);
 		}
 	}

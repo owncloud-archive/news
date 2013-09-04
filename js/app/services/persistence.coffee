@@ -3,7 +3,7 @@
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -22,9 +22,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 angular.module('News').factory 'Persistence',
 ['Request', 'FeedLoading', 'AutoPageLoading', 'NewLoading', 'Config',
-'ActiveFeed', '$rootScope',
+'ActiveFeed', '$rootScope', '$q'
 (Request, FeedLoading, AutoPageLoading, NewLoading, Config, ActiveFeed,
-$rootScope) ->
+$rootScope, $q) ->
 
 	class Persistence
 
@@ -37,15 +37,22 @@ $rootScope) ->
 			Loads the initial data from the server
 			###
 
+			@deferred = $q.defer()
+
 			# items can only be loaded after the active feed is known
 			@getActiveFeed =>
 				@getItems(@_activeFeed.getType(), @_activeFeed.getId())
-			
+
 			@getAllFolders()
-			@getAllFeeds()
+
+			successCallback = =>
+				@deferred.resolve()
+
+			@getAllFeeds(successCallback)
 			@userSettingsRead()
 			@userSettingsLanguage()
 
+			@deferred.promise
 
 		###
 			ITEM CONTROLLER

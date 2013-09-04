@@ -6,7 +6,7 @@
 * @author Alessandro Cosentino
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -187,8 +187,8 @@ class FeedFetcher implements IFeedFetcher {
 
 		$feed->setTitle($title);
 		$feed->setUrl($url);
-		$feed->setLink($simplePieFeed->get_link());
-		$feed->setUrlHash(md5($url));
+		$feed->setLink($simplePieFeed->get_permalink());
+		$feed->setUrlHash(md5($feed->getLink()));
 		$feed->setAdded($this->time->getTime());
 
 		if ($getFavicon) {

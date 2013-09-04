@@ -6,7 +6,7 @@
 * @author Alessandro Cosentino
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -125,5 +125,11 @@ class ItemTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('', $item->getUrl());
 	}
 
+
+	public function testSetMagnetUrl() {
+		$item = new Item();
+		$item->setUrl('magnet://link.com');
+		$this->assertEquals('magnet://link.com', $item->getUrl());
+	}
 
 }

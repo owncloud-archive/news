@@ -5,7 +5,7 @@
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -51,41 +51,44 @@ class UpdateThread(threading.Thread):
         self.timeout = timeout
 
     def run(self):
-        with UpdateThread.lock:
-            if len(self.feeds) > 0:
-                feed = self.feeds.pop()
-            else:
-                return
+        while True:
+            with UpdateThread.lock:
+                if len(self.feeds) > 0:
+                    feed = self.feeds.pop()
+                else:
+                    return
 
-        feed['feedId'] = feed['id']
-        del feed['id']
+            feed['feedId'] = feed['id']
+            del feed['id']
 
-        # call the update method of one feed
-        data = urllib.parse.urlencode(feed)
-        headers = {
-            'Content-type': 'application/json',
-            'Accept': 'text/plain'
-        }
-        url = '%s?%s' % (self.update_url, data)
+            # call the update method of one feed
+            data = urllib.parse.urlencode(feed)
+            headers = {
+                'Content-type': 'application/json',
+                'Accept': 'text/plain'
+            }
+            url = '%s?%s' % (self.update_url, data)
 
-        try:
-            opener = get_basic_auth_opener(url, self.user, self.password)
-            opener.open(url, timeout=self.timeout)
-        except (urllib.error.HTTPError, socket.timeout) as e:
-            print('%s: %s' % (url, e))
+            try:
+                opener = get_basic_auth_opener(url, self.user, self.password)
+                opener.open(url, timeout=self.timeout)
+            except (urllib.error.HTTPError, urllib.error.URLError, 
+                socket.timeout) as e:
+                print('%s: %s' % (url, e))
 
-        self.run()
 
 
 class Updater:
 
-    def __init__(self, base_url, thread_num, interval, user, password, timeout):
+    def __init__(self, base_url, thread_num, interval, user, password, timeout, 
+                 run_once):
         self.thread_num = thread_num
         self.interval = interval
         self.base_url = base_url
         self.user = user
         self.password = password
         self.timeout = timeout
+        self.run_once = run_once
 
         if self.base_url[-1] != '/':
             self.base_url += '/'
@@ -97,42 +100,52 @@ class Updater:
 
 
     def run(self):
-        try:
-            opener = get_basic_auth_opener(self.base_url, self.user,
-                self.password)
-            # run the cleanup request and get all the feeds to update
-            opener.open(self.cleanup_url)
-            feeds_response = opener.open(self.all_feeds_url)
-            feeds_json = feeds_response.read().decode('utf-8')
-            feeds = json.loads(feeds_json)['feeds']
+        while True:
+            try:
+                opener = get_basic_auth_opener(self.base_url, self.user,
+                    self.password)
+                # run the cleanup request and get all the feeds to update
+                opener.open(self.cleanup_url)
+                feeds_response = opener.open(self.all_feeds_url)
+                feeds_json = feeds_response.read().decode('utf-8')
+                feeds = json.loads(feeds_json)['feeds']
 
-            # start thread_num for feeds
-            threads = []
-            for num in range(0, self.thread_num):
-                thread = UpdateThread(feeds, self.update_url, self.user,
-                    self.password, self.timeout)
-                thread.start()
-                threads.append(thread)
+                # start thread_num threads which update the feeds
+                threads = []
+                for num in range(0, self.thread_num):
+                    thread = UpdateThread(feeds, self.update_url, self.user,
+                        self.password, self.timeout)
+                    thread.start()
+                    threads.append(thread)
 
-            for thread in threads:
-                thread.join()
+                for thread in threads:
+                    thread.join()
 
-            # wait until the interval finished to run again
-            time.sleep(self.interval)
-            self.run()
+                if self.run_once:
+                    return
+                
+                # wait until the interval finished to run again
+                time.sleep(self.interval)
 
-        except (ValueError, urllib.error.HTTPError) as e:
-            print('%s: %s' % (self.base_url, e))
-            exit(1)
+            except (ValueError, urllib.error.HTTPError, 
+                urllib.error.URLError) as e:
+                print('%s: %s' % (self.base_url, e))
+                print('Trying again in 30 seconds')
+                time.sleep(30)
+
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--testrun',
+        help='Run update only once, DO NOT use this in a cron job, only \
+              recommended for testing', action='store_true')
     parser.add_argument('--threads',
         help='How many feeds should be fetched in paralell, defaults to 10',
         default=10,
         type=int)
     parser.add_argument('--timeout',
-        help='Maximum number of seconds for updating a feed, defaults to 5 minutes',
+        help='Maximum number of seconds for updating a feed, \
+              defaults to 5 minutes',
         default=5*60,
         type=int)
     parser.add_argument('--interval',
@@ -150,7 +163,7 @@ def main():
 
     # create the updater and run the threads
     updater = Updater(args.url, args.threads, args.interval, args.user,
-        args.password, args.timeout)
+        args.password, args.timeout, args.testrun)
     updater.run()
 
 

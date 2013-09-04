@@ -3,7 +3,7 @@
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -52,11 +52,18 @@ angular.module('News').directive 'itemShortcuts', ['$window', ($window) ->
 		jumpToNextItem = (scrollArea) ->
 			$scrollArea = $(scrollArea)
 			$items = $scrollArea.find('.feed_item')
+			jumped = false
 			for item in $items
 				$item = $(item)
 				if $item.position().top > 1
+					jumped = true
 					jumpTo($scrollArea, $item)
 					break
+			# in case this is the last item it should still scroll below the
+			# top
+			if jumped == false
+				$scrollArea.scrollTop($scrollArea.prop('scrollHeight'))
+
 
 
 		getCurrentItem = (scrollArea) ->

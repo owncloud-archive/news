@@ -6,7 +6,7 @@
 * @author Alessandro Cosentino
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -48,6 +48,7 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 	private $time;
 	private $importParser;
 	private $autoPurgeMinimumInterval;
+	private $enhancer;
 
 	protected function setUp(){
 		$this->api = $this->getAPIMock();
@@ -72,9 +73,13 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$this->importParser = $this->getMockBuilder('\OCA\News\Utility\ImportParser')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->enhancer = $this->getMockBuilder('\OCA\News\Utility\ArticleEnhancer\Enhancer')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->feedBusinessLayer = new FeedBusinessLayer($this->feedMapper,
 			$this->fetcher, $this->itemMapper, $this->api,
-			$timeFactory, $this->importParser, $this->autoPurgeMinimumInterval);
+			$timeFactory, $this->importParser, $this->autoPurgeMinimumInterval,
+			$this->enhancer);
 		$this->user = 'jack';
 		$response = 'hi';
 	}
@@ -100,10 +105,6 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$this->api->expects($this->once())
 			->method('getTrans')
 			->will($this->returnValue($trans));
-		$this->feedMapper->expects($this->once())
-			->method('findByUrlHash')
-			->with($this->equalTo(md5($url)), $this->equalTo($this->user))
-			->will($this->throwException(new DoesNotExistException('yo')));
 		$this->fetcher->expects($this->once())
 			->method('fetch')
 			->with($this->equalTo($url))
@@ -118,6 +119,8 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$createdFeed = new Feed();
 		$ex = new DoesNotExistException('yo');
 		$createdFeed->setUrl($url);
+		$createdFeed->setUrlHash('hsssi');
+		$createdFeed->setLink($url);
 		$item1 = new Item();
 		$item1->setGuidHash('hi');
 		$item2 = new Item();
@@ -129,7 +132,7 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 
 		$this->feedMapper->expects($this->once())
 			->method('findByUrlHash')
-			->with($this->equalTo(md5($url)), $this->equalTo($this->user))
+			->with($this->equalTo($createdFeed->getUrlHash()), $this->equalTo($this->user))
 			->will($this->throwException($ex));
 		$this->fetcher->expects($this->once())
 			->method('fetch')
@@ -146,6 +149,11 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 				$this->equalTo($item2->getFeedId()),
 				$this->equalTo($this->user))
 			->will($this->throwException($ex));
+		$this->enhancer->expects($this->at(0))
+			->method('enhance')
+			->with($this->equalTo($return[1][1]),
+				$this->equalTo($url))
+			->will($this->returnValue($return[1][1]));
 		$this->itemMapper->expects($this->at(1))
 			->method('insert')
 			->with($this->equalTo($return[1][1]));
@@ -156,6 +164,11 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 				$this->equalTo($item1->getFeedId()),
 				$this->equalTo($this->user))
 			->will($this->throwException($ex));
+		$this->enhancer->expects($this->at(1))
+			->method('enhance')
+			->with($this->equalTo($return[1][0]),
+				$this->equalTo($url))
+			->will($this->returnValue($return[1][0]));
 		$this->itemMapper->expects($this->at(3))
 			->method('insert')
 			->with($this->equalTo($return[1][0]));
@@ -170,9 +183,11 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 	public function testCreateItemGuidExistsAlready(){
 		$url = 'http://test';
 		$folderId = 10;
-		$createdFeed = new Feed();
 		$ex = new DoesNotExistException('yo');
+		$createdFeed = new Feed();
 		$createdFeed->setUrl($url);
+		$createdFeed->setUrlHash($url);
+		$createdFeed->setLink($url);
 		$item1 = new Item();
 		$item1->setGuidHash('hi');
 		$item2 = new Item();
@@ -184,7 +199,8 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 
 		$this->feedMapper->expects($this->once())
 			->method('findByUrlHash')
-			->with($this->equalTo(md5($url)), $this->equalTo($this->user))
+			->with($this->equalTo($createdFeed->getUrlHash()), 
+				$this->equalTo($this->user))
 			->will($this->throwException($ex));
 		$this->fetcher->expects($this->once())
 			->method('fetch')
@@ -201,6 +217,11 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 				$this->equalTo($item2->getFeedId()),
 				$this->equalTo($this->user))
 			->will($this->throwException($ex));
+		$this->enhancer->expects($this->at(0))
+			->method('enhance')
+			->with($this->equalTo($return[1][1]),
+				$this->equalTo($url))
+			->will($this->returnValue($return[1][1]));
 		$this->itemMapper->expects($this->at(1))
 			->method('insert')
 			->with($this->equalTo($return[1][1]));
@@ -223,6 +244,7 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$feed = new Feed();
 		$feed->setId(3);
 		$feed->getUrl('test');
+		$feed->setUrlHash('yo');
 
 		$item = new Item();
 		$item->setGuidHash(md5('hi'));
@@ -249,6 +271,11 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 					$this->equalTo($items[0]->getFeedId()),
 					$this->equalTo($this->user))
 			->will($this->throwException($ex));
+		$this->enhancer->expects($this->at(0))
+			->method('enhance')
+			->with($this->equalTo($items[0]),
+				$this->equalTo($feed->getUrl()))
+			->will($this->returnValue($items[0]));
 		$this->itemMapper->expects($this->once())
 			->method('insert')
 			->with($this->equalTo($items[0]));
@@ -263,145 +290,7 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$this->assertEquals($return, $feed);
 	}
 
-
-	public function testUpdateUpdatesEntryNotWhenPubDateSame(){
-		$feed = new Feed();
-		$feed->setId(3);
-		$feed->getUrl('test');
-
-		$item = new Item();
-		$item->setGuidHash(md5('hi'));
-		$item->setPubDate(3333);
-		$items = array(
-			$item
-		);
-
-		$fetchReturn = array($feed, $items);
-
-		$this->feedMapper->expects($this->at(0))
-			->method('find')
-			->with($this->equalTo($feed->getId()),
-					$this->equalTo($this->user))
-			->will($this->returnValue($feed));
-		$this->fetcher->expects($this->once())
-			->method('fetch')
-			->will($this->returnValue($fetchReturn));
-		$this->itemMapper->expects($this->once())
-			->method('findByGuidHash')
-			->with($this->equalTo($item->getGuidHash()),
-					$this->equalTo($feed->getId()),
-					$this->equalTo($this->user))
-			->will($this->returnValue($item));
-		$this->itemMapper->expects($this->never())
-			->method('insert');
-		$this->itemMapper->expects($this->never())
-			->method('delete');
-
-		$this->feedMapper->expects($this->at(1))
-			->method('find')
-			->with($feed->getId(), $this->user)
-			->will($this->returnValue($feed));
-
-		$return = $this->feedBusinessLayer->update($feed->getId(), $this->user);
-
-		$this->assertEquals($return, $feed);
-	}
-
-
-	public function testUpdateUpdatesEntryNotWhenPubDateUnkown(){
-		$feed = new Feed();
-		$feed->setId(3);
-		$feed->getUrl('test');
-
-		$item = new Item();
-		$item->setGuidHash(md5('hi'));
-		$item->setPubDate(false);
-		$items = array(
-			$item
-		);
-
-		$item2 = new Item();
-		$item2->setPubDate(0);
-
-		$fetchReturn = array($feed, $items);
-
-		$this->feedMapper->expects($this->at(0))
-			->method('find')
-			->with($this->equalTo($feed->getId()),
-				$this->equalTo($this->user))
-			->will($this->returnValue($feed));
-		$this->fetcher->expects($this->once())
-			->method('fetch')
-			->will($this->returnValue($fetchReturn));
-		$this->itemMapper->expects($this->once())
-			->method('findByGuidHash')
-			->with($this->equalTo($item->getGuidHash()),
-				$this->equalTo($feed->getId()),
-				$this->equalTo($this->user))
-			->will($this->returnValue($item2));
-		$this->itemMapper->expects($this->never())
-			->method('insert');
-		$this->itemMapper->expects($this->never())
-			->method('delete');
-
-		$this->feedMapper->expects($this->at(1))
-			->method('find')
-			->with($feed->getId(), $this->user)
-			->will($this->returnValue($feed));
-
-		$return = $this->feedBusinessLayer->update($feed->getId(), $this->user);
-
-		$this->assertEquals($return, $feed);
-	}
-
-	public function testUpdateUpdatesEntryNotWhenNoPubDate(){
-		$feed = new Feed();
-		$feed->setId(3);
-		$feed->getUrl('test');
-
-		$item = new Item();
-		$item->setGuidHash(md5('hi'));
-		$item->setPubDate(null);
-		$items = array(
-			$item
-		);
-
-		$item2 = new Item();
-		$item2->setPubDate(null);
-
-		$fetchReturn = array($feed, $items);
-
-		$this->feedMapper->expects($this->at(0))
-			->method('find')
-			->with($this->equalTo($feed->getId()),
-				$this->equalTo($this->user))
-			->will($this->returnValue($feed));
-		$this->fetcher->expects($this->once())
-			->method('fetch')
-			->will($this->returnValue($fetchReturn));
-		$this->itemMapper->expects($this->once())
-			->method('findByGuidHash')
-			->with($this->equalTo($item->getGuidHash()),
-				$this->equalTo($feed->getId()),
-				$this->equalTo($this->user))
-			->will($this->returnValue($item2));
-		$this->itemMapper->expects($this->never())
-			->method('insert');
-		$this->itemMapper->expects($this->never())
-			->method('delete');
-
-		$this->feedMapper->expects($this->at(1))
-			->method('find')
-			->with($feed->getId(), $this->user)
-			->will($this->returnValue($feed));
-
-		$return = $this->feedBusinessLayer->update($feed->getId(), $this->user);
-
-		$this->assertEquals($return, $feed);
-	}
-
-
-	public function testCreateUpdateFails(){
+	public function testUpdateFails(){
 		$feed = new Feed();
 		$feed->setId(3);
 		$feed->getUrl('test');

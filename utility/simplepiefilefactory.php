@@ -6,7 +6,7 @@
 * @author Alessandro Cosentino
 * @author Bernhard Posselt
 * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+* @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -23,17 +23,13 @@
 *
 */
 
-namespace OCA\News\BusinessLayer;
+namespace OCA\News\Utility;
 
 
-class BusinessLayerExistsException extends BusinessLayerException {
+class SimplePieFileFactory {
 
-	/**
-	 * Constructor
-	 * @param string $msg the error message
-	 */
-	public function __construct($msg){
-		parent::__construct($msg);
+	public function getFile($url, $timeout) {
+		return new \SimplePie_File($url, $timeout);
 	}
 
 }

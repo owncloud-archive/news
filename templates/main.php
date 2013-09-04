@@ -17,10 +17,21 @@
 \OCP\Util::addStyle('news', 'items');
 \OCP\Util::addStyle('news', 'settings');
 \OCP\Util::addStyle('news', 'showall');
+\OCP\Util::addStyle('news', 'firstrun');
+
+
+// stylesheets for different OC versions
+$version = \OCP\Util::getVersion();
+
+// owncloud 6
+if($version[0] > 5 || ($version[0] >= 5 && $version[1] >= 80)) {
+	\OCP\Util::addStyle('news', 'owncloud6');
+}
+
 
 ?>
 
-<div id="app" ng-app="News" ng-cloak>
+<div id="app" ng-app="News" ng-cloak ng-controller="AppController">
 	<div id="undo-container">
 		<div undo-notification id="undo">
 			<a href="#"><?php p($l->t('Undo deletion of %s', '{{ getCaption() }}')); ?></a>
@@ -38,7 +49,8 @@
 			<?php print_unescaped($this->inc('part.showall')); ?>
 		</ul>
 
-		<div id="app-settings" ng-controller="SettingsController">
+		<div id="app-settings" ng-controller="SettingsController"
+			ng-class="{open: initialized && feedBusinessLayer.noFeeds()}">
 			<?php print_unescaped($this->inc('part.settings')) ?>
 		</div>
 
@@ -49,10 +61,14 @@
 			autopaging: isAutoPaging()
 		}"
 		ng-controller="ItemController"
+		ng-show="initialized && !feedBusinessLayer.noFeeds()"
 		news-item-scroll="true"
 		item-shortcuts
 		tabindex="-1">
 		<?php print_unescaped($this->inc("part.items")); ?>
+	</div>
+	<div id="firstrun" ng-show="initialized && feedBusinessLayer.noFeeds()">
+		<?php print_unescaped($this->inc("part.firstrun")); ?>
 	</div>
 
 </div>

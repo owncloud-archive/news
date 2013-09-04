@@ -44,6 +44,7 @@ Before you install the app check that the following requirements are met:
 - `Magic quotes are turned off <http://php.net/manual/de/security.magicquotes.disabling.php>`_ (only needed for PHP < 5.4)
 - `You use a browser that supports the FileReader API <https://developer.mozilla.org/en/docs/DOM/FileReader#Browser_compatibility>`_
 - You can use a cron or webcron to call Background Jobs in ownCloud
+- Your **data/** directory is owned by your webserver user and write/readable
 - You have installed **php-curl** and activated it in the **php.ini**
 - Install ownCloud **5.0.6+** (important!)
 
@@ -141,35 +142,33 @@ All feeds are not updated and theres no cron.lock
 * If your cron works fine but owncloud's cronjobs are never executed, file a bug in `core <https://github.com/owncloud/core/>`_
 * Try the `updater script <https://github.com/owncloud/news/wiki/Cron-1.2>`_
 
+News always redirects to files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This problem is related to opcode caching, `check the issue tracker for how to solve it <https://github.com/owncloud/news/issues/319>`_
+
 Configuration
 -------------
-This will be in a separate config file in the future but for now you can tweak the following things.
+All configuration values are set inside :file:`owncloud/data/news/config/config.ini`
 
-:file:`dependencyinjection/dicontainer.php`
+The configuration is in **INI** format and looks like this:
 
-* To use a custom update/cron script you need to disable the cronjob which is run by ownCloud by default::
+.. code-block:: ini
 
-    $this['useCronUpdates'] = false;
+    autoPurgeMinimumInterval = 60
+    autoPurgeCount = 200
+    simplePieCacheDuration = 1800
+    feedFetcherTimeout = 60
+    useCronUpdates = true
 
-* To cache feeds longer increase::
 
-    $this['simplePieCacheDuration'] = 30*60;  // seconds
+* **autoPurgeMinimumInterval**: Minimum amount of seconds after deleted feeds and folders are removed from the database. 
+* **autoPurgeCount**: To let people have more read and unstarred items per feed before they are purged increase this value
+* **simplePieCacheDuration**: Amount of seconds to cache feeds
+* **feedFetcherTimeout**: Maximum number of seconds to wait for an RSS or Atom feed to load. If a feed takes longer than that number of seconds to update, the update will be aborted
+* **useCronUpdates**: To use a custom update/cron script you need to disable the cronjob which is run by ownCloud by default by setting this to false
 
-* To let people have more read items per feed before they are purged increase::
 
-    $this['autoPurgeCount'] = 200;  // per feed
 
-:file:`js/app/app.coffee`
-
-All changes in the coffee file have to be compiled by using::
-
-    make
-
-in the **js/** directory
-
-* To increase the interval when the app fetches new entries from database(!, not the webpage, thats set by the backgroundjob interval) change::
-
-    feedUpdateInterval: 1000*60*3  # miliseconds
 
 
 

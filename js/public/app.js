@@ -2,7 +2,7 @@
 /**
  * ownCloud News App - v0.0.1
  *
- * Copyright (c) 2013 - Bernhard Posselt <nukeawhale@gmail.com>
+ * Copyright (c) 2013 - Bernhard Posselt <dev@bernhard-posselt.com>
  *
  * This file is licensed under the Affero General Public License version 3 or later.
  * See the COPYING file
@@ -16,7 +16,7 @@
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -48,7 +48,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
   angular.module('News').run([
     'Persistence', 'Config', function(Persistence, Config) {
-      Persistence.init();
       return setInterval(function() {
         Persistence.getAllFeeds(null, false);
         return Persistence.getAllFolders(null, false);
@@ -73,7 +72,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -125,7 +124,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -176,7 +175,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -225,21 +224,22 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
           }
         };
         jumpToNextItem = function(scrollArea) {
-          var $item, $items, $scrollArea, item, _i, _len, _results;
+          var $item, $items, $scrollArea, item, jumped, _i, _len;
           $scrollArea = $(scrollArea);
           $items = $scrollArea.find('.feed_item');
-          _results = [];
+          jumped = false;
           for (_i = 0, _len = $items.length; _i < _len; _i++) {
             item = $items[_i];
             $item = $(item);
             if ($item.position().top > 1) {
+              jumped = true;
               jumpTo($scrollArea, $item);
               break;
-            } else {
-              _results.push(void 0);
             }
           }
-          return _results;
+          if (jumped === false) {
+            return $scrollArea.scrollTop($scrollArea.prop('scrollHeight'));
+          }
         };
         getCurrentItem = function(scrollArea) {
           var $item, $items, $scrollArea, item, _i, _len;
@@ -302,7 +302,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -351,7 +351,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -434,7 +434,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -497,8 +497,59 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 ownCloud - News
 
+@author Alessandro Cosentino
+@copyright 2013 Alessandro Cosentino cosenal@gmail.com
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+License as published by the Free Software Foundation; either
+version 3 of the License, or any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+
+You should have received a copy of the GNU Affero General Public
+License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+(function() {
+  angular.module('News').controller('AppController', [
+    '$scope', 'Persistence', 'FeedBusinessLayer', function($scope, Persistence, FeedBusinessLayer) {
+      var AppController;
+      AppController = (function() {
+        function AppController(_$scope, _persistence, _feedBusinessLayer) {
+          var successCallback,
+            _this = this;
+          this._$scope = _$scope;
+          this._persistence = _persistence;
+          this._feedBusinessLayer = _feedBusinessLayer;
+          this._$scope.initialized = false;
+          this._$scope.feedBusinessLayer = this._feedBusinessLayer;
+          successCallback = function() {
+            return _this._$scope.initialized = true;
+          };
+          this._persistence.init().then(successCallback);
+        }
+
+        return AppController;
+
+      })();
+      return new AppController($scope, Persistence, FeedBusinessLayer);
+    }
+  ]);
+
+}).call(this);
+
+// Generated by CoffeeScript 1.6.3
+/*
+
+ownCloud - News
+
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -628,7 +679,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @_author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -712,7 +763,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -770,7 +821,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -827,7 +878,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -882,7 +933,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -970,6 +1021,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
         FeedBusinessLayer.prototype.getNumberOfFeeds = function() {
           return this._feedModel.size();
+        };
+
+        FeedBusinessLayer.prototype.noFeeds = function() {
+          return this.getNumberOfFeeds() === 0;
         };
 
         FeedBusinessLayer.prototype.isVisible = function(feedId) {
@@ -1112,7 +1167,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -1354,7 +1409,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -1499,7 +1554,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -1566,7 +1621,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -1651,7 +1706,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -1690,7 +1745,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -1727,7 +1782,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -1788,7 +1843,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -1987,7 +2042,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -2147,7 +2202,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -2281,7 +2336,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -2328,7 +2383,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -2407,7 +2462,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
       };
 
       OPMLParser.prototype._recursivelyParse = function($xml, structure) {
-        var $outline, feed, folder, outline, _i, _len, _ref, _results;
+        var $outline, feed, folder, outline, title, _i, _len, _ref, _results;
         _ref = $xml.children('outline');
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -2417,7 +2472,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
             feed = new Feed($outline.attr('text'), $outline.attr('xmlUrl'));
             _results.push(structure.add(feed));
           } else {
-            folder = new Folder($outline.attr('text'));
+            title = $outline.attr('text') || $outline.attr('title');
+            folder = new Folder(title);
             structure.add(folder);
             _results.push(this._recursivelyParse($outline, folder));
           }
@@ -2439,7 +2495,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -2458,7 +2514,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 (function() {
   angular.module('News').factory('Persistence', [
-    'Request', 'FeedLoading', 'AutoPageLoading', 'NewLoading', 'Config', 'ActiveFeed', '$rootScope', function(Request, FeedLoading, AutoPageLoading, NewLoading, Config, ActiveFeed, $rootScope) {
+    'Request', 'FeedLoading', 'AutoPageLoading', 'NewLoading', 'Config', 'ActiveFeed', '$rootScope', '$q', function(Request, FeedLoading, AutoPageLoading, NewLoading, Config, ActiveFeed, $rootScope, $q) {
       var Persistence;
       Persistence = (function() {
         function Persistence(_request, _feedLoading, _autoPageLoading, _newLoading, _config, _activeFeed, _$rootScope) {
@@ -2476,14 +2532,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
           			Loads the initial data from the server
           */
 
-          var _this = this;
+          var successCallback,
+            _this = this;
+          this.deferred = $q.defer();
           this.getActiveFeed(function() {
             return _this.getItems(_this._activeFeed.getType(), _this._activeFeed.getId());
           });
           this.getAllFolders();
-          this.getAllFeeds();
+          successCallback = function() {
+            return _this.deferred.resolve();
+          };
+          this.getAllFeeds(successCallback);
           this.userSettingsRead();
-          return this.userSettingsLanguage();
+          this.userSettingsLanguage();
+          return this.deferred.promise;
         };
 
         /*
@@ -3011,7 +3073,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -3077,7 +3139,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -3128,7 +3190,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -3179,7 +3241,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -3214,7 +3276,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -3234,8 +3296,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 (function() {
   angular.module('News').factory('unreadCountFormatter', function() {
     return function(unreadCount) {
-      if (unreadCount > 99) {
-        unreadCount = '99+';
+      if (unreadCount > 999) {
+        unreadCount = '999+';
       }
       return unreadCount;
     };

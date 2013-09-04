@@ -3,7 +3,7 @@
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -70,7 +70,8 @@ angular.module('News').factory 'OPMLParser', ->
 					feed = new Feed($outline.attr('text'), $outline.attr('xmlUrl'))
 					structure.add(feed)
 				else
-					folder = new Folder($outline.attr('text'))
+					title = $outline.attr('text') || $outline.attr('title')
+					folder = new Folder(title)
 					structure.add(folder)
 					@_recursivelyParse($outline, folder)
 

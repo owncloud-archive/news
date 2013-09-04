@@ -3,7 +3,7 @@
 ownCloud - News
 
 @author Bernhard Posselt
-@copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+@copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -93,13 +93,13 @@ describe 'FeedController', ->
 
 	it 'should show 99+ if in window title when more than 99 unread count', =>
 		item = {id: 3, unreadCount: 1, faviconLink: 'test', url: 'hi'}
-		item1 = {id: 5, unreadCount: 99, faviconLink: 'test', url: 'his'}
+		item1 = {id: 5, unreadCount: 999, faviconLink: 'test', url: 'his'}
 		@FeedModel.add(item)
 		@FeedModel.add(item1)
 
 		@scope.getTotalUnreadCount()
 
-		expect(@$window.document.title).toBe('News (99+) | ownCloud')
+		expect(@$window.document.title).toBe('News (999+) | ownCloud')
 
 
 	it 'should move a feed if moveFeedToFolder is broadcasted', =>

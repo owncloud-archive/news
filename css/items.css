@@ -2,7 +2,7 @@
  * ownCloud - News
  *
  * @author Bernhard Posselt
- * @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+ * @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -204,7 +204,13 @@
 		max-width: 770px;
 		font-size: 14px;
 		clear: both;
-		overflow: auto;
+		overflow-x: auto;
+		/*overflow-y: hidden;
+		height: 80px;*/
+	}
+
+	.feed_item .body.opened {
+
 	}
 
 		.feed_item .body p {
