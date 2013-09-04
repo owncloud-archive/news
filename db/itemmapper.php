@@ -29,10 +29,15 @@ use \OCA\AppFramework\Db\MultipleObjectsReturnedException;
 use \OCA\AppFramework\Db\Mapper;
 use \OCA\AppFramework\Core\API;
 
+use \OCA\News\Utility\AttachementCaching;
+
 class ItemMapper extends Mapper implements IMapper {
 
-	public function __construct(API $api){
+	private $attachementCaching;
+
+	public function __construct(API $api, AttachementCaching $attachementCaching){
 		parent::__construct($api, 'news_items');
+		$this->attachementCaching = $attachementCaching;
 	}
 
 
@@ -44,6 +49,22 @@ class ItemMapper extends Mapper implements IMapper {
 		while($row = $result->fetchRow()){
 			$item = new Item();
 			$item->fromRow($row);
+
+
+			///////////////////////
+			// set absolute paths in body imgs
+			$bodyXml = simplexml_load_string("<body>".$item->getBody()."</body>");
+			foreach ($bodyXml->xpath('//img') as $character) {
+	    		$imgSrc = $character->attributes()->src;
+	    		if(!filter_var($imgSrc, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
+	    			$character->attributes()->src = $this->api->getAbsoluteURL( $imgSrc );
+			}
+			$body = strstr($bodyXml->asXML(), "<body>");
+			$body = substr($body, 6, -8);
+			$item->setBody( $body );
+			//
+			////////////////////////
+
 
 			array_push($items, $item);
 		}
@@ -263,6 +284,16 @@ class ItemMapper extends Mapper implements IMapper {
 
 			if($limit > 0) {
 				$params = array($status, $row['feed_id']);
+
+				// delete appropriate images
+				$sql = 'SELECT `feed_id`, MD5(CONCAT(`id`, `feed_id`, `guid_hash`)) AS `secret_id` FROM `*PREFIX*news_items`' .
+				'WHERE NOT ((`status` & ?) > 0) ' .
+				'AND `feed_id` = ? ' .
+				'ORDER BY `id` ASC';
+				$result = $this->execute($sql, $params, $limit);
+				while($row = $result->fetchRow()) {
+					$this->attachementCaching->purgeDeleted($row['feed_id'], $row['secret_id']);
+				}
 
 				$sql = 'DELETE FROM `*PREFIX*news_items` `items` ' .
 				'WHERE NOT ((`status` & ?) > 0) ' .

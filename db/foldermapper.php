@@ -29,11 +29,16 @@ use \OCA\AppFramework\Core\API;
 use \OCA\AppFramework\Db\Mapper;
 use \OCA\AppFramework\Db\Entity;
 
+use \OCA\News\Utility\AttachementCaching;
+
 
 class FolderMapper extends Mapper implements IMapper {
 
-	public function __construct(API $api) {
+	private $attachementCaching;
+
+	public function __construct(API $api, AttachementCaching $attachementCaching) {
 		parent::__construct($api, 'news_folders');
+		$this->attachementCaching = $attachementCaching;
 	}
 
 	public function find($id, $userId){
@@ -85,6 +90,16 @@ class FolderMapper extends Mapper implements IMapper {
 
 	public function delete(Entity $entity){
 		parent::delete($entity);
+
+		// delete appropriate images
+		$sql = 'SELECT `id` FROM `*PREFIX*news_feeds` WHERE `folder_id` = ?';
+		$params = array($entity->getId());
+		$result = $this->execute($sql, $params);
+
+		while($row = $result->fetchRow()) {
+			$this->attachementCaching->purgeDeleted($row['id']);
+		}
+		
 
 		// someone please slap me for doing this manually :P
 		// we needz CASCADE + FKs please

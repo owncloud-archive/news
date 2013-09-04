@@ -35,6 +35,7 @@ use \OCA\News\Db\ItemMapper;
 use \OCA\News\Utility\Fetcher;
 use \OCA\News\Utility\FetcherException;
 use \OCA\News\Utility\ImportParser;
+use \OCA\News\Utility\AttachementCaching;
 
 class FeedBusinessLayer extends BusinessLayer {
 
@@ -43,12 +44,14 @@ class FeedBusinessLayer extends BusinessLayer {
 	private $api;
 	private $timeFactory;
 	private $importParser;
+	private $attachementCaching;
 	private $autoPurgeMinimumInterval;
 
 	public function __construct(FeedMapper $feedMapper, Fetcher $feedFetcher,
 		                        ItemMapper $itemMapper, API $api,
 		                        TimeFactory $timeFactory,
 		                        ImportParser $importParser,
+		                        AttachementCaching $attachementCaching,
 		                        $autoPurgeMinimumInterval){
 		parent::__construct($feedMapper);
 		$this->feedFetcher = $feedFetcher;
@@ -56,6 +59,7 @@ class FeedBusinessLayer extends BusinessLayer {
 		$this->api = $api;
 		$this->timeFactory = $timeFactory;
 		$this->importParser = $importParser;
+		$this->attachementCaching = $attachementCaching;
 		$this->autoPurgeMinimumInterval = $autoPurgeMinimumInterval;
 	}
 
@@ -103,6 +107,18 @@ class FeedBusinessLayer extends BusinessLayer {
 			$feed->setUserId($userId);
 			$feed = $this->mapper->insert($feed);
 
+
+			// download the favicon
+			if(true || $feed->getFaviconLink()) {
+				$feed->setFaviconLink(
+					$this->attachementCaching->replaceFavicon(
+						$feed->getFaviconLink(), $feed->getId()
+					)
+				);
+			}
+			$this->mapper->update($feed);
+
+
 			// insert items in reverse order because the first one is usually the
 			// newest item
 			$unreadCount = 0;
@@ -118,7 +134,12 @@ class FeedBusinessLayer extends BusinessLayer {
 					continue;
 				} catch(DoesNotExistException $ex){
 					$unreadCount += 1;
-					$this->itemMapper->insert($item);
+					$item = $this->itemMapper->insert($item);
+
+					// we have the id now, save the images locally and replace their url
+					$item = $this->attachementCaching->replaceAttachements($item);
+					$this->itemMapper->update($item);
+
 				}
 			}
 
@@ -184,6 +205,11 @@ class FeedBusinessLayer extends BusinessLayer {
 						$this->itemMapper->findByGuidHash($item->getGuidHash(), $feedId, $userId);
 					} catch(DoesNotExistException $ex){
 						$this->itemMapper->insert($item);
+
+						// we have the id now, save the images locally and replace their url
+						$item = $this->attachementCaching->replaceAttachements($item);
+						$this->itemMapper->update($item);
+
 					}
 				}
 

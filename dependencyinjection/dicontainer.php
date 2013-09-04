@@ -53,6 +53,7 @@ use \OCA\News\Utility\FeedFetcher;
 use \OCA\News\Utility\TwitterFetcher;
 use \OCA\News\Utility\OPMLExporter;
 use \OCA\News\Utility\ImportParser;
+use \OCA\News\Utility\AttachementCaching;
 use \OCA\News\Utility\Updater;
 
 
@@ -167,6 +168,7 @@ class DIContainer extends BaseContainer {
 				$c['API'],
 				$c['TimeFactory'],
 				$c['ImportParser'],
+				$c['AttachementCaching'],
 				$c['autoPurgeMinimumInterval']);
 		});
 
@@ -183,15 +185,15 @@ class DIContainer extends BaseContainer {
 		 * MAPPERS
 		 */
 		$this['FolderMapper'] = $this->share(function($c){
-			return new FolderMapper($c['API']);
+			return new FolderMapper($c['API'],$c['AttachementCaching']);
 		});
 
 		$this['FeedMapper'] = $this->share(function($c){
-			return new FeedMapper($c['API']);
+			return new FeedMapper($c['API'],$c['AttachementCaching']);
 		});
 
 		$this['ItemMapper'] = $this->share(function($c){
-			return new ItemMapper($c['API']);
+			return new ItemMapper($c['API'],$c['AttachementCaching']);
 		});
 
 
@@ -252,6 +254,10 @@ class DIContainer extends BaseContainer {
 
 		$this['ImportParser'] = $this->share(function($c){
 			return new ImportParser($c['TimeFactory'], $c['HTMLPurifier']);
+		});
+
+		$this['AttachementCaching'] = $this->share(function($c){
+			return new AttachementCaching($c['API']);
 		});
 
 		$this['StatusFlag'] = $this->share(function($c){
