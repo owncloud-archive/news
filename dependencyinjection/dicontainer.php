@@ -63,6 +63,7 @@ use \OCA\News\Utility\SimplePieFileFactory;
 use \OCA\News\Utility\ArticleEnhancer\Enhancer;
 use \OCA\News\Utility\ArticleEnhancer\ArticleEnhancer;
 use OCA\News\Utility\ArticleEnhancer\TwoGAGEnhancer;
+use OCA\News\Utility\ArticleEnhancer\ButterSafeEnhancer;
 
 use \OCA\News\Middleware\CORSMiddleware;
 
@@ -259,6 +260,7 @@ class DIContainer extends BaseContainer {
 
 			// register enhancers which need special implementation
 			$enhancer->registerEnhancer('twogag.com', $c['TwoGAGEnhancer']);
+			$enhancer->registerEnhancer('buttersafe.com', $c['ButterSafeEnhancer']);
 
 			// register simple enhancers from config json file
 			$enhancerConfig = file_get_contents(
@@ -281,6 +283,14 @@ class DIContainer extends BaseContainer {
 
 		$this['TwoGAGEnhancer'] = $this->share(function($c){
 			return new TwoGAGEnhancer(
+				$c['SimplePieFileFactory'],
+				$c['HTMLPurifier'],
+				$c['feedFetcherTimeout']
+			);
+		});
+
+		$this['ButterSafeEnhancer'] = $this->share(function($c){
+			return new ButterSafeEnhancer(
 				$c['SimplePieFileFactory'],
 				$c['HTMLPurifier'],
 				$c['feedFetcherTimeout']
