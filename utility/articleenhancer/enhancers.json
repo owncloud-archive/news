@@ -35,6 +35,10 @@
 	},
 	"escapistmagazine.com/articles/view/comics/fraughtwithperil": {
 		"%escapistmagazine.com/articles/view/comics/fraughtwithperil%": "//*[@class='body']"
+	},
+	"trenchescomic.com": {
+		"%trenchescomic.com/comic%": "//*[@class=\"top\"]/img",
+		"%trenchescomic.com/tales%": "//*[@class=\"copy\"]"
 	}
 }
 
