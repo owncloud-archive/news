@@ -42,6 +42,9 @@
 	},
 	"lfgcomic.com": {
 		"%(lfgcomic.com/page)|(feedproxy.google.com/~r/LookingForGroup)%": "//*[@id=\"comic\"]/img | //*[@class=\"content\"]"
+	},
+	"sandraandwoo.com": {
+		"%sandraandwoo.com%": "//*[@id=\"comic\"]/img | //*[@class=\"post\"]"
 	}
 }
 
