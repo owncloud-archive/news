@@ -39,6 +39,9 @@
 	"trenchescomic.com": {
 		"%trenchescomic.com/comic%": "//*[@class=\"top\"]/img",
 		"%trenchescomic.com/tales%": "//*[@class=\"copy\"]"
+	},
+	"lfgcomic.com": {
+		"%(lfgcomic.com/page)|(feedproxy.google.com/~r/LookingForGroup)%": "//*[@id=\"comic\"]/img | //*[@class=\"content\"]"
 	}
 }
 
