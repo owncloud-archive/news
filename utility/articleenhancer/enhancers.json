@@ -45,6 +45,10 @@
 	},
 	"sandraandwoo.com": {
 		"%sandraandwoo.com%": "//*[@id=\"comic\"]/img | //*[@class=\"post\"]"
+	},
+	"theoatmeal.com": {
+		"%theoatmeal.com/blog%": "//*[@class=\"post_body\"]",
+		"%theoatmeal.com/comics%": "//*[@id=\"comic\"] | //*[@class=\"super_vacum\"] | //*[@class=\"pad\"]"
 	}
 }
 
