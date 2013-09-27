@@ -27,6 +27,8 @@
 				target="_blank" ng-href="{{ item.url }}">
 				{{ item.title }}
 			</a>
+			<a href="https://www.facebook.com/sharer/sharer.php?u={{ item.url }}" target="_blank"> <img src="<?php p(OCP\Util::imagePath('news','fb_icon_325x325.png'));?>" width=20 alt="share on facebook"> </a>
+        	        <a target="_blank" href="https://plus.google.com/share?url={{ item.url }}"><img src="<?php p(OCP\Util::imagePath('news','g1.png'));?>"></a>
 		</h1>
 
 		<h2 class="item_author">
