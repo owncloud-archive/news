@@ -144,9 +144,11 @@ class FolderMapperTest extends \OCA\AppFramework\Utility\MapperTestUtility {
 		$sql = 'DELETE FROM `*PREFIX*news_folders` WHERE `id` = ?';
 		$arguments = array($folder->getId());
 
-		$sql2 = 'DELETE FROM `*PREFIX*news_feeds` WHERE `folder_id` = ?';
+		$sql2 = 'SELECT `id` FROM `*PREFIX*news_feeds` WHERE `folder_id` = ?';
 
-		$sql3 = 'DELETE `items` FROM `*PREFIX*news_items` `items` '.
+		$sql3 = 'DELETE FROM `*PREFIX*news_feeds` WHERE `folder_id` = ?';
+
+		$sql4 = 'DELETE `items` FROM `*PREFIX*news_items` `items` '.
 			'LEFT JOIN `*PREFIX*news_feeds` `feeds` ON '. 
 			'`items`.`feed_id` = `feeds`.`id` WHERE `feeds`.`id` IS NULL';
 		$arguments2 = array($folder->getId());
@@ -178,10 +180,19 @@ class FolderMapperTest extends \OCA\AppFramework\Utility\MapperTestUtility {
 
 		$query->expects($this->at(2))
 			->method('execute')
+			->with($this->equalTo($arguments2))
 			->will($this->returnValue($pdoResult));
 		$this->api->expects($this->at(2))
 			->method('prepareQuery')
 			->with($this->equalTo($sql3))
+			->will(($this->returnValue($query)));
+
+		$query->expects($this->at(3))
+			->method('execute')
+			->will($this->returnValue($pdoResult));
+		$this->api->expects($this->at(3))
+			->method('prepareQuery')
+			->with($this->equalTo($sql4))
 			->will(($this->returnValue($query)));
 
 		$this->folderMapper->delete($folder);

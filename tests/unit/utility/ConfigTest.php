@@ -55,6 +55,8 @@ class ConfigFetcherTest extends \OCA\AppFramework\Utility\TestUtility {
 		$this->assertEquals(30*60, $this->config->getSimplePieCacheDuration());
 		$this->assertEquals(60, $this->config->getFeedFetcherTimeout());
 		$this->assertEquals(true, $this->config->getUseCronUpdates());
+		$this->assertEquals(false, $this->config->getPrefetchImages());
+
 	}
 
 
@@ -118,7 +120,8 @@ class ConfigFetcherTest extends \OCA\AppFramework\Utility\TestUtility {
 			"autoPurgeCount = 3\n" . 
 			"simplePieCacheDuration = 1800\n" . 
 			"feedFetcherTimeout = 60\n" . 
-			"useCronUpdates = true";
+			"useCronUpdates = true\n" .
+			"prefetchImages = false";
 		$this->config->setAutoPurgeCount(3);
 
 		$this->fileSystem->expects($this->once())
@@ -142,7 +145,8 @@ class ConfigFetcherTest extends \OCA\AppFramework\Utility\TestUtility {
 			"autoPurgeCount = 200\n" . 
 			"simplePieCacheDuration = 1800\n" . 
 			"feedFetcherTimeout = 60\n" . 
-			"useCronUpdates = false";
+			"useCronUpdates = false\n" .
+			"prefetchImages = false";
 
 		$this->fileSystem->expects($this->once())
 			->method('file_put_contents')

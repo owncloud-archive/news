@@ -29,17 +29,10 @@ use \OCA\AppFramework\Core\API;
 use \OCA\AppFramework\Db\Mapper;
 use \OCA\AppFramework\Db\Entity;
 
-use \OCA\News\Utility\AttachementCaching;
-
-
 class FeedMapper extends Mapper implements IMapper {
 
-
-	private $attachementCaching;
-
-	public function __construct(API $api, AttachementCaching $attachementCaching) {
+	public function __construct(API $api) {
 		parent::__construct($api, 'news_feeds');
-		$this->attachementCaching = $attachementCaching;
 	}
 
 
@@ -77,18 +70,6 @@ class FeedMapper extends Mapper implements IMapper {
 		while($row = $result->fetchRow()){
 			$feed = new Feed();
 			$feed->fromRow($row);
-
-
-			///////////////////////
-			// set absolute path of favicon
-			$faviconUrl = $feed->getFaviconLink();
-
-			if(!filter_var($faviconUrl, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED))
-	    			$feed->setFaviconLink( $this->api->getAbsoluteURL( $faviconUrl ) );
-
-			//
-			////////////////////////
-
 
 			array_push($feeds, $feed);
 		}
@@ -180,9 +161,6 @@ class FeedMapper extends Mapper implements IMapper {
 
 	public function delete(Entity $entity){
 		parent::delete($entity);
-
-		// delete appropriate images
-		$this->attachementCaching->purgeDeleted($entity->getId());
 
 		// someone please slap me for doing this manually :P
 		// we needz CASCADE + FKs please

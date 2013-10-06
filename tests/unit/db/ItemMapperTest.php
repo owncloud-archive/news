@@ -361,8 +361,14 @@ class ItemMapperTest extends \OCA\AppFramework\Utility\MapperTestUtility {
 
 
 		$row = array('feed_id' => 30, 'size' => 11);
+		$row2 = array('id' => 1, 'feed_id' => 30);
 
-		$sql2 = 'DELETE FROM `*PREFIX*news_items` ' .
+		$sql2 = 'SELECT * FROM `*PREFIX*news_items`' .
+				'WHERE NOT ((`status` & ?) > 0) ' .
+				'AND `feed_id` = ? ' .
+				'ORDER BY `id` ASC';
+
+		$sql3 = 'DELETE FROM `*PREFIX*news_items` ' .
 				'WHERE NOT ((`status` & ?) > 0) ' .
 				'AND `feed_id` = ? ' .
 				'ORDER BY `id` ASC';
@@ -379,6 +385,18 @@ class ItemMapperTest extends \OCA\AppFramework\Utility\MapperTestUtility {
 			->method('fetchRow')
 			->will($this->returnValue(false));
 
+
+		$pdoResult2 = $this->getMock('Result',
+			array('fetchRow'));
+
+		$pdoResult2->expects($this->at(0))
+			->method('fetchRow')
+			->will($this->returnValue($row2));
+		$pdoResult2->expects($this->at(1))
+			->method('fetchRow')
+			->will($this->returnValue(false));
+
+
 		$query = $this->getMock('Query',
 			array('execute'));
 		$query->expects($this->at(0))
@@ -391,16 +409,30 @@ class ItemMapperTest extends \OCA\AppFramework\Utility\MapperTestUtility {
 			->with($this->equalTo($sql1))
 			->will(($this->returnValue($query)));
 
+
 		$query2 = $this->getMock('Query',
 			array('execute'));
 		$query2->expects($this->at(0))
 			->method('execute')
-			->with($this->equalTo($params2));
+			->with($this->equalTo($params2))
+			->will($this->returnValue($pdoResult2));
 
 		$this->api->expects($this->at(1))
 			->method('prepareQuery')
-			->with($this->equalTo($sql2), $this->equalTo(1))
+			->with($this->equalTo($sql2))
 			->will($this->returnValue($query2));
+
+
+		$query3 = $this->getMock('Query',
+			array('execute'));
+		$query3->expects($this->at(0))
+			->method('execute')
+			->with($this->equalTo($params2));
+
+		$this->api->expects($this->at(2))
+			->method('prepareQuery')
+			->with($this->equalTo($sql3), $this->equalTo(1))
+			->will($this->returnValue($query3));
 
 		$result = $this->mapper->deleteReadOlderThanThreshold($threshold);
 	}
