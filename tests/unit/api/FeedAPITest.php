@@ -44,6 +44,7 @@ class FeedAPITest extends ControllerTestUtility {
 	private $folderBusinessLayer;
 	private $feedBusinessLayer;
 	private $itemBusinessLayer;
+	private $imgCachefileSystem;
 	private $feedAPI;
 	private $api;
 	private $user;
@@ -71,12 +72,17 @@ class FeedAPITest extends ControllerTestUtility {
 			'\OCA\News\BusinessLayer\ItemBusinessLayer')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->imgCachefileSystem = $this->getMockBuilder(
+			'\OCA\News\Utility\SimplePieFileFactory')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->feedAPI = new FeedAPI(
 			$this->api,
 			$this->request,
 			$this->folderBusinessLayer,
 			$this->feedBusinessLayer,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 		$this->user = 'tom';
 		$this->msg = 'hohoho';
@@ -200,7 +206,8 @@ class FeedAPITest extends ControllerTestUtility {
 			$request,
 			$this->folderBusinessLayer,
 			$this->feedBusinessLayer,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -228,7 +235,8 @@ class FeedAPITest extends ControllerTestUtility {
 			$request,
 			$this->folderBusinessLayer,
 			$this->feedBusinessLayer,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -259,7 +267,8 @@ class FeedAPITest extends ControllerTestUtility {
 			$request,
 			$this->folderBusinessLayer,
 			$this->feedBusinessLayer,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -303,7 +312,8 @@ class FeedAPITest extends ControllerTestUtility {
 			$request,
 			$this->folderBusinessLayer,
 			$this->feedBusinessLayer,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -383,7 +393,8 @@ class FeedAPITest extends ControllerTestUtility {
 			$request,
 			$this->folderBusinessLayer,
 			$this->feedBusinessLayer,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -417,7 +428,8 @@ class FeedAPITest extends ControllerTestUtility {
 			$request,
 			$this->folderBusinessLayer,
 			$this->feedBusinessLayer,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -480,7 +492,8 @@ class FeedAPITest extends ControllerTestUtility {
 			$request,
 			$this->folderBusinessLayer,
 			$this->feedBusinessLayer,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 		$this->feedBusinessLayer->expects($this->once())
 			->method('update')

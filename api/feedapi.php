@@ -30,6 +30,9 @@ use \OCA\AppFramework\Controller\Controller;
 use \OCA\AppFramework\Http\Request;
 use \OCA\AppFramework\Http\JSONResponse;
 use \OCA\AppFramework\Http\Http;
+use \OCA\AppFramework\Http\Response;
+
+use \OCA\News\Http\ImageResponse;
 
 use \OCA\News\BusinessLayer\FeedBusinessLayer;
 use \OCA\News\BusinessLayer\FolderBusinessLayer;
@@ -43,16 +46,19 @@ class FeedAPI extends Controller {
 	private $itemBusinessLayer;
 	private $feedBusinessLayer;
 	private $folderBusinessLayer;
+	private $imgCachefileSystem;
 
 	public function __construct(API $api,
 	                            Request $request,
 	                            FolderBusinessLayer $folderBusinessLayer,
 	                            FeedBusinessLayer $feedBusinessLayer,
-	                            ItemBusinessLayer $itemBusinessLayer){
+	                            ItemBusinessLayer $itemBusinessLayer,
+	                            $imgCachefileSystem){
 		parent::__construct($api, $request);
 		$this->folderBusinessLayer = $folderBusinessLayer;
 		$this->feedBusinessLayer = $feedBusinessLayer;
 		$this->itemBusinessLayer = $itemBusinessLayer;
+		$this->imgCachefileSystem = $imgCachefileSystem;
 	}
 
 
@@ -220,6 +226,39 @@ class FeedAPI extends Controller {
 		}
 		return new JSONResponse();
 
+	}
+
+
+	/**
+	 * @IsAdminExemption
+	 * @IsSubAdminExemption
+	 * @IsLoggedInExemption
+	 * @CSRFExemption
+	 * @Ajax
+	 * @API
+	 */
+	public function getImage() {
+		$feedId = (int) $this->params('feedId');
+		$imageFile = $this->params('imageFile');
+
+		if($this->imgCachefileSystem->file_exists( $feedId . "/" . $imageFile )) {
+
+			$image = new \OC_Image( $this->imgCachefileSystem->file_get_contents( $feedId . "/" . $imageFile) );
+			if($image->valid()) {
+				$response = new ImageResponse($image);
+			} else {
+				$response = new ImageResponse();
+				$response->setContentType("image/ico");
+				$response->setImageData( $this->imgCachefileSystem->file_get_contents( $feedId . "/" . $imageFile) );
+			}
+
+		} else {
+			$response = new Response();
+			$response->setStatus(400);
+			
+		}
+
+		return $response;
 	}
 
 

@@ -44,6 +44,7 @@ class ItemAPITest extends ControllerTestUtility {
 	private $user;
 	private $request;
 	private $msg;
+	private $imgCachefileSystem;
 
 	protected function setUp() {
 		$this->api = $this->getMockBuilder(
@@ -58,11 +59,16 @@ class ItemAPITest extends ControllerTestUtility {
 			'\OCA\News\BusinessLayer\ItemBusinessLayer')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->imgCachefileSystem = $this->getMockBuilder(
+			'\OCA\News\Utility\SimplePieFileFactory')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->user = 'tom';
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$this->request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 		$this->msg = 'hi';
 	}
@@ -144,7 +150,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -183,7 +190,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -221,7 +229,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -253,7 +262,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -281,7 +291,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -306,7 +317,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -334,7 +346,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -360,7 +373,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -390,7 +404,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -416,7 +431,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -446,7 +462,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -473,7 +490,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -500,7 +518,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -528,7 +547,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -553,7 +573,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -590,7 +611,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -629,7 +651,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
@@ -664,7 +687,8 @@ class ItemAPITest extends ControllerTestUtility {
 		$this->itemAPI = new ItemAPI(
 			$this->api,
 			$request,
-			$this->itemBusinessLayer
+			$this->itemBusinessLayer,
+			$this->imgCachefileSystem
 		);
 
 		$this->api->expects($this->once())
