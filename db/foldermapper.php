@@ -29,16 +29,10 @@ use \OCA\AppFramework\Core\API;
 use \OCA\AppFramework\Db\Mapper;
 use \OCA\AppFramework\Db\Entity;
 
-use \OCA\News\Utility\AttachementCaching;
-
-
 class FolderMapper extends Mapper implements IMapper {
 
-	private $attachementCaching;
-
-	public function __construct(API $api, AttachementCaching $attachementCaching) {
+	public function __construct(API $api) {
 		parent::__construct($api, 'news_folders');
-		$this->attachementCaching = $attachementCaching;
 	}
 
 	public function find($id, $userId){
@@ -91,13 +85,14 @@ class FolderMapper extends Mapper implements IMapper {
 	public function delete(Entity $entity){
 		parent::delete($entity);
 
-		// delete appropriate images
+		// get the feeds of that folder, that will be deleted
 		$sql = 'SELECT `id` FROM `*PREFIX*news_feeds` WHERE `folder_id` = ?';
 		$params = array($entity->getId());
 		$result = $this->execute($sql, $params);
 
+		$deletedFeedIds = array();
 		while($row = $result->fetchRow()) {
-			$this->attachementCaching->purgeDeleted($row['id']);
+			array_push($deletedFeedIds, $row['id']);
 		}
 		
 
@@ -112,6 +107,8 @@ class FolderMapper extends Mapper implements IMapper {
 			'`items`.`feed_id` = `feeds`.`id` WHERE `feeds`.`id` IS NULL';
 		
 		$this->execute($sql);
+
+		return $deletedFeedIds;
 	}
 
 
