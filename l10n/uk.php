@@ -25,10 +25,7 @@
 "Collapse" => "Згорнути",
 "Delete folder" => "Видалити теку",
 "Rename folder" => "Переіменувати теку",
-"Import / Export OPML" => "Імпорт / Експорт OPML",
 "Import" => "Імпорт",
 "Export" => "Експорт",
-"Error when importing: file does not contain valid OPML" => "Помилка при імпорті: файл не містить дійсний OPML",
-"Show all" => "Показати все",
-"Show only unread" => "Показати тільки не прочитане"
+"Error when importing: file does not contain valid OPML" => "Помилка при імпорті: файл не містить дійсний OPML"
 );

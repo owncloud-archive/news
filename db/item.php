@@ -40,7 +40,7 @@ class Item extends Entity implements IAPI {
 	public $enclosureMime;
 	public $enclosureLink;
 	public $feedId;
-	public $status;
+	public $status = 0;
 	public $lastModified;
 
 
@@ -109,6 +109,49 @@ class Item extends Entity implements IAPI {
 	}
 
 
+	public function toExport($feeds) {
+		return array(
+			'guid' => $this->getGuid(),
+			'url' => $this->getUrl(),
+			'title' => $this->getTitle(),
+			'author' => $this->getAuthor(),
+			'pubDate' => $this->getPubDate(),
+			'body' => $this->getBody(),
+			'enclosureMime' => $this->getEnclosureMime(),
+			'enclosureLink' => $this->getEnclosureLink(),
+			'unread' => $this->isUnread(),
+			'starred' => $this->isStarred(),
+			'feedLink' => $feeds['feed'. $this->getFeedId()]->getLink()
+		);
+	}
+
+
+	public static function fromImport($import) {
+		$item = new static();
+		$item->setGuid($import['guid']);
+		$item->setUrl($import['url']);
+		$item->setTitle($import['title']);
+		$item->setAuthor($import['author']);
+		$item->setPubDate($import['pubDate']);
+		$item->setBody($import['body']);
+		$item->setEnclosureMime($import['enclosureMime']);
+		$item->setEnclosureLink($import['enclosureLink']);
+		if($import['unread']) {
+			$item->setUnread();
+		} else {
+			$item->setRead();
+		}
+		if($import['starred']) {
+			$item->setStarred();
+		} else {
+			$item->setUnstarred();
+		}
+		
+		$item->setFeedId(null);
+		return $item;
+	}
+
+
 	public function setAuthor($name) {
 		parent::setAuthor(strip_tags($name));
 	}
@@ -124,6 +167,18 @@ class Item extends Entity implements IAPI {
 		if(strpos($url, 'http') === 0 || strpos($url, 'magnet') === 0) {
 			parent::setUrl($url);
 		}
+	}
+
+
+	public function setGuid($guid) {
+		parent::setGuid($guid);
+		$this->setGuidHash(md5($guid));
+	}
+
+
+	public function setBody($body) {
+		// FIXME: this should not happen if the target="_blank" is already on the link
+		parent::setBody(str_replace('<a', '<a target="_blank"',	$body));
 	}
 
 }

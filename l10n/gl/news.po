@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-21 07:04-0400\n"
-"PO-Revision-Date: 2013-08-19 18:21+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-09-26 22:57-0400\n"
+"PO-Revision-Date: 2013-09-25 05:50+0000\n"
+"Last-Translator: mbouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician (http://www.transifex.com/projects/p/owncloud/language/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,68 +20,85 @@ msgstr ""
 "Language: gl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: appinfo/app.php:52
+#: appinfo/app.php:52 templates/main.php:38
 msgid "News"
 msgstr "Novas"
 
-#: businesslayer/feedbusinesslayer.php:95
+#: businesslayer/feedbusinesslayer.php:101
 msgid "Can not add feed: Exists already"
 msgstr "Non é posíbel engadir a fonte: xa existe"
 
-#: businesslayer/feedbusinesslayer.php:133
+#: businesslayer/feedbusinesslayer.php:138
 msgid "Can not add feed: URL does not exist or has invalid xml"
 msgstr "Non é posíbel engadir a fonte: non existe o URL ou é un XML incorrecto"
+
+#: businesslayer/feedbusinesslayer.php:267
+msgid "Articles without feed"
+msgstr "Artigos sen fonte"
 
 #: businesslayer/folderbusinesslayer.php:66
 msgid "Can not add folder: Exists already"
 msgstr "Non é posíbel engadir o cartafol: xa existe"
 
-#: templates/main.php:26
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid " "
+msgstr " "
+
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid "_"
+msgstr "_"
+
+#: js/vendor/jquery-ui/ui/minified/jquery-ui.min.js:8
+#: js/vendor/jquery-ui/ui/minified/jquery.ui.autocomplete.min.js:4
+msgid "status"
+msgstr "estado"
+
+#: templates/main.php:34
 #, php-format
 msgid "Undo deletion of %s"
 msgstr "Desfacer a eliminación de %s"
 
-#: templates/part.addnew.php:11
+#: templates/part.addnew.php:13
 msgid "Add Website"
 msgstr "Engadir un sitio web"
 
-#: templates/part.addnew.php:16
+#: templates/part.addnew.php:21
 msgid "Error: address exists already!"
 msgstr "Erro: xa existe o enderezo "
 
-#: templates/part.addnew.php:19
+#: templates/part.addnew.php:24
 msgid "Error: folder exists already"
 msgstr "Erro: xa existe o cartafol"
 
-#: templates/part.addnew.php:26
+#: templates/part.addnew.php:31
 msgid "Address"
 msgstr "Enderezo"
 
-#: templates/part.addnew.php:30 templates/part.addnew.php:33
+#: templates/part.addnew.php:34 templates/part.addnew.php:37
 msgid "Add"
 msgstr "Engadir"
 
-#: templates/part.addnew.php:37 templates/part.addnew.php:45
+#: templates/part.addnew.php:41 templates/part.addnew.php:48
 msgid "New folder"
 msgstr "Novo cartafol"
 
-#: templates/part.addnew.php:38
+#: templates/part.addnew.php:42
 msgid "Folder"
 msgstr "Cartafol"
 
-#: templates/part.addnew.php:43
+#: templates/part.addnew.php:46
 msgid "Choose folder"
 msgstr "Escoller un cartafol"
 
-#: templates/part.addnew.php:55
+#: templates/part.addnew.php:57
 msgid "Folder name"
 msgstr "Nome do cartafol"
 
-#: templates/part.addnew.php:58
+#: templates/part.addnew.php:60
 msgid "Back to folder selection"
 msgstr "Volver á selección do cartafol"
 
-#: templates/part.addnew.php:63
+#: templates/part.addnew.php:64
 msgid "Create folder"
 msgstr "Crear un cartafol"
 
@@ -102,19 +119,23 @@ msgstr "Todos os artigos"
 msgid "Mark read"
 msgstr "Marcar como lido"
 
-#: templates/part.items.php:32
+#: templates/part.firstrun.php:2
+msgid "Welcome to the ownCloud News app!"
+msgstr "Benvido/a ao aplicativo de novas do ownCloud!"
+
+#: templates/part.items.php:34
 msgid "from"
 msgstr "desde"
 
-#: templates/part.items.php:37
+#: templates/part.items.php:39
 msgid "by"
 msgstr "por"
 
-#: templates/part.items.php:44
+#: templates/part.items.php:46
 msgid "Download"
 msgstr "Descargar"
 
-#: templates/part.items.php:57
+#: templates/part.items.php:59
 msgid "Keep unread"
 msgstr "Manter sen ler"
 
@@ -135,41 +156,37 @@ msgid "Rename folder"
 msgstr "Renomear o cartafol"
 
 #: templates/part.settings.php:13
-msgid "Import / Export OPML"
-msgstr "Importar / Exportar OPML"
+msgid "Subscriptions (OPML)"
+msgstr "Subscricións (OPML)"
 
-#: templates/part.settings.php:17 templates/part.settings.php:19
-#: templates/part.settings.php:47 templates/part.settings.php:49
+#: templates/part.settings.php:17 templates/part.settings.php:20
+#: templates/part.settings.php:48 templates/part.settings.php:53
 msgid "Import"
 msgstr "Importar"
 
-#: templates/part.settings.php:23 templates/part.settings.php:27
-#: templates/part.settings.php:30 templates/part.settings.php:32
+#: templates/part.settings.php:24 templates/part.settings.php:28
+#: templates/part.settings.php:32 templates/part.settings.php:34
+#: templates/part.settings.php:56 templates/part.settings.php:60
+#: templates/part.settings.php:64 templates/part.settings.php:66
 msgid "Export"
 msgstr "Exportar"
 
-#: templates/part.settings.php:36
+#: templates/part.settings.php:38
 msgid "Error when importing: file does not contain valid OPML"
 msgstr "Erro durante a importación: o ficheiro non conten OPML correcto"
 
-#: templates/part.settings.php:42
-msgid "Import Google Reader JSON"
-msgstr "Importar o JSON de Google Reader"
+#: templates/part.settings.php:44
+msgid "Unread/Starred Articles"
+msgstr "Artigos destacados ou sen ler"
 
-#: templates/part.settings.php:43
-msgid ""
-"To import starred and shared articles from Google \n"
-"\t\t\tReader please upload the .json files from the Google Takeout archive"
-msgstr "Para importar artigos favoritos e compartidos de Google \n\t\t\tReader envíe os ficheiros .json do arquivo de Google Takeout"
-
-#: templates/part.settings.php:53
+#: templates/part.settings.php:70
 msgid "Error when importing: file does not contain valid JSON"
 msgstr "Produciuse un erro ao importar: o ficheiro non contén un JSON correcto"
 
 #: templates/part.showall.php:5
-msgid "Show all"
-msgstr "Amosar todo"
+msgid "Show read articles"
+msgstr "Amosar os artigos xa lidos"
 
 #: templates/part.showall.php:11
-msgid "Show only unread"
-msgstr "Amosar só o non lido"
+msgid "Hide read articles"
+msgstr "Agochar os artigos xa lidos"

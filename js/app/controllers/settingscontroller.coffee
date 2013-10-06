@@ -34,19 +34,19 @@ angular.module('News').controller 'SettingsController',
 		try
 			FolderBusinessLayer.import(fileContent)
 		catch error
-			console.error error
 			$scope.error = true
 
 
-	$scope.importGoogleReader = (fileContent) =>
+	$scope.importArticles = (fileContent) =>
 		$scope.jsonError = false
-		ShowAll.setShowAll(true)
+		$scope.loading = true
 
 		try
 			parsedJSON = JSON.parse(fileContent)
-			FeedBusinessLayer.importGoogleReader(parsedJSON)
+			FeedBusinessLayer.importArticles parsedJSON, ->
+				$scope.loading = false
 		catch error
-			console.error error
 			$scope.jsonError = true
+			$scope.loading = false
 
 ]

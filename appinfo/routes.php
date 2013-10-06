@@ -140,10 +140,10 @@ $this->create('news_feeds_read', '/feeds/{feedId}/read')->post()->action(
 	}
 );
 
-$this->create('news_feeds_import_googlereader', '/feeds/import/googlereader')
+$this->create('news_feeds_import_articles', '/feeds/import/articles')
 ->post()->action(
 	function($params){
-		App::main('FeedController', 'importGoogleReader', $params,
+		App::main('FeedController', 'importArticles', $params,
 			new DIContainer());
 	}
 );
@@ -154,6 +154,12 @@ $this->create('news_feeds_import_googlereader', '/feeds/import/googlereader')
 $this->create('news_items', '/items')->get()->action(
 	function($params){
 		App::main('ItemController', 'items', $params, new DIContainer());
+	}
+);
+
+$this->create('news_items_new', '/items/new')->get()->action(
+	function($params){
+		App::main('ItemController', 'newItems', $params, new DIContainer());
 	}
 );
 
@@ -196,6 +202,12 @@ $this->create('news_export_opml', '/export/opml')->get()->action(
 	}
 );
 
+$this->create('news_export_articles', '/export/articles')->get()->action(
+	function($params){
+		App::main('ExportController', 'articles', $params, new DIContainer());
+	}
+);
+
 /**
  * User Settings
  */
@@ -233,9 +245,15 @@ $this->create('news_api_version', '/api/v1-2/version')->get()->action(
 	}
 );
 
-$this->create('news_api_cleanup', '/api/v1-2/cleanup')->get()->action(
+$this->create('news_api_before_update', '/api/v1-2/cleanup/before-update')->get()->action(
 	function($params) {
-		return App::main('NewsAPI', 'cleanUp', $params, new DIContainer());
+		return App::main('NewsAPI', 'beforeUpdate', $params, new DIContainer());
+	}
+);
+
+$this->create('news_api_after_update', '/api/v1-2/cleanup/after-update')->get()->action(
+	function($params) {
+		return App::main('NewsAPI', 'afterUpdate', $params, new DIContainer());
 	}
 );
 
@@ -279,7 +297,7 @@ $this->create('news_api_cors', '/api/v1-2/{path}')->method('options')->action(
 	function($params) {
 		return App::main('NewsAPI', 'cors', $params, new DIContainer());
 	}
-)->requirements(array('path', '.+'));
+)->requirements(array('path' => '.+'));
 
 
 $this->create('news_api_feeds_get_all', '/api/v1-2/feeds')->get()->action(

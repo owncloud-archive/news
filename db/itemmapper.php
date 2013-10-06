@@ -251,6 +251,15 @@ class ItemMapper extends Mapper implements IMapper {
 	}
 
 
+	public function findAllUnreadOrStarred($userId) {
+		$params = array($userId);
+		$status = StatusFlag::UNREAD | StatusFlag::STARRED;
+		$sql = 'AND ((`items`.`status` & ' . $status . ') > 0) ';
+		$sql = $this->makeSelectQuery($sql);
+		return $this->findAllRows($sql, $params);
+	}
+
+
 	public function findByGuidHash($guidHash, $feedId, $userId){
 		$sql = $this->makeSelectQuery(
 			'AND `items`.`guid_hash` = ? ' .
@@ -270,17 +279,21 @@ class ItemMapper extends Mapper implements IMapper {
 	 */
 	public function deleteReadOlderThanThreshold($threshold){
 		$status = StatusFlag::STARRED | StatusFlag::UNREAD;
-		$sql = 'SELECT COUNT(*) `size`, `feed_id` ' .
-			'FROM `*PREFIX*news_items` ' .
-			'WHERE NOT ((`status` & ?) > 0) ' .
-			'GROUP BY `feed_id` ' .
+		$sql = 'SELECT COUNT(*) - `feeds`.`articles_per_update` AS `size`, ' .
+		'`items`.`feed_id` AS `feed_id` ' . 
+			'FROM `*PREFIX*news_items` `items` ' .
+			'JOIN `*PREFIX*news_feeds` `feeds` ' .
+				'ON `feeds`.`id` = `items`.`feed_id` ' .
+			'WHERE NOT ((`items`.`status` & ?) > 0) ' .
+			'GROUP BY `items`.`feed_id`, `feeds`.`articles_per_update` ' .
 			'HAVING COUNT(*) > ?';
 		$params = array($status, $threshold);
 		$result = $this->execute($sql, $params);
 
 		while($row = $result->fetchRow()) {
 
-			$limit = $threshold - $row['size'];
+			$size = (int) $row['size'];
+			$limit = $size - $threshold;
 
 			if($limit > 0) {
 				$params = array($status, $row['feed_id']);
@@ -295,10 +308,11 @@ class ItemMapper extends Mapper implements IMapper {
 					$this->attachementCaching->purgeDeleted($row['feed_id'], $row['secret_id']);
 				}
 
-				$sql = 'DELETE FROM `*PREFIX*news_items` `items` ' .
+
+				$sql = 'DELETE FROM `*PREFIX*news_items` ' .
 				'WHERE NOT ((`status` & ?) > 0) ' .
 				'AND `feed_id` = ? ' .
-				'ORDER BY `items`.`id` ASC';
+				'ORDER BY `id` ASC';
 
 				$this->execute($sql, $params, $limit);
 			}

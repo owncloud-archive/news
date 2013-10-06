@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Dr. ROX <to.dr.rox@gmail.com>, 2012
+# Dr. ROX <to.dr.rox@gmail.com>, 2012
+# Liudas Ališauskas <liudas.alisauskas@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-21 07:04-0400\n"
-"PO-Revision-Date: 2013-08-19 18:21+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-09-30 08:07-0400\n"
+"PO-Revision-Date: 2013-09-29 08:44+0000\n"
+"Last-Translator: Liudas Ališauskas <liudas.alisauskas@gmail.com>\n"
 "Language-Team: Lithuanian (Lithuania) (http://www.transifex.com/projects/p/owncloud/language/lt_LT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,111 +20,132 @@ msgstr ""
 "Language: lt_LT\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: appinfo/app.php:52
+#: appinfo/app.php:52 templates/main.php:38
 msgid "News"
 msgstr "Naujienos"
 
-#: businesslayer/feedbusinesslayer.php:95
+#: businesslayer/feedbusinesslayer.php:100
 msgid "Can not add feed: Exists already"
-msgstr ""
+msgstr "Nepavyko pridėti srauto: Jau yra"
 
-#: businesslayer/feedbusinesslayer.php:133
+#: businesslayer/feedbusinesslayer.php:137
 msgid "Can not add feed: URL does not exist or has invalid xml"
-msgstr ""
+msgstr "Nepavyko pridėti srauto: Nėra URL arba netinkamas xml"
+
+#: businesslayer/feedbusinesslayer.php:266
+msgid "Articles without feed"
+msgstr "Straipsniai be sklaidos kanalų"
 
 #: businesslayer/folderbusinesslayer.php:66
 msgid "Can not add folder: Exists already"
-msgstr ""
+msgstr "Nepavyko pridėti aplanko: Jau yra"
 
-#: templates/main.php:26
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid " "
+msgstr " "
+
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid "_"
+msgstr "_"
+
+#: js/vendor/jquery-ui/ui/minified/jquery-ui.min.js:8
+#: js/vendor/jquery-ui/ui/minified/jquery.ui.autocomplete.min.js:4
+msgid "status"
+msgstr "būsena"
+
+#: templates/main.php:34
 #, php-format
 msgid "Undo deletion of %s"
-msgstr ""
+msgstr "Atšaukti %s ištrynimą"
 
-#: templates/part.addnew.php:11
+#: templates/part.addnew.php:13
 msgid "Add Website"
-msgstr ""
+msgstr "Pridėti tinklapį"
 
-#: templates/part.addnew.php:16
+#: templates/part.addnew.php:21
 msgid "Error: address exists already!"
-msgstr ""
+msgstr "Klaida: adresas jau yra"
 
-#: templates/part.addnew.php:19
+#: templates/part.addnew.php:24
 msgid "Error: folder exists already"
-msgstr ""
+msgstr "Klaida: aplankas jau yra"
 
-#: templates/part.addnew.php:26
+#: templates/part.addnew.php:31
 msgid "Address"
 msgstr "Adresas"
 
-#: templates/part.addnew.php:30 templates/part.addnew.php:33
+#: templates/part.addnew.php:34 templates/part.addnew.php:37
 msgid "Add"
 msgstr "Pridėti"
 
-#: templates/part.addnew.php:37 templates/part.addnew.php:45
+#: templates/part.addnew.php:41 templates/part.addnew.php:48
 msgid "New folder"
-msgstr ""
+msgstr "Naujas aplankas"
 
-#: templates/part.addnew.php:38
+#: templates/part.addnew.php:42
 msgid "Folder"
 msgstr "Katalogas"
 
-#: templates/part.addnew.php:43
+#: templates/part.addnew.php:46
 msgid "Choose folder"
-msgstr ""
+msgstr "Pasirinkti aplanką"
 
-#: templates/part.addnew.php:55
+#: templates/part.addnew.php:57
 msgid "Folder name"
 msgstr "Katalogo pavadinimas"
 
-#: templates/part.addnew.php:58
+#: templates/part.addnew.php:60
 msgid "Back to folder selection"
-msgstr ""
+msgstr "Atgal į aplanko pasirinkimą"
 
-#: templates/part.addnew.php:63
+#: templates/part.addnew.php:64
 msgid "Create folder"
-msgstr ""
+msgstr "Sukurti aplanką"
 
 #: templates/part.feed.starred.php:11
 msgid "Starred"
-msgstr ""
+msgstr "Pažymėti"
 
 #: templates/part.feed.unread.php:10
 msgid "Unread articles"
-msgstr ""
+msgstr "Neskaityti įrašai"
 
 #: templates/part.feed.unread.php:17
 msgid "All articles"
-msgstr ""
+msgstr "Visi straipsniai"
 
 #: templates/part.feed.unread.php:26 templates/part.listfeed.php:49
 #: templates/part.listfolder.php:43
 msgid "Mark read"
-msgstr ""
+msgstr "Žymėti skaitytu"
 
-#: templates/part.items.php:32
+#: templates/part.firstrun.php:2
+msgid "Welcome to the ownCloud News app!"
+msgstr "Jus sveikina ownCloud naujienų programa!"
+
+#: templates/part.items.php:34
 msgid "from"
-msgstr ""
+msgstr "iš"
 
-#: templates/part.items.php:37
+#: templates/part.items.php:39
 msgid "by"
 msgstr " "
 
-#: templates/part.items.php:44
+#: templates/part.items.php:46
 msgid "Download"
 msgstr "Atsisiųsti"
 
-#: templates/part.items.php:57
+#: templates/part.items.php:59
 msgid "Keep unread"
-msgstr ""
+msgstr "Laikyti neskaitytu"
 
 #: templates/part.listfeed.php:37 templates/part.listfeed.php:55
 msgid "Delete website"
-msgstr ""
+msgstr "Ištrinti tinklapį"
 
 #: templates/part.listfolder.php:14
 msgid "Collapse"
-msgstr ""
+msgstr "Sutraukti"
 
 #: templates/part.listfolder.php:32 templates/part.listfolder.php:48
 msgid "Delete folder"
@@ -133,41 +156,37 @@ msgid "Rename folder"
 msgstr "Pervadinti katalogą"
 
 #: templates/part.settings.php:13
-msgid "Import / Export OPML"
-msgstr ""
+msgid "Subscriptions (OPML)"
+msgstr "Prenumeratos (OPML)"
 
-#: templates/part.settings.php:17 templates/part.settings.php:19
-#: templates/part.settings.php:47 templates/part.settings.php:49
+#: templates/part.settings.php:17 templates/part.settings.php:20
+#: templates/part.settings.php:48 templates/part.settings.php:53
 msgid "Import"
 msgstr "Importuoti"
 
-#: templates/part.settings.php:23 templates/part.settings.php:27
-#: templates/part.settings.php:30 templates/part.settings.php:32
+#: templates/part.settings.php:24 templates/part.settings.php:28
+#: templates/part.settings.php:32 templates/part.settings.php:34
+#: templates/part.settings.php:56 templates/part.settings.php:60
+#: templates/part.settings.php:64 templates/part.settings.php:66
 msgid "Export"
 msgstr "Eksportuoti"
 
-#: templates/part.settings.php:36
+#: templates/part.settings.php:38
 msgid "Error when importing: file does not contain valid OPML"
-msgstr ""
+msgstr "Klaida importuojant: failas neturi tinkamo OPML"
 
-#: templates/part.settings.php:42
-msgid "Import Google Reader JSON"
-msgstr ""
+#: templates/part.settings.php:44
+msgid "Unread/Starred Articles"
+msgstr "Neskaityti/Paryškinti straipsniai"
 
-#: templates/part.settings.php:43
-msgid ""
-"To import starred and shared articles from Google \n"
-"\t\t\tReader please upload the .json files from the Google Takeout archive"
-msgstr ""
-
-#: templates/part.settings.php:53
+#: templates/part.settings.php:70
 msgid "Error when importing: file does not contain valid JSON"
-msgstr ""
+msgstr "Klaida importuojant: failas neturi tinkamo JSON"
 
 #: templates/part.showall.php:5
-msgid "Show all"
-msgstr ""
+msgid "Show read articles"
+msgstr "Rodyti skaitytus straipsnius"
 
 #: templates/part.showall.php:11
-msgid "Show only unread"
-msgstr ""
+msgid "Hide read articles"
+msgstr "Slėpti skaitytus straipsnius"

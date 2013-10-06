@@ -16,9 +16,6 @@
 "Collapse" => "Skjul",
 "Delete folder" => "Slett mappe",
 "Rename folder" => "Gi mappen nytt navn",
-"Import / Export OPML" => "Importer / Eksporter OPML",
 "Import" => "Importer",
-"Export" => "Eksporter",
-"Show all" => "Vis alle",
-"Show only unread" => "Vis kun uleste"
+"Export" => "Eksporter"
 );

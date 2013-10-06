@@ -47,9 +47,9 @@ class FeedMapper extends Mapper implements IMapper {
 		$sql = 'SELECT `feeds`.*, COUNT(`items`.`id`) AS `unread_count` ' .
 			'FROM `*PREFIX*news_feeds` `feeds` ' .
 			'LEFT JOIN `*PREFIX*news_items` `items` ' .
-				'ON `feeds`.`id` = `items`.`feed_id` ' . 
+				'ON `feeds`.`id` = `items`.`feed_id` ' .
 				// WARNING: this is a desperate attempt at making this query work
-				// because prepared statements dont work. This is a possible 
+				// because prepared statements dont work. This is a possible
 				// SQL INJECTION RISK WHEN MODIFIED WITHOUT THOUGHT.
 				// think twice when changing this
 				'AND (`items`.`status` & ' . StatusFlag::UNREAD . ') = ' .
@@ -58,7 +58,7 @@ class FeedMapper extends Mapper implements IMapper {
 				'AND `feeds`.`user_id` = ? ' .
 			'GROUP BY `feeds`.`id`, `feeds`.`user_id`, `feeds`.`url_hash`,'.
 				'`feeds`.`url`, `feeds`.`title`, `feeds`.`link`,'.
-				'`feeds`.`favicon_link`, `feeds`.`added`,'.
+				'`feeds`.`favicon_link`, `feeds`.`added`, `feeds`.`articles_per_update`,'.
 				'`feeds`.`folder_id`, `feeds`.`prevent_update`, `feeds`.`deleted_at`';
 		$params = array($id, $userId);
 
@@ -72,7 +72,7 @@ class FeedMapper extends Mapper implements IMapper {
 
 	private function findAllRows($sql, $params=array(), $limit=null){
 		$result = $this->execute($sql, $params, $limit);
-		
+
 		$feeds = array();
 		while($row = $result->fetchRow()){
 			$feed = new Feed();
@@ -105,9 +105,9 @@ class FeedMapper extends Mapper implements IMapper {
 			'LEFT JOIN `*PREFIX*news_items` `items` ' .
 				'ON `feeds`.`id` = `items`.`feed_id` ' .
 				// WARNING: this is a desperate attempt at making this query work
-				// because prepared statements dont work. This is a possible 
+				// because prepared statements dont work. This is a possible
 				// SQL INJECTION RISK WHEN MODIFIED WITHOUT THOUGHT.
-				// think twice when changing this 
+				// think twice when changing this
 				'AND (`items`.`status` & ' . StatusFlag::UNREAD . ') = ' .
 				StatusFlag::UNREAD . ' ' .
 			'WHERE `feeds`.`user_id` = ? ' .
@@ -117,7 +117,7 @@ class FeedMapper extends Mapper implements IMapper {
 			'AND `feeds`.`deleted_at` = 0 ' .
 			'GROUP BY `feeds`.`id`, `feeds`.`user_id`, `feeds`.`url_hash`,'.
 				'`feeds`.`url`, `feeds`.`title`, `feeds`.`link`,'.
-				'`feeds`.`favicon_link`, `feeds`.`added`,'.
+				'`feeds`.`favicon_link`, `feeds`.`added`, `feeds`.`articles_per_update`,'.
 				'`feeds`.`folder_id`, `feeds`.`prevent_update`, `feeds`.`deleted_at`';
 		$params = array($userId);
 
@@ -133,9 +133,9 @@ class FeedMapper extends Mapper implements IMapper {
 			'LEFT JOIN `*PREFIX*news_items` `items` ' .
 				'ON `feeds`.`id` = `items`.`feed_id` ' .
 				// WARNING: this is a desperate attempt at making this query work
-				// because prepared statements dont work. This is a possible 
+				// because prepared statements dont work. This is a possible
 				// SQL INJECTION RISK WHEN MODIFIED WITHOUT THOUGHT.
-				// think twice when changing this 
+				// think twice when changing this
 				'AND (`items`.`status` & ' . StatusFlag::UNREAD . ') = ' .
 				StatusFlag::UNREAD . ' ' .
 			'WHERE (`feeds`.`folder_id` = 0 ' .
@@ -144,7 +144,7 @@ class FeedMapper extends Mapper implements IMapper {
 			'AND `feeds`.`deleted_at` = 0 ' .
 			'GROUP BY `feeds`.`id`, `feeds`.`user_id`, `feeds`.`url_hash`,'.
 				'`feeds`.`url`, `feeds`.`title`, `feeds`.`link`,'.
-				'`feeds`.`favicon_link`, `feeds`.`added`,'.
+				'`feeds`.`favicon_link`, `feeds`.`added`, `feeds`.`articles_per_update`,'.
 				'`feeds`.`folder_id`, `feeds`.`prevent_update`, `feeds`.`deleted_at`';
 
 		return $this->findAllRows($sql);
@@ -155,9 +155,9 @@ class FeedMapper extends Mapper implements IMapper {
 		$sql = 'SELECT `feeds`.*, COUNT(`items`.`id`) AS `unread_count` ' .
 			'FROM `*PREFIX*news_feeds` `feeds` ' .
 			'LEFT JOIN `*PREFIX*news_items` `items` ' .
-				'ON `feeds`.`id` = `items`.`feed_id` ' . 
+				'ON `feeds`.`id` = `items`.`feed_id` ' .
 				// WARNING: this is a desperate attempt at making this query work
-				// because prepared statements dont work. This is a possible 
+				// because prepared statements dont work. This is a possible
 				// SQL INJECTION RISK WHEN MODIFIED WITHOUT THOUGHT.
 				// think twice when changing this
 				'AND (`items`.`status` & ' . StatusFlag::UNREAD . ') = ' .
@@ -166,7 +166,7 @@ class FeedMapper extends Mapper implements IMapper {
 				'AND `feeds`.`user_id` = ? ' .
 			'GROUP BY `feeds`.`id`, `feeds`.`user_id`, `feeds`.`url_hash`,'.
 				'`feeds`.`url`, `feeds`.`title`, `feeds`.`link`,'.
-				'`feeds`.`favicon_link`, `feeds`.`added`,'.
+				'`feeds`.`favicon_link`, `feeds`.`added`, `feeds`.`articles_per_update`,'.
 				'`feeds`.`folder_id`, `feeds`.`prevent_update`, `feeds`.`deleted_at`';
 		$params = array($hash, $userId);
 

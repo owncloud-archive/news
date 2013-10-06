@@ -86,6 +86,19 @@ $rootScope, $q) ->
 			@_request.get 'news_items', params
 
 
+		getNewItems: (type, id, lastModified, onSuccess) ->
+			onSuccess or= ->
+			params =
+				data:
+					type: type
+					id: id
+					lastModified: lastModified
+				onSuccess: onSuccess
+				onFailure: onSuccess
+
+			@_request.get 'news_items_new', params
+
+
 		starItem: (feedId, guidHash) ->
 			###
 			Stars an item
@@ -254,13 +267,15 @@ $rootScope, $q) ->
 			@_request.post 'news_feeds_update', params
 
 
-		importGoogleReader: (json, onSuccess) ->
+		importArticles: (json, onSuccess) ->
 			params =
 				data:
 					json: json
-				onSuccess: onSuccess
+				onSuccess: =>
+					@getAllFeeds()
+					onSuccess()
 
-			@_request.post 'news_feeds_import_googlereader', params
+			@_request.post 'news_feeds_import_articles', params
 
 
 		###

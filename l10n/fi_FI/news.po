@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-21 07:04-0400\n"
-"PO-Revision-Date: 2013-08-19 18:22+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-09-26 22:57-0400\n"
+"PO-Revision-Date: 2013-09-25 10:50+0000\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/owncloud/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,68 +20,85 @@ msgstr ""
 "Language: fi_FI\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: appinfo/app.php:52
+#: appinfo/app.php:52 templates/main.php:38
 msgid "News"
 msgstr "Uutiset"
 
-#: businesslayer/feedbusinesslayer.php:95
+#: businesslayer/feedbusinesslayer.php:101
 msgid "Can not add feed: Exists already"
 msgstr "Syötettä ei voi lisätä: se on jo olemassa"
 
-#: businesslayer/feedbusinesslayer.php:133
+#: businesslayer/feedbusinesslayer.php:138
 msgid "Can not add feed: URL does not exist or has invalid xml"
 msgstr "Syötettä ei voi lisätä: joko osoitetta ei ole olemassa tai siinä on virheellistä XML:ää"
+
+#: businesslayer/feedbusinesslayer.php:267
+msgid "Articles without feed"
+msgstr "Vailla syötettä olevat artikkelit"
 
 #: businesslayer/folderbusinesslayer.php:66
 msgid "Can not add folder: Exists already"
 msgstr "Kansiota ei voi lisätä: se on jo olemassa"
 
-#: templates/main.php:26
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid " "
+msgstr " "
+
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid "_"
+msgstr "_"
+
+#: js/vendor/jquery-ui/ui/minified/jquery-ui.min.js:8
+#: js/vendor/jquery-ui/ui/minified/jquery.ui.autocomplete.min.js:4
+msgid "status"
+msgstr "tila"
+
+#: templates/main.php:34
 #, php-format
 msgid "Undo deletion of %s"
 msgstr "Kumoa poisto: %s"
 
-#: templates/part.addnew.php:11
+#: templates/part.addnew.php:13
 msgid "Add Website"
 msgstr "Lisää verkkosivusto"
 
-#: templates/part.addnew.php:16
+#: templates/part.addnew.php:21
 msgid "Error: address exists already!"
 msgstr "Virhe: osoite on jo olemassa!"
 
-#: templates/part.addnew.php:19
+#: templates/part.addnew.php:24
 msgid "Error: folder exists already"
 msgstr "Virhe: kansio on jo olemassa"
 
-#: templates/part.addnew.php:26
+#: templates/part.addnew.php:31
 msgid "Address"
 msgstr "Osoite"
 
-#: templates/part.addnew.php:30 templates/part.addnew.php:33
+#: templates/part.addnew.php:34 templates/part.addnew.php:37
 msgid "Add"
 msgstr "Lisää"
 
-#: templates/part.addnew.php:37 templates/part.addnew.php:45
+#: templates/part.addnew.php:41 templates/part.addnew.php:48
 msgid "New folder"
 msgstr "Uusi kansio"
 
-#: templates/part.addnew.php:38
+#: templates/part.addnew.php:42
 msgid "Folder"
 msgstr "Kansio"
 
-#: templates/part.addnew.php:43
+#: templates/part.addnew.php:46
 msgid "Choose folder"
 msgstr "Valitse kansio"
 
-#: templates/part.addnew.php:55
+#: templates/part.addnew.php:57
 msgid "Folder name"
 msgstr "Kansion nimi"
 
-#: templates/part.addnew.php:58
+#: templates/part.addnew.php:60
 msgid "Back to folder selection"
 msgstr "Takaisin kansion valintaan"
 
-#: templates/part.addnew.php:63
+#: templates/part.addnew.php:64
 msgid "Create folder"
 msgstr "Luo kansio"
 
@@ -102,19 +119,23 @@ msgstr "Kaikki artikkelit"
 msgid "Mark read"
 msgstr "Merkitse luetuksi"
 
-#: templates/part.items.php:32
+#: templates/part.firstrun.php:2
+msgid "Welcome to the ownCloud News app!"
+msgstr "Tervetuloa ownCloudin syötesovellukseen!"
+
+#: templates/part.items.php:34
 msgid "from"
 msgstr "Syöte:"
 
-#: templates/part.items.php:37
+#: templates/part.items.php:39
 msgid "by"
 msgstr " Kirjoittaja:"
 
-#: templates/part.items.php:44
+#: templates/part.items.php:46
 msgid "Download"
 msgstr "Lataa"
 
-#: templates/part.items.php:57
+#: templates/part.items.php:59
 msgid "Keep unread"
 msgstr "Pidä lukemattomana"
 
@@ -135,41 +156,37 @@ msgid "Rename folder"
 msgstr "Muuta kansion nimeä"
 
 #: templates/part.settings.php:13
-msgid "Import / Export OPML"
-msgstr "OPML:n tuonti ja vienti"
+msgid "Subscriptions (OPML)"
+msgstr "Tilaukset (OPML)"
 
-#: templates/part.settings.php:17 templates/part.settings.php:19
-#: templates/part.settings.php:47 templates/part.settings.php:49
+#: templates/part.settings.php:17 templates/part.settings.php:20
+#: templates/part.settings.php:48 templates/part.settings.php:53
 msgid "Import"
 msgstr "Tuo"
 
-#: templates/part.settings.php:23 templates/part.settings.php:27
-#: templates/part.settings.php:30 templates/part.settings.php:32
+#: templates/part.settings.php:24 templates/part.settings.php:28
+#: templates/part.settings.php:32 templates/part.settings.php:34
+#: templates/part.settings.php:56 templates/part.settings.php:60
+#: templates/part.settings.php:64 templates/part.settings.php:66
 msgid "Export"
 msgstr "Vie"
 
-#: templates/part.settings.php:36
+#: templates/part.settings.php:38
 msgid "Error when importing: file does not contain valid OPML"
 msgstr "Virhe tuotaessa: tiedostossa ei ole kelvollista OPML:ää"
 
-#: templates/part.settings.php:42
-msgid "Import Google Reader JSON"
-msgstr "Google Reader JSONin tuonti"
+#: templates/part.settings.php:44
+msgid "Unread/Starred Articles"
+msgstr ""
 
-#: templates/part.settings.php:43
-msgid ""
-"To import starred and shared articles from Google \n"
-"\t\t\tReader please upload the .json files from the Google Takeout archive"
-msgstr "Tuo tähdellä varustetut ja jaetut artikkelit Google \n\t\t\t-syötteenlukijasta lataamalla .json-tiedostot Google Takeout -arkistosta"
-
-#: templates/part.settings.php:53
+#: templates/part.settings.php:70
 msgid "Error when importing: file does not contain valid JSON"
 msgstr "Virhe tuotaessa: tiedosto ei sisällä kelvollista JSONia"
 
 #: templates/part.showall.php:5
-msgid "Show all"
-msgstr "Näytä kaikki"
+msgid "Show read articles"
+msgstr "Näytä luetut artikkelit"
 
 #: templates/part.showall.php:11
-msgid "Show only unread"
-msgstr "Näytä vain lukemattomat"
+msgid "Hide read articles"
+msgstr "Piilota luetut artikkelit"

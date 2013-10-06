@@ -45,24 +45,27 @@ use \OCA\News\Db\FolderMapper;
 use \OCA\News\Db\FeedMapper;
 use \OCA\News\Db\ItemMapper;
 use \OCA\News\Db\StatusFlag;
+use \OCA\News\Db\MapperFactory;
 
-use \OCA\News\External\NewsAPI;
-use \OCA\News\External\FolderAPI;
-use \OCA\News\External\FeedAPI;
-use \OCA\News\External\ItemAPI;
+use \OCA\News\API\NewsAPI;
+use \OCA\News\API\FolderAPI;
+use \OCA\News\API\FeedAPI;
+use \OCA\News\API\ItemAPI;
 
 use \OCA\News\Utility\Config;
-use \OCA\News\Utility\Fetcher;
-use \OCA\News\Utility\FeedFetcher;
-use \OCA\News\Utility\TwitterFetcher;
 use \OCA\News\Utility\OPMLExporter;
-use \OCA\News\Utility\ImportParser;
+
 use \OCA\News\Utility\AttachementCaching;
+
 use \OCA\News\Utility\Updater;
 use \OCA\News\Utility\SimplePieFileFactory;
 
-use \OCA\News\Utility\ArticleEnhancer\Enhancer;
-use \OCA\News\Utility\ArticleEnhancer\CyanideAndHappinessEnhancer;
+use \OCA\News\Fetcher\Fetcher;
+use \OCA\News\Fetcher\FeedFetcher;
+
+use \OCA\News\ArticleEnhancer\Enhancer;
+use \OCA\News\ArticleEnhancer\XPathArticleEnhancer;
+use \OCA\News\ArticleEnhancer\RegexArticleEnhancer;
 
 use \OCA\News\Middleware\CORSMiddleware;
 
@@ -165,6 +168,7 @@ class DIContainer extends BaseContainer {
 			return new ExportController($c['API'], $c['Request'],
 			                            $c['FeedBusinessLayer'],
 				                        $c['FolderBusinessLayer'],
+				                        $c['ItemBusinessLayer'],
 				                        $c['OPMLExporter']);
 		});
 
@@ -192,7 +196,6 @@ class DIContainer extends BaseContainer {
 				$c['ItemMapper'],
 				$c['API'],
 				$c['TimeFactory'],
-				$c['ImportParser'],
 				$c['AttachementCaching'],
 				$c['autoPurgeMinimumInterval'],
 				$c['Enhancer']);
@@ -211,6 +214,10 @@ class DIContainer extends BaseContainer {
 		/**
 		 * MAPPERS
 		 */
+		$this['MapperFactory'] = $this->share(function($c){
+			return new MapperFactory($c['API']);
+		});
+
 		$this['FolderMapper'] = $this->share(function($c){
 			return new FolderMapper($c['API'],$c['AttachementCaching']);
 		});
@@ -220,7 +227,7 @@ class DIContainer extends BaseContainer {
 		});
 
 		$this['ItemMapper'] = $this->share(function($c){
-			return new ItemMapper($c['API'],$c['AttachementCaching']);
+			return $c['MapperFactory']->getItemMapper($c['API'], $c['AttachementCaching']);
 		});
 
 
@@ -255,32 +262,39 @@ class DIContainer extends BaseContainer {
 		$this['Enhancer'] = $this->share(function($c){
 			$enhancer = new Enhancer();
 
-			// register fetchers in order
-			// the most generic enhancer should be the last one
-			$enhancer->registerEnhancer('explosm.net', $c['CyanideAndHappinessEnhancer']);
+			// register simple enhancers from config json file
+			$xpathEnhancerConfig = file_get_contents(
+				__DIR__ . '/../articleenhancer/xpathenhancers.json'
+			);
+			
+			foreach(json_decode($xpathEnhancerConfig, true) as $feed => $config) {
+				$articleEnhancer = new XPathArticleEnhancer(
+					$c['HTMLPurifier'],
+					$c['SimplePieFileFactory'],
+					$config,
+					$c['feedFetcherTimeout']
+				);
+				$enhancer->registerEnhancer($feed, $articleEnhancer);
+			}
+
+			$regexEnhancerConfig = file_get_contents(
+				__DIR__ . '/../articleenhancer/regexenhancers.json'
+			);
+			foreach(json_decode($regexEnhancerConfig, true) as $feed => $config) {
+				foreach ($config as $matchArticleUrl => $regex) {
+					$articleEnhancer = new RegexArticleEnhancer($matchArticleUrl, $regex);
+					$enhancer->registerEnhancer($feed, $articleEnhancer);
+				}
+			}
 
 			return $enhancer;
 		});
-
-		$this['DefaultEnhancer'] = $this->share(function($c){
-			return new DefaultEnhancer();
-		});
-
-		$this['CyanideAndHappinessEnhancer'] = $this->share(function($c){
-			return new CyanideAndHappinessEnhancer(
-				$c['SimplePieFileFactory'],
-				$c['HTMLPurifier'],
-				$c['feedFetcherTimeout']
-			);
-		});
-
 
 		$this['Fetcher'] = $this->share(function($c){
 			$fetcher = new Fetcher();
 
 			// register fetchers in order
 			// the most generic fetcher should be the last one
-			$fetcher->registerFetcher($c['TwitterFetcher']); // twitter timeline
 			$fetcher->registerFetcher($c['FeedFetcher']);
 
 			return $fetcher;
@@ -298,18 +312,11 @@ class DIContainer extends BaseContainer {
 				$c['HTMLPurifier']);
 		});
 
-		$this['TwitterFetcher'] = $this->share(function($c){
-			return new TwitterFetcher($c['FeedFetcher']);
-		});
-
-
-		$this['ImportParser'] = $this->share(function($c){
-			return new ImportParser($c['TimeFactory'], $c['HTMLPurifier']);
-		});
 
 		$this['AttachementCaching'] = $this->share(function($c){
 			return new AttachementCaching($c['API']);
 		});
+
 
 		$this['StatusFlag'] = $this->share(function($c){
 			return new StatusFlag();

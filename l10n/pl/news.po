@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-21 07:04-0400\n"
-"PO-Revision-Date: 2013-08-19 18:21+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-10-02 08:10-0400\n"
+"PO-Revision-Date: 2013-09-30 12:26+0000\n"
+"Last-Translator: Cyryl Sochacki <cyrylsochacki@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/owncloud/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,68 +25,85 @@ msgstr ""
 "Language: pl\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: appinfo/app.php:52
+#: appinfo/app.php:52 templates/main.php:38
 msgid "News"
 msgstr "Aktualności"
 
-#: businesslayer/feedbusinesslayer.php:95
+#: businesslayer/feedbusinesslayer.php:100
 msgid "Can not add feed: Exists already"
 msgstr "Nie można dodać kanału: istnieje już"
 
-#: businesslayer/feedbusinesslayer.php:133
+#: businesslayer/feedbusinesslayer.php:137
 msgid "Can not add feed: URL does not exist or has invalid xml"
 msgstr "Nie można dodać kanału: adres URL nie istnieje lub ma nieprawidłowy kod xml"
+
+#: businesslayer/feedbusinesslayer.php:266
+msgid "Articles without feed"
+msgstr "Artykuły nie z kanałów"
 
 #: businesslayer/folderbusinesslayer.php:66
 msgid "Can not add folder: Exists already"
 msgstr "Nie można dodać folderu: istnieje już"
 
-#: templates/main.php:26
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid " "
+msgstr " "
+
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid "_"
+msgstr "_"
+
+#: js/vendor/jquery-ui/ui/minified/jquery-ui.min.js:8
+#: js/vendor/jquery-ui/ui/minified/jquery.ui.autocomplete.min.js:4
+msgid "status"
+msgstr "status"
+
+#: templates/main.php:34
 #, php-format
 msgid "Undo deletion of %s"
 msgstr "Cofnij usunięcie %s"
 
-#: templates/part.addnew.php:11
+#: templates/part.addnew.php:13
 msgid "Add Website"
 msgstr "Dodaj stronę www"
 
-#: templates/part.addnew.php:16
+#: templates/part.addnew.php:21
 msgid "Error: address exists already!"
 msgstr "Błąd: adres już istnieje!"
 
-#: templates/part.addnew.php:19
+#: templates/part.addnew.php:24
 msgid "Error: folder exists already"
 msgstr "Bład: folder już istnieje"
 
-#: templates/part.addnew.php:26
+#: templates/part.addnew.php:31
 msgid "Address"
 msgstr "Adres"
 
-#: templates/part.addnew.php:30 templates/part.addnew.php:33
+#: templates/part.addnew.php:34 templates/part.addnew.php:37
 msgid "Add"
 msgstr "Dodaj"
 
-#: templates/part.addnew.php:37 templates/part.addnew.php:45
+#: templates/part.addnew.php:41 templates/part.addnew.php:48
 msgid "New folder"
 msgstr "Nowy folder"
 
-#: templates/part.addnew.php:38
+#: templates/part.addnew.php:42
 msgid "Folder"
 msgstr "Folder"
 
-#: templates/part.addnew.php:43
+#: templates/part.addnew.php:46
 msgid "Choose folder"
 msgstr "Wybierz folder"
 
-#: templates/part.addnew.php:55
+#: templates/part.addnew.php:57
 msgid "Folder name"
 msgstr "Nazwa folderu"
 
-#: templates/part.addnew.php:58
+#: templates/part.addnew.php:60
 msgid "Back to folder selection"
 msgstr "Wróć do wyboru folderu"
 
-#: templates/part.addnew.php:63
+#: templates/part.addnew.php:64
 msgid "Create folder"
 msgstr "Utwórz folder"
 
@@ -107,19 +124,23 @@ msgstr "Wszystkie artykuły"
 msgid "Mark read"
 msgstr "Oznacz jako przeczytane"
 
-#: templates/part.items.php:32
+#: templates/part.firstrun.php:2
+msgid "Welcome to the ownCloud News app!"
+msgstr "Witaj w aplikacji ownCloud News!"
+
+#: templates/part.items.php:34
 msgid "from"
 msgstr "z"
 
-#: templates/part.items.php:37
+#: templates/part.items.php:39
 msgid "by"
 msgstr "przez"
 
-#: templates/part.items.php:44
+#: templates/part.items.php:46
 msgid "Download"
 msgstr "Pobierz"
 
-#: templates/part.items.php:57
+#: templates/part.items.php:59
 msgid "Keep unread"
 msgstr "Pozostaw nieprzeczytane"
 
@@ -140,41 +161,37 @@ msgid "Rename folder"
 msgstr "Zmień nazwę folderu"
 
 #: templates/part.settings.php:13
-msgid "Import / Export OPML"
-msgstr "Importuj/eksportuj OPML"
+msgid "Subscriptions (OPML)"
+msgstr "Subskrypcje (OPML)"
 
-#: templates/part.settings.php:17 templates/part.settings.php:19
-#: templates/part.settings.php:47 templates/part.settings.php:49
+#: templates/part.settings.php:17 templates/part.settings.php:20
+#: templates/part.settings.php:48 templates/part.settings.php:53
 msgid "Import"
 msgstr "Importuj"
 
-#: templates/part.settings.php:23 templates/part.settings.php:27
-#: templates/part.settings.php:30 templates/part.settings.php:32
+#: templates/part.settings.php:24 templates/part.settings.php:28
+#: templates/part.settings.php:32 templates/part.settings.php:34
+#: templates/part.settings.php:56 templates/part.settings.php:60
+#: templates/part.settings.php:64 templates/part.settings.php:66
 msgid "Export"
 msgstr "Eksportuj"
 
-#: templates/part.settings.php:36
+#: templates/part.settings.php:38
 msgid "Error when importing: file does not contain valid OPML"
 msgstr "Błąd podczas importowania: plik nie zawiera prawidłowego OPML"
 
-#: templates/part.settings.php:42
-msgid "Import Google Reader JSON"
-msgstr "Importuj Google Reader JSON"
+#: templates/part.settings.php:44
+msgid "Unread/Starred Articles"
+msgstr "Nieprzeczytane/Oznaczone Artykuły"
 
-#: templates/part.settings.php:43
-msgid ""
-"To import starred and shared articles from Google \n"
-"\t\t\tReader please upload the .json files from the Google Takeout archive"
-msgstr "Aby zaimportować ulubione i wspólne artykuły z Google ⏎\n⇥⇥⇥ Reader proszę przesłać .json pliki z archiwum Google Takeout"
-
-#: templates/part.settings.php:53
+#: templates/part.settings.php:70
 msgid "Error when importing: file does not contain valid JSON"
 msgstr "Błąd podczas importowania: plik nie zawiera prawidłowego JSON"
 
 #: templates/part.showall.php:5
-msgid "Show all"
-msgstr "Pokaż wszystko"
+msgid "Show read articles"
+msgstr "Pokaż przeczytane artykuły"
 
 #: templates/part.showall.php:11
-msgid "Show only unread"
-msgstr "Pokaż tylko nieprzeczytane"
+msgid "Hide read articles"
+msgstr "Ukryj przeczytane artykuły"

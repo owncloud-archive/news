@@ -19,6 +19,7 @@
 "Unread articles" => "未讀文章",
 "All articles" => "所有文章",
 "Mark read" => "標記成已讀",
+"Welcome to the ownCloud News app!" => "歡迎使用 ownCloud 新聞應用程式！",
 "from" => "從",
 "by" => "由",
 "Download" => "下載",
@@ -27,13 +28,8 @@
 "Collapse" => "收合",
 "Delete folder" => "刪除資料夾",
 "Rename folder" => "資料夾更名",
-"Import / Export OPML" => "匯入/匯出 OPML",
 "Import" => "匯入",
 "Export" => "匯出",
 "Error when importing: file does not contain valid OPML" => "匯入時出錯: 該檔案不包含有效的OPML",
-"Import Google Reader JSON" => "導入Google閱讀器JSON檔案",
-"To import starred and shared articles from Google \n\t\t\tReader please upload the .json files from the Google Takeout archive" => "從Google匯入喜愛或分享的文章\\n»»»讀者上傳Google Takeout存檔中的 .json檔案",
-"Error when importing: file does not contain valid JSON" => "匯入錯誤: 檔案包含非法的JSON數據",
-"Show all" => "顯示全部",
-"Show only unread" => "只顯示未閱讀的項目"
+"Error when importing: file does not contain valid JSON" => "匯入錯誤: 檔案包含非法的JSON數據"
 );

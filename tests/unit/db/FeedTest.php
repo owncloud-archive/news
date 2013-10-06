@@ -62,6 +62,13 @@ class FeedTest extends \PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testSetUrlUpdatesHash() {
+		$feed = new Feed();
+		$feed->setUrl('http://test');
+		$this->assertEquals(md5('http://test'), $feed->getUrlHash());
+	}
+
+
 	public function testSetXSSLink() {
 		$feed = new Feed();
 		$feed->setLink('javascript:alert()');

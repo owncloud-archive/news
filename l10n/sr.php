@@ -1,5 +1,6 @@
 <?php $TRANSLATIONS = array(
 "News" => "Вести",
+"status" => "статус",
 "Address" => "Адреса",
 "Add" => "Додај",
 "Folder" => "фасцикла",
@@ -11,6 +12,5 @@
 "Delete folder" => "Обриши фасциклу",
 "Rename folder" => "Преименуј фасциклу",
 "Import" => "Увези",
-"Export" => "Извези",
-"Show only unread" => "Прикажи само непрочитане"
+"Export" => "Извези"
 );

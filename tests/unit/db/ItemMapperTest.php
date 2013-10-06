@@ -60,7 +60,7 @@ class ItemMapperTest extends \OCA\AppFramework\Utility\MapperTestUtility {
 		$this->folderId = 2;
 
 		$this->row = array(
-		    array('id' => $this->items[0]->getId()),
+			array('id' => $this->items[0]->getId()),
 		);
 
 		$this->rows = array(
@@ -221,6 +221,18 @@ class ItemMapperTest extends \OCA\AppFramework\Utility\MapperTestUtility {
 	}
 
 
+	public function testFindAllUnreadOrStarred(){
+		$status = StatusFlag::UNREAD | StatusFlag::STARRED;
+		$sql = 'AND ((`items`.`status` & ' . $status . ') > 0) ';
+		$sql = $this->makeSelectQuery($sql);
+		$params = array($this->user);
+		$this->setMapperResult($sql, $params, $this->rows);
+		$result = $this->mapper->findAllUnreadOrStarred($this->user);
+
+		$this->assertEquals($this->items, $result);
+	}
+
+
 	public function testFindAllFeed(){
 		$sql = 'AND `items`.`feed_id` = ? ' .
 			'AND `items`.`id` < ? ';
@@ -313,18 +325,23 @@ class ItemMapperTest extends \OCA\AppFramework\Utility\MapperTestUtility {
 
 	public function testDeleteReadOlderThanThresholdDoesNotDeleteBelowThreshold(){
 		$status = StatusFlag::STARRED | StatusFlag::UNREAD;
-		$sql = 'SELECT COUNT(*) `size`, `feed_id` ' .
-			'FROM `*PREFIX*news_items` ' .
-			'WHERE NOT ((`status` & ?) > 0) ' .
-			'GROUP BY `feed_id` ' .
+		$sql =  'SELECT COUNT(*) - `feeds`.`articles_per_update` AS `size`, ' .
+		'`items`.`feed_id` AS `feed_id` ' . 
+			'FROM `*PREFIX*news_items` `items` ' .
+			'JOIN `*PREFIX*news_feeds` `feeds` ' .
+				'ON `feeds`.`id` = `items`.`feed_id` ' .
+			'WHERE NOT ((`items`.`status` & ?) > 0) ' .
+			'GROUP BY `items`.`feed_id`, `feeds`.`articles_per_update` ' .
 			'HAVING COUNT(*) > ?';
 
 		$threshold = 10;
-		$rows = array(array('feed_id' => 30, 'size' => 11));
+		$rows = array(array('feed_id' => 30, 'size' => 9));
 		$params = array($status, $threshold);
 
 		$this->setMapperResult($sql, $params, $rows);
 		$this->mapper->deleteReadOlderThanThreshold($threshold);
+
+
 	}
 
 
@@ -332,20 +349,23 @@ class ItemMapperTest extends \OCA\AppFramework\Utility\MapperTestUtility {
 		$threshold = 10;
 		$status = StatusFlag::STARRED | StatusFlag::UNREAD;
 
-		$sql1 = 'SELECT COUNT(*) `size`, `feed_id` ' .
-			'FROM `*PREFIX*news_items` ' .
-			'WHERE NOT ((`status` & ?) > 0) ' .
-			'GROUP BY `feed_id` ' .
+		$sql1 = 'SELECT COUNT(*) - `feeds`.`articles_per_update` AS `size`, ' .
+		'`items`.`feed_id` AS `feed_id` ' . 
+			'FROM `*PREFIX*news_items` `items` ' .
+			'JOIN `*PREFIX*news_feeds` `feeds` ' .
+				'ON `feeds`.`id` = `items`.`feed_id` ' .
+			'WHERE NOT ((`items`.`status` & ?) > 0) ' .
+			'GROUP BY `items`.`feed_id`, `feeds`.`articles_per_update` ' .
 			'HAVING COUNT(*) > ?';
 		$params1 = array($status, $threshold);
 
 
-		$row = array('feed_id' => 30, 'size' => 9);
+		$row = array('feed_id' => 30, 'size' => 11);
 
-		$sql2 = 'DELETE FROM `*PREFIX*news_items` `items` ' .
+		$sql2 = 'DELETE FROM `*PREFIX*news_items` ' .
 				'WHERE NOT ((`status` & ?) > 0) ' .
 				'AND `feed_id` = ? ' .
-				'ORDER BY `items`.`id` ASC';
+				'ORDER BY `id` ASC';
 		$params2 = array($status, 30);
 
 

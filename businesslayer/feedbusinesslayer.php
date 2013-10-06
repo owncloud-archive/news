@@ -30,14 +30,15 @@ use \OCA\AppFramework\Utility\TimeFactory;
 use \OCA\AppFramework\Core\API;
 
 use \OCA\News\Db\Feed;
+use \OCA\News\Db\Item;
 use \OCA\News\Db\FeedMapper;
 use \OCA\News\Db\ItemMapper;
-use \OCA\News\Utility\Fetcher;
-use \OCA\News\Utility\FetcherException;
-use \OCA\News\Utility\ImportParser;
+
 use \OCA\News\Utility\AttachementCaching;
 
-use \OCA\News\Utility\ArticleEnhancer\Enhancer;
+use \OCA\News\Fetcher\Fetcher;
+use \OCA\News\Fetcher\FetcherException;
+use \OCA\News\ArticleEnhancer\Enhancer;
 
 class FeedBusinessLayer extends BusinessLayer {
 
@@ -45,7 +46,6 @@ class FeedBusinessLayer extends BusinessLayer {
 	private $itemMapper;
 	private $api;
 	private $timeFactory;
-	private $importParser;
 	private $attachementCaching;
 	private $autoPurgeMinimumInterval;
 	private $enhancer;
@@ -53,7 +53,6 @@ class FeedBusinessLayer extends BusinessLayer {
 	public function __construct(FeedMapper $feedMapper, Fetcher $feedFetcher,
 		                        ItemMapper $itemMapper, API $api,
 		                        TimeFactory $timeFactory,
-		                        ImportParser $importParser,
 		                        AttachementCaching $attachementCaching,
 		                        $autoPurgeMinimumInterval,
 		                        Enhancer $enhancer){
@@ -63,7 +62,6 @@ class FeedBusinessLayer extends BusinessLayer {
 		$this->itemMapper = $itemMapper;
 		$this->api = $api;
 		$this->timeFactory = $timeFactory;
-		$this->importParser = $importParser;
 		$this->attachementCaching = $attachementCaching;
 		$this->autoPurgeMinimumInterval = $autoPurgeMinimumInterval;
 		$this->enhancer = $enhancer;
@@ -112,6 +110,7 @@ class FeedBusinessLayer extends BusinessLayer {
 			// insert feed
 			$feed->setFolderId($folderId);
 			$feed->setUserId($userId);
+			$feed->setArticlesPerUpdate(count($items));
 			$feed = $this->mapper->insert($feed);
 
 
@@ -202,8 +201,11 @@ class FeedBusinessLayer extends BusinessLayer {
 				list($feed, $items) = $this->feedFetcher->fetch(
 					$existingFeed->getUrl(), false);
 
-				// keep the current faviconLink
-				$feed->setFaviconLink($existingFeed->getFaviconLink());
+				// update number of articles on every feed update
+				if($existingFeed->getArticlesPerUpdate() !== count($items)) {
+					$existingFeed->setArticlesPerUpdate(count($items));
+					$this->mapper->update($existingFeed);
+				}
 
 				// insert items in reverse order because the first one is usually
 				// the newest item
@@ -255,41 +257,67 @@ class FeedBusinessLayer extends BusinessLayer {
 
 
 	/**
-	 * Imports the google reader json
+	 * Import articles
 	 * @param array $json the array with json
 	 * @param string userId the username
-	 * @return Feed the created feed
+	 * @return Feed if one had to be created for nonexistent feeds
 	 */
-	public function importGoogleReaderJSON($json, $userId) {
-		$url = 'http://owncloud/googlereader';
+	public function importArticles($json, $userId) {
+		$url = 'http://owncloud/nofeed';
 		$urlHash = md5($url);
 
-		try {
-			$feed = $this->mapper->findByUrlHash($urlHash, $userId);
-		} catch(DoesNotExistException $ex) {
-			$feed = new Feed();
-			$feed->setUserId($userId);
-			$feed->setUrlHash($urlHash);
-			$feed->setUrl($url);
-			$feed->setTitle('Google Reader');
-			$feed->setAdded($this->timeFactory->getTime());
-			$feed->setFolderId(0);
-			$feed->setPreventUpdate(true);
-			$feed = $this->mapper->insert($feed);
+		// build assoc array for fast access
+		$feeds = $this->findAll($userId);
+		$feedsDict = array();
+		foreach($feeds as $feed) {
+			$feedsDict[$feed->getLink()] = $feed;
 		}
 
-		foreach($this->importParser->parse($json) as $item) {
-			$item->setFeedId($feed->getId());
+		$createdFeed = false;
+
+		// loop over all items and get the corresponding feed
+		// if the feed does not exist, create a seperate feed for them
+		foreach ($json as $entry) {
+			$item = Item::fromImport($entry);
+			$item->setLastModified($this->timeFactory->getTime());
+			$feedLink = $entry['feedLink'];  // this is not set on the item yet
+
+			if(array_key_exists($feedLink, $feedsDict)) {
+				$feed = $feedsDict[$feedLink];
+				$item->setFeedId($feed->getId());
+			} elseif(array_key_exists($url, $feedsDict)) {
+				$feed = $feedsDict[$url];
+				$item->setFeedId($feed->getId());				
+			} else {
+				$createdFeed = true;
+				$feed = new Feed();
+				$feed->setUserId($userId);
+				$feed->setLink($url);
+				$feed->setUrl($url);
+				$feed->setTitle($this->api->getTrans()->t('Articles without feed'));
+				$feed->setAdded($this->timeFactory->getTime());
+				$feed->setFolderId(0);
+				$feed->setPreventUpdate(true);	
+				$feed = $this->mapper->insert($feed);
+
+				$item->setFeedId($feed->getId());
+				$feedsDict[$feed->getLink()] = $feed;
+			}
+
 			try {
-				$this->itemMapper->findByGuidHash(
-					$item->getGuidHash(), $item->getFeedId(), $userId);
-			} catch(DoesNotExistException $ex) {
+				// if item exists, copy the status
+				$existingItem = $this->itemMapper->findByGuidHash(
+					$item->getGuidHash(), $feed->getId(), $userId);
+				$existingItem->setStatus($item->getStatus());
+				$this->itemMapper->update($existingItem);
+			} catch(DoesNotExistException $ex){
 				$this->itemMapper->insert($item);
 			}
 		}
 
-		return $this->mapper->findByUrlHash($urlHash, $userId);
-
+		if($createdFeed) {
+			return $this->mapper->findByUrlHash($urlHash, $userId);
+		}
 	}
 
 

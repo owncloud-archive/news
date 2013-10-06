@@ -1,0 +1,83 @@
+{
+	"cad-comic.com": {
+		"%cad-comic.com/cad/\\d+/$%": "//*[@id='content']/img"
+	},
+	"explosm.net": {
+		"%explosm.net/comics%": "//*[@id='maincontent']/div[2]/div/img",
+		"%explosm.net/show%": "//*[@id='videoPlayer']/iframe"
+	},
+	"themerepublic.net": {
+		"%feedproxy.google.com/~r/blogspot/DngUJ%": "//*[@class='post hentry']"
+	},
+	"penny-arcade.com": {
+		"%feeds.penny-arcade.com/~r/pa-mainsite%": "//*[starts-with(@class, \"post\")]"
+	},
+	"leasticoulddo.com": {
+		"%feedproxy.google.com/~r/LICD%": "//*[@id='comic-img']/a/img | //*[@id='comic-img']/img"
+	},
+	"escapistmagazine.com/articles/view/comics/critical-miss": {
+		"%escapistmagazine.com/articles/view/comics/critical-miss%": "//*[@class='body']/span/img"
+	},
+	"escapistmagazine.com/articles/view/comics/namegame": {
+		"%escapistmagazine.com/articles/view/comics/namegame%": "//*[@class='body']/span/p/img[@height != \"120\"]"
+	},
+	"escapistmagazine.com/articles/view/comics/stolen-pixels": {
+		"%escapistmagazine.com/articles/view/comics/stolen-pixels%": "//*[@class='body']/span/p[2]/img"
+	},
+	"escapistmagazine.com/articles/view/comics/bumhugparade": {
+		"%escapistmagazine.com/articles/view/comics/bumhugparade%": "//*[@class='body']/span/p[2]/img"
+	},
+	"escapistmagazine.com/articles/view/comics/escapistradiotheater": {
+		"%escapistmagazine.com/articles/view/comics/escapistradiotheater%": "//*[@class='body']/span/p[2]/img"
+	},
+	"escapistmagazine.com/articles/view/comics/paused": {
+		"%escapistmagazine.com/articles/view/comics/paused%": "//*[@class='body']/span/p[2]/img | //*[@class='body']/span/div/img"
+	},
+	"escapistmagazine.com/articles/view/comics/fraughtwithperil": {
+		"%escapistmagazine.com/articles/view/comics/fraughtwithperil%": "//*[@class='body']"
+	},
+	"trenchescomic.com": {
+		"%trenchescomic.com/comic%": "//*[@class=\"top\"]/img",
+		"%trenchescomic.com/tales%": "//*[@class=\"copy\"]"
+	},
+	"lfgcomic.com": {
+		"%(lfgcomic.com/page)|(feedproxy.google.com/~r/LookingForGroup)%": "//*[@id=\"comic\"]/img | //*[@class=\"content\"]"
+	},
+	"sandraandwoo.com": {
+		"%sandraandwoo.com%": "//*[@id=\"comic\"]/img | //*[@class=\"post\"]"
+	},
+	"sandraandwoo.com/gaia": {
+		"%sandraandwoo.com%": "//*[@id=\"comic\"]/img | //*[@class=\"post\"]"
+	},
+	"theoatmeal.com": {
+		"%theoatmeal.com/blog%": "//*[@class=\"post_body\"]",
+		"%theoatmeal.com/comics%": "//*[@id=\"comic\"] | //*[@class=\"super_vacum\"] | //*[@class=\"pad\"]"
+	},
+	"loldwell.com": {
+		"%loldwell.com/\\?p=%": "//*[@id=\"comic\"]"
+	},
+	"mokepon.smackjeeves.com": {
+		"%mokepon.smackjeeves.com/comics%": "//*[@id=\"comic_area\"]/img | //*[@id=\"comic_area\"]/a/img"
+	},
+	"twokinds.keenspot.com": {
+		"%twokinds.keenspot.com/(archive.php/)?\\?%": "//*[@class=\"comic\"]/div/a/img | //*[@id=\"cg_img\"]/img | //*[@id=\"cg_img\"]/a/img"
+	},
+	"niceteethcomic.com": {
+		"%niceteethcomic.com/archives%": "//*[@class=\"comicpane\"]/a/img"
+	},
+	"awkwardzombie.com" :{
+		"%awkwardzombie.com/index.php\\?comic=%": "//*[@id=\"comic\"]/img"
+	},
+	"vgcats.com": {
+		"%vgcats.com/comics%": "//*[@align=\"center\"]/img"
+	},
+	"vgcats.com/super": {
+		"%vgcats.com/super%": "//div[@align=\"center\"]/p/img"
+	},
+	"chaoslife.findchaos.com": {
+		"%chaoslife.findchaos.com%": "//div[@id=\"comic\"]"
+	},
+	"forlackofabettercomic.com/archive.php": {
+		"%forlackofabettercomic.com/\\?id=%": "//div[@id=\"comicset\"]/a/img"
+	}
+}

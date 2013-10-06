@@ -74,6 +74,22 @@ describe 'Persistence', ->
 		expect(@req.get).toHaveBeenCalledWith('news_items', expected)
 
 
+	it 'should send a load new items request', =>
+		success = ->
+		params =
+			data:
+				type: 2
+				id: 5
+				lastModified: 3
+			onSuccess: success
+			onFailure: success
+
+		@Persistence.getNewItems(params.data.type, params.data.id,
+		                      params.data.lastModified, success)
+
+		expect(@req.get).toHaveBeenCalledWith('news_items_new', params)
+
+
 	it 'send a correct star item request', =>
 		params =
 			routeParams:
@@ -233,16 +249,16 @@ describe 'Persistence', ->
 		expect(@req.post).toHaveBeenCalledWith('news_feeds_create', params)
 
 
-	it 'should do a proper import google reader request', =>
+	it 'should do a proper import articles request', =>
 		params =
 			data:
 				json: {"some": "json"}
-			onSuccess: ->
+			onSuccess: jasmine.any(Function)
 
-		@Persistence.importGoogleReader(params.data.json, params.onSuccess)
+		@Persistence.importArticles(params.data.json, ->)
 
 
-		expect(@req.post).toHaveBeenCalledWith('news_feeds_import_googlereader',
+		expect(@req.post).toHaveBeenCalledWith('news_feeds_import_articles',
 			params)
 
 

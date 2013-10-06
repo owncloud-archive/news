@@ -54,11 +54,16 @@ ActiveFeed, FeedType, $window) ->
 				# dont do this for other dom elements
 				# the title is some kind of exception since its always there
 				# and it has nothing to do with the body structure
+				if @_$scope.translations and @_$scope.translations.appName
+					appName = @_$scope.translations.appName
+				else
+					appName = ''
+				
 				if count > 0
 					titleCount = @_unreadCountFormatter(count)
-					title =	'News (' + titleCount + ') | ownCloud'
+					title =	appName + ' (' + titleCount + ') | ownCloud'
 				else
-					title = 'News | ownCloud'
+					title = appName + ' | ownCloud'
 
 				# only update title when it changed to prevent highlighting the
 				# tab
@@ -81,10 +86,10 @@ ActiveFeed, FeedType, $window) ->
 					# set folder to open
 					if parentFolderId != 0
 						@_folderBusinessLayer.open(parentFolderId)
+					@_$scope.feedUrl = ''
 					@_feedBusinessLayer.create feedUrl, parentFolderId
 					# on success
 					, (data) =>
-						@_$scope.feedUrl = ''
 						@_isAddingFeed = false
 						@_feedBusinessLayer.load(data['feeds'][0].id)
 					# on error

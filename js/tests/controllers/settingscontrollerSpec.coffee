@@ -30,11 +30,14 @@ describe 'SettingsController', ->
 		$provide.value 'Persistence', @persistence
 		return
 
-	beforeEach inject ($controller, @FeedBusinessLayer, @FolderBusinessLayer,
-	                   @ShowAll) =>
+	beforeEach inject ($controller, @ShowAll) =>
 		@scope = {}
 		@replace =
 			'$scope': @scope
+			'FolderBusinessLayer':
+				import: jasmine.createSpy('import')
+			'FeedBusinessLayer':
+				importArticles: jasmine.createSpy('import')
 		@controller = $controller('SettingsController', @replace)
 
 
@@ -44,9 +47,12 @@ describe 'SettingsController', ->
 
 	it 'should show an error if the xml import failed', =>
 		xml = 'test'
+		@replace.FolderBusinessLayer.import.andCallFake ->
+			throw new Error()
 
 		@scope.import(xml)
 
+		expect(@replace.FolderBusinessLayer.import).toHaveBeenCalledWith(xml)
 		expect(@scope.error).toBe(true)
 
 
@@ -58,29 +64,27 @@ describe 'SettingsController', ->
 		expect(@ShowAll.getShowAll()).toBe(true)
 
 
-	it 'should set showall to true if importing json', =>
+	it 'should set loading to true if importing json', =>
 		json = "[\"test\"]"
 
-		@scope.importGoogleReader(json)
-
-		expect(@ShowAll.getShowAll()).toBe(true)
+		@scope.importArticles(json)
+		expect(@scope.loading).toBe(true)
 
 
 	it 'should show an error if the json import failed', =>
 		json = 'test'
 
-		@scope.importGoogleReader(json)
+		@scope.importArticles(json)
 
 		expect(@scope.jsonError).toBe(true)
 
 
 	it 'should import json', =>
-		@FeedBusinessLayer.importGoogleReader = jasmine.createSpy('googlereader')
 		json = "{\"test\": \"abc\"}"
 
-		@scope.importGoogleReader(json)
+		@scope.importArticles(json)
 
 		expected = JSON.parse(json)
-		expect(@FeedBusinessLayer.importGoogleReader).toHaveBeenCalledWith(
-			expected
+		expect(@replace.FeedBusinessLayer.importArticles).toHaveBeenCalledWith(
+			expected, jasmine.any(Function)
 		)

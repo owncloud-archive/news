@@ -4,13 +4,15 @@
 # 
 # Translators:
 # zimba12 <cosenal@gmail.com>, 2012
+# F0ca <staffhabbfoca@live.it>, 2013
+# polxmod <paolo.velati@gmail.com>, 2013
 # Vincenzo Reale <vinx.reale@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-21 07:04-0400\n"
-"PO-Revision-Date: 2013-08-19 18:21+0000\n"
+"POT-Creation-Date: 2013-09-28 22:03-0400\n"
+"PO-Revision-Date: 2013-09-27 18:30+0000\n"
 "Last-Translator: Vincenzo Reale <vinx.reale@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/owncloud/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -19,68 +21,85 @@ msgstr ""
 "Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: appinfo/app.php:52
+#: appinfo/app.php:52 templates/main.php:38
 msgid "News"
 msgstr "Notizie"
 
-#: businesslayer/feedbusinesslayer.php:95
+#: businesslayer/feedbusinesslayer.php:100
 msgid "Can not add feed: Exists already"
 msgstr "Impossible aggiungere la fonte: esiste già"
 
-#: businesslayer/feedbusinesslayer.php:133
+#: businesslayer/feedbusinesslayer.php:137
 msgid "Can not add feed: URL does not exist or has invalid xml"
 msgstr "Impossibile aggiungere la fonte: l'URL non esiste o ha xml non valido"
+
+#: businesslayer/feedbusinesslayer.php:266
+msgid "Articles without feed"
+msgstr "Articoli senza fonte"
 
 #: businesslayer/folderbusinesslayer.php:66
 msgid "Can not add folder: Exists already"
 msgstr "Impossibile aggiungere la cartella: esiste già"
 
-#: templates/main.php:26
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid " "
+msgstr " "
+
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid "_"
+msgstr "_"
+
+#: js/vendor/jquery-ui/ui/minified/jquery-ui.min.js:8
+#: js/vendor/jquery-ui/ui/minified/jquery.ui.autocomplete.min.js:4
+msgid "status"
+msgstr "stato"
+
+#: templates/main.php:34
 #, php-format
 msgid "Undo deletion of %s"
 msgstr "Annulla l'eliminazione di %s"
 
-#: templates/part.addnew.php:11
+#: templates/part.addnew.php:13
 msgid "Add Website"
 msgstr "Aggiungi sito web"
 
-#: templates/part.addnew.php:16
+#: templates/part.addnew.php:21
 msgid "Error: address exists already!"
 msgstr "Errore: l'indirizzo esiste già!"
 
-#: templates/part.addnew.php:19
+#: templates/part.addnew.php:24
 msgid "Error: folder exists already"
 msgstr "Errore: la cartella esiste già"
 
-#: templates/part.addnew.php:26
+#: templates/part.addnew.php:31
 msgid "Address"
 msgstr "Indirizzo"
 
-#: templates/part.addnew.php:30 templates/part.addnew.php:33
+#: templates/part.addnew.php:34 templates/part.addnew.php:37
 msgid "Add"
 msgstr "Aggiungi"
 
-#: templates/part.addnew.php:37 templates/part.addnew.php:45
+#: templates/part.addnew.php:41 templates/part.addnew.php:48
 msgid "New folder"
 msgstr "Nuova cartella"
 
-#: templates/part.addnew.php:38
+#: templates/part.addnew.php:42
 msgid "Folder"
 msgstr "Cartella"
 
-#: templates/part.addnew.php:43
+#: templates/part.addnew.php:46
 msgid "Choose folder"
 msgstr "Scegli cartella"
 
-#: templates/part.addnew.php:55
+#: templates/part.addnew.php:57
 msgid "Folder name"
 msgstr "Nome della cartella"
 
-#: templates/part.addnew.php:58
+#: templates/part.addnew.php:60
 msgid "Back to folder selection"
 msgstr "Torna alla selezione della cartella"
 
-#: templates/part.addnew.php:63
+#: templates/part.addnew.php:64
 msgid "Create folder"
 msgstr "Crea cartella"
 
@@ -101,19 +120,23 @@ msgstr "Tutti gli articoli"
 msgid "Mark read"
 msgstr "Marca come letto"
 
-#: templates/part.items.php:32
+#: templates/part.firstrun.php:2
+msgid "Welcome to the ownCloud News app!"
+msgstr "Benvenuto nell'applicazione delle notizie di ownCloud!"
+
+#: templates/part.items.php:34
 msgid "from"
 msgstr "da"
 
-#: templates/part.items.php:37
+#: templates/part.items.php:39
 msgid "by"
 msgstr "da"
 
-#: templates/part.items.php:44
+#: templates/part.items.php:46
 msgid "Download"
 msgstr "Scarica"
 
-#: templates/part.items.php:57
+#: templates/part.items.php:59
 msgid "Keep unread"
 msgstr "Mantieni non letto"
 
@@ -134,41 +157,37 @@ msgid "Rename folder"
 msgstr "Rinomina la cartella"
 
 #: templates/part.settings.php:13
-msgid "Import / Export OPML"
-msgstr "Importa/Esporta OPML"
+msgid "Subscriptions (OPML)"
+msgstr "Sottoscrizioni (OPML)"
 
-#: templates/part.settings.php:17 templates/part.settings.php:19
-#: templates/part.settings.php:47 templates/part.settings.php:49
+#: templates/part.settings.php:17 templates/part.settings.php:20
+#: templates/part.settings.php:48 templates/part.settings.php:53
 msgid "Import"
 msgstr "Importa"
 
-#: templates/part.settings.php:23 templates/part.settings.php:27
-#: templates/part.settings.php:30 templates/part.settings.php:32
+#: templates/part.settings.php:24 templates/part.settings.php:28
+#: templates/part.settings.php:32 templates/part.settings.php:34
+#: templates/part.settings.php:56 templates/part.settings.php:60
+#: templates/part.settings.php:64 templates/part.settings.php:66
 msgid "Export"
 msgstr "Esporta"
 
-#: templates/part.settings.php:36
+#: templates/part.settings.php:38
 msgid "Error when importing: file does not contain valid OPML"
 msgstr "Errore di importazione: il file non contiene OPML valido"
 
-#: templates/part.settings.php:42
-msgid "Import Google Reader JSON"
-msgstr "Importa JSON di Google Reader"
+#: templates/part.settings.php:44
+msgid "Unread/Starred Articles"
+msgstr "Articoli non letti/preferiti"
 
-#: templates/part.settings.php:43
-msgid ""
-"To import starred and shared articles from Google \n"
-"\t\t\tReader please upload the .json files from the Google Takeout archive"
-msgstr "Per importare gli articoli con stella e condivisi da Google\nReader carica i file .json dall'archivio Google Takeout"
-
-#: templates/part.settings.php:53
+#: templates/part.settings.php:70
 msgid "Error when importing: file does not contain valid JSON"
 msgstr "Errore durante l'importazione: il file non contiene JSON valido"
 
 #: templates/part.showall.php:5
-msgid "Show all"
-msgstr "Mostra tutto"
+msgid "Show read articles"
+msgstr "Mostra gli articoli già letti"
 
 #: templates/part.showall.php:11
-msgid "Show only unread"
-msgstr "Mostra solo i non letti"
+msgid "Hide read articles"
+msgstr "Nascondi gli articoli già letti"

@@ -103,6 +103,72 @@ class ItemTest extends \PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testToExport() {
+		$item = new Item();
+		$item->setId(3);
+		$item->setGuid('guid');
+		$item->setGuidHash('hash');
+		$item->setUrl('https://google');
+		$item->setTitle('title');
+		$item->setAuthor('author');
+		$item->setPubDate(123);
+		$item->setBody('body');
+		$item->setEnclosureMime('audio/ogg');
+		$item->setEnclosureLink('enclink');
+		$item->setFeedId(1);
+		$item->setStatus(0);
+		$item->setRead();
+		$item->setStarred();
+		$item->setLastModified(321);
+
+		$feed = new Feed();
+		$feed->setLink('http://test');
+		$feeds = array(
+			"feed1" => $feed
+		);
+
+		$this->assertEquals(array(
+			'guid' => 'guid',
+			'url' => 'https://google',
+			'title' => 'title',
+			'author' => 'author',
+			'pubDate' => 123,
+			'body' => 'body',
+			'enclosureMime' => 'audio/ogg',
+			'enclosureLink' => 'enclink',
+			'unread' => false,
+			'starred' => true,
+			'feedLink' => 'http://test'
+			), $item->toExport($feeds));
+	}
+
+
+	public function testFromImport() {
+		$item = new Item();
+		$item->setGuid('guid');
+		$item->setUrl('https://google');
+		$item->setTitle('title');
+		$item->setAuthor('author');
+		$item->setPubDate(123);
+		$item->setBody('body');
+		$item->setEnclosureMime('audio/ogg');
+		$item->setEnclosureLink('enclink');
+		$item->setFeedId(1);
+		$item->setUnread();
+		$item->setStarred();
+
+		$feed = new Feed();
+		$feed->setLink('http://test');
+		$feeds = array(
+			"feed1" => $feed
+		);
+
+		$compareWith = Item::fromImport($item->toExport($feeds));
+		$item->setFeedId(null);
+		$this->assertEquals($item, $compareWith);
+	}
+
+
 	public function testSetAuthor(){
 		$item = new Item();
 		$item->setAuthor('<a>my link</li>');
@@ -131,5 +197,21 @@ class ItemTest extends \PHPUnit_Framework_TestCase {
 		$item->setUrl('magnet://link.com');
 		$this->assertEquals('magnet://link.com', $item->getUrl());
 	}
+
+
+	public function testSetGuidUpdatesHash() {
+		$item = new Item();
+		$item->setGuid('http://test');
+		$this->assertEquals(md5('http://test'), $item->getGuidHash());
+	}
+
+
+	public function testMakeLinksInBodyOpenNewTab() {
+		$item = new Item();
+		$item->setBody("<a href=\"test\">ha</a>");
+		$this->assertEquals("<a target=\"_blank\" href=\"test\">ha</a>", 
+			$item->getBody());
+	}
+
 
 }

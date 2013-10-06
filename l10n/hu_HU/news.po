@@ -4,15 +4,16 @@
 # 
 # Translators:
 # akoscomp <nagy.akos@libreoffice.ro>, 2013
+# ebela <bela@dandre.hu>, 2013
 # gyeben <gyonkibendeguz@gmail.com>, 2013
 # Laszlo Tornoci <torlasz@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-21 07:04-0400\n"
-"PO-Revision-Date: 2013-08-19 18:21+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-09-30 08:07-0400\n"
+"PO-Revision-Date: 2013-09-30 00:26+0000\n"
+"Last-Translator: ebela <bela@dandre.hu>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/owncloud/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,68 +21,85 @@ msgstr ""
 "Language: hu_HU\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: appinfo/app.php:52
+#: appinfo/app.php:52 templates/main.php:38
 msgid "News"
 msgstr "Hírek"
 
-#: businesslayer/feedbusinesslayer.php:95
+#: businesslayer/feedbusinesslayer.php:100
 msgid "Can not add feed: Exists already"
 msgstr "Nem sikerült hozzáadni a hírcsatornát: már létezik"
 
-#: businesslayer/feedbusinesslayer.php:133
+#: businesslayer/feedbusinesslayer.php:137
 msgid "Can not add feed: URL does not exist or has invalid xml"
 msgstr "Nem sikerült hozzáadni a hírcsatornát: hibás az URL vagy érvénytelen xml-t ad"
+
+#: businesslayer/feedbusinesslayer.php:266
+msgid "Articles without feed"
+msgstr "Cikkek folyam(feed) nélkül"
 
 #: businesslayer/folderbusinesslayer.php:66
 msgid "Can not add folder: Exists already"
 msgstr "A mappa nem hozható létre: már létezik"
 
-#: templates/main.php:26
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid " "
+msgstr " "
+
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid "_"
+msgstr "-"
+
+#: js/vendor/jquery-ui/ui/minified/jquery-ui.min.js:8
+#: js/vendor/jquery-ui/ui/minified/jquery.ui.autocomplete.min.js:4
+msgid "status"
+msgstr "állapot"
+
+#: templates/main.php:34
 #, php-format
 msgid "Undo deletion of %s"
 msgstr "%s törlésének visszavonása"
 
-#: templates/part.addnew.php:11
+#: templates/part.addnew.php:13
 msgid "Add Website"
 msgstr "Weboldal hozzáadása"
 
-#: templates/part.addnew.php:16
+#: templates/part.addnew.php:21
 msgid "Error: address exists already!"
 msgstr "Hiba: már létező cím!"
 
-#: templates/part.addnew.php:19
+#: templates/part.addnew.php:24
 msgid "Error: folder exists already"
 msgstr "Hiba: a mappa már létezik"
 
-#: templates/part.addnew.php:26
+#: templates/part.addnew.php:31
 msgid "Address"
 msgstr "Cím"
 
-#: templates/part.addnew.php:30 templates/part.addnew.php:33
+#: templates/part.addnew.php:34 templates/part.addnew.php:37
 msgid "Add"
 msgstr "Hozzáad"
 
-#: templates/part.addnew.php:37 templates/part.addnew.php:45
+#: templates/part.addnew.php:41 templates/part.addnew.php:48
 msgid "New folder"
 msgstr "Új mappa"
 
-#: templates/part.addnew.php:38
+#: templates/part.addnew.php:42
 msgid "Folder"
 msgstr "Mappa"
 
-#: templates/part.addnew.php:43
+#: templates/part.addnew.php:46
 msgid "Choose folder"
 msgstr "Mappa kiválasztása"
 
-#: templates/part.addnew.php:55
+#: templates/part.addnew.php:57
 msgid "Folder name"
 msgstr "Mappanév"
 
-#: templates/part.addnew.php:58
+#: templates/part.addnew.php:60
 msgid "Back to folder selection"
 msgstr "Vissza a mappa kiválasztásához"
 
-#: templates/part.addnew.php:63
+#: templates/part.addnew.php:64
 msgid "Create folder"
 msgstr "Mappa létrehozása"
 
@@ -102,19 +120,23 @@ msgstr "Az összes cikk"
 msgid "Mark read"
 msgstr "Jelöljük meg olvasottként"
 
-#: templates/part.items.php:32
+#: templates/part.firstrun.php:2
+msgid "Welcome to the ownCloud News app!"
+msgstr "Üdvözöljük az ownCloud Hírek alkalmazásban!"
+
+#: templates/part.items.php:34
 msgid "from"
 msgstr "innen:"
 
-#: templates/part.items.php:37
+#: templates/part.items.php:39
 msgid "by"
 msgstr "általa:"
 
-#: templates/part.items.php:44
+#: templates/part.items.php:46
 msgid "Download"
 msgstr "Letöltés"
 
-#: templates/part.items.php:57
+#: templates/part.items.php:59
 msgid "Keep unread"
 msgstr "Maradjon olvasatlan"
 
@@ -135,41 +157,37 @@ msgid "Rename folder"
 msgstr "Mappa átnevezése"
 
 #: templates/part.settings.php:13
-msgid "Import / Export OPML"
-msgstr "OPML állomány importálása/exportálása"
+msgid "Subscriptions (OPML)"
+msgstr "Feliratkozások (OPML)"
 
-#: templates/part.settings.php:17 templates/part.settings.php:19
-#: templates/part.settings.php:47 templates/part.settings.php:49
+#: templates/part.settings.php:17 templates/part.settings.php:20
+#: templates/part.settings.php:48 templates/part.settings.php:53
 msgid "Import"
 msgstr "Importálás"
 
-#: templates/part.settings.php:23 templates/part.settings.php:27
-#: templates/part.settings.php:30 templates/part.settings.php:32
+#: templates/part.settings.php:24 templates/part.settings.php:28
+#: templates/part.settings.php:32 templates/part.settings.php:34
+#: templates/part.settings.php:56 templates/part.settings.php:60
+#: templates/part.settings.php:64 templates/part.settings.php:66
 msgid "Export"
 msgstr "Exportálás"
 
-#: templates/part.settings.php:36
+#: templates/part.settings.php:38
 msgid "Error when importing: file does not contain valid OPML"
 msgstr "Hiba az importálás során: az állomány nem tartalmaz érvényes OPML adatot"
 
-#: templates/part.settings.php:42
-msgid "Import Google Reader JSON"
-msgstr "A Google Reader JSON adatainak importálása"
+#: templates/part.settings.php:44
+msgid "Unread/Starred Articles"
+msgstr "Olvastlan/Csillagozott cikkek"
 
-#: templates/part.settings.php:43
-msgid ""
-"To import starred and shared articles from Google \n"
-"\t\t\tReader please upload the .json files from the Google Takeout archive"
-msgstr "Ha a Google Readerből importálni szeretné a csillaggal megjelölt vagy megosztott cikkeket, akkor töltse föl a .json állományokat a Google Takeout archívumból"
-
-#: templates/part.settings.php:53
+#: templates/part.settings.php:70
 msgid "Error when importing: file does not contain valid JSON"
 msgstr "Hiba az importálás során: az állomány nem tartalmaz érvényes JSON adatokat"
 
 #: templates/part.showall.php:5
-msgid "Show all"
-msgstr "Mutassuk mindet"
+msgid "Show read articles"
+msgstr "Megjeleníti olvasásra a cikkeket"
 
 #: templates/part.showall.php:11
-msgid "Show only unread"
-msgstr "Csak az olvasatlanok megjelenítése"
+msgid "Hide read articles"
+msgstr "Elrejteni a cikk olvasót"

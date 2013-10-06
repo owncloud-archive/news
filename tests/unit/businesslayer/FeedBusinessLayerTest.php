@@ -32,9 +32,8 @@ use \OCA\AppFramework\Db\DoesNotExistException;
 
 use \OCA\News\Db\Feed;
 use \OCA\News\Db\Item;
-use \OCA\News\Utility\Fetcher;
-use \OCA\News\Utility\FetcherException;
-use \OCA\News\Utility\ImportParser;
+use \OCA\News\Fetcher\Fetcher;
+use \OCA\News\Fetcher\FetcherException;
 
 class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 
@@ -64,21 +63,18 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$this->feedMapper = $this->getMockBuilder('\OCA\News\Db\FeedMapper')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->fetcher = $this->getMockBuilder('\OCA\News\Utility\Fetcher')
+		$this->fetcher = $this->getMockBuilder('\OCA\News\Fetcher\Fetcher')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->itemMapper = $this->getMockBuilder('\OCA\News\Db\ItemMapper')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->importParser = $this->getMockBuilder('\OCA\News\Utility\ImportParser')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->enhancer = $this->getMockBuilder('\OCA\News\Utility\ArticleEnhancer\Enhancer')
+		$this->enhancer = $this->getMockBuilder('\OCA\News\ArticleEnhancer\Enhancer')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->feedBusinessLayer = new FeedBusinessLayer($this->feedMapper,
 			$this->fetcher, $this->itemMapper, $this->api,
-			$timeFactory, $this->importParser, $this->autoPurgeMinimumInterval,
+			$timeFactory, $this->autoPurgeMinimumInterval,
 			$this->enhancer);
 		$this->user = 'jack';
 		$response = 'hi';
@@ -177,6 +173,7 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 
 		$this->assertEquals($feed->getFolderId(), $folderId);
 		$this->assertEquals($feed->getUrl(), $url);
+		$this->assertEquals($feed->getArticlesPerUpdate(), 2);
 	}
 
 
@@ -244,6 +241,7 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$feed = new Feed();
 		$feed->setId(3);
 		$feed->getUrl('test');
+		$feed->setArticlesPerUpdate(1);
 		$feed->setUrlHash('yo');
 
 		$item = new Item();
@@ -288,6 +286,43 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$return = $this->feedBusinessLayer->update($feed->getId(), $this->user);
 
 		$this->assertEquals($return, $feed);
+	}
+
+
+	public function testUpdateUpdatesArticlesPerFeedCount() {
+		$feed = new Feed();
+		$feed->setId(3);
+		$feed->getUrl('test');
+		$feed->setUrlHash('yo');
+
+		$existingFeed = new Feed();
+		$feed->setArticlesPerUpdate(2);
+
+		$item = new Item();
+		$item->setGuidHash(md5('hi'));
+		$item->setFeedId(3);
+		$items = array(
+			$item
+		);
+
+		$ex = new DoesNotExistException('hi');
+
+		$fetchReturn = array($feed, $items);
+
+		$this->feedMapper->expects($this->any())
+			->method('find')
+			->will($this->returnValue($existingFeed));
+
+		$this->fetcher->expects($this->once())
+			->method('fetch')
+			->will($this->returnValue(array($feed, $items)));
+
+		$this->feedMapper->expects($this->once())
+			->method('update')
+			->with($this->equalTo($existingFeed));
+
+
+		$this->feedBusinessLayer->update($feed->getId(), $this->user);
 	}
 
 	public function testUpdateFails(){
@@ -340,6 +375,7 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$feed = new Feed();
 		$feed->setId(3);
 		$feed->getUrl('test');
+		$feed->setArticlesPerUpdate(1);
 
 		$item = new Item();
 		$item->setGuidHash(md5('hi'));
@@ -423,99 +459,136 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 	}
 
 
-	public function testImportGoogleReaderJSON(){
-		$url = 'http://owncloud/googlereader';
-		$urlHash = md5($url);
+	public function testImportArticles(){
+		$url = 'http://owncloud/nofeed';
 
 		$feed = new Feed();
 		$feed->setId(3);
 		$feed->setUserId($this->user);
-		$feed->setUrlHash($urlHash);
 		$feed->setUrl($url);
-		$feed->setTitle('Google Reader');
+		$feed->setLink($url);
+		$feed->setTitle('Articles without feed');
 		$feed->setAdded($this->time);
 		$feed->setFolderId(0);
 		$feed->setPreventUpdate(true);
 
-		$items = array(new Item());
+		$feeds = array($feed);
 
-		$this->feedMapper->expects($this->at(0))
-			->method('findByUrlHash')
-			->with($this->equalTo($urlHash),
-				$this->equalTo($this->user))
-			->will($this->throwException(new DoesNotExistException('hi')));
-		$this->feedMapper->expects($this->at(1))
-			->method('insert')
-			->will($this->returnValue($feed));
-		$this->feedMapper->expects($this->at(2))
-			->method('findByUrlHash')
-			->with($this->equalTo($urlHash),
-				$this->equalTo($this->user))
-			->will($this->returnValue($feed));
-		$this->importParser->expects($this->once())
-			->method('parse')
-			->will($this->returnValue($items));
+		$item = new Item();
+		$item->setFeedId(3);
+		$item->setAuthor('john');
+		$item->setGuid('s');
+		$item->setTitle('hey');
+		$item->setPubDate(333);
+		$item->setBody('come over');
+		$item->setEnclosureMime('mime');
+		$item->setEnclosureLink('lin');
+		$item->setUnread();
+		$item->setUnstarred();
+		$item->setLastModified($this->time);
+
+		$json = $item->toExport(array('feed3' => $feed));
+
+		$items = array($json);
+
+		$this->feedMapper->expects($this->once())
+			->method('findAllFromUser')
+			->with($this->equalTo($this->user))
+			->will($this->returnValue($feeds));
+
 		$this->itemMapper->expects($this->once())
-			->method('findByGuidHash');
-		$this->itemMapper->expects($this->never())
-			->method('insert');
+			->method('findByGuidHash')
+			->will($this->throwException(new DoesNotExistException('yo')));
+		$this->itemMapper->expects($this->once())
+			->method('insert')
+			->with($this->equalTo($item));
 
 
-		$result = $this->feedBusinessLayer->importGoogleReaderJSON(array(), $this->user);
+		$result = $this->feedBusinessLayer->importArticles($items, $this->user);
 
-		$this->assertEquals($feed, $result);
+		$this->assertEquals(null, $result);
 	}
 
 
-	public function testImportGoogleReaderJSONFeedExists(){
-		$url = 'http://owncloud/googlereader';
-		$urlHash = md5($url);
-
+	public function testImportArticlesCreatesOwnFeedWhenNotFound(){
+		$url = 'http://owncloud/args';
 
 		$feed = new Feed();
+		$feed->setId(3);
 		$feed->setUserId($this->user);
-		$feed->setUrlHash($urlHash);
 		$feed->setUrl($url);
-		$feed->setTitle('Google Reader');
+		$feed->setLink($url);
+		$feed->setTitle('Articles without feed');
 		$feed->setAdded($this->time);
 		$feed->setFolderId(0);
 		$feed->setPreventUpdate(true);
-		$feed->setId(3);
+
+		$feeds = array($feed);
 
 		$item = new Item();
-		$item->setGuidHash('hi');
-		$items = array($item);
-		$savedItem = new Item();
-		$savedItem->setFeedId($feed->getId());
-		$savedItem->setGuidHash('hi');
+		$item->setFeedId(3);
+		$item->setAuthor('john');
+		$item->setGuid('s');
+		$item->setTitle('hey');
+		$item->setPubDate(333);
+		$item->setBody('come over');
+		$item->setEnclosureMime('mime');
+		$item->setEnclosureLink('lin');
+		$item->setUnread();
+		$item->setUnstarred();
+		$item->setLastModified($this->time);
 
-		$in = array();
+		$json = $item->toExport(array('feed3' => $feed));
+		$json2 = $json;
+		$json2['feedLink'] = 'http://test.com'; // believe it or not this copies stuff :D
 
-		$this->feedMapper->expects($this->at(0))
-			->method('findByUrlHash')
-			->with($this->equalTo($urlHash),
-				$this->equalTo($this->user))
-			->will($this->returnValue($feed));
-		$this->feedMapper->expects($this->at(1))
-			->method('findByUrlHash')
-			->with($this->equalTo($urlHash),
-				$this->equalTo($this->user))
-			->will($this->returnValue($feed));
-		$this->importParser->expects($this->once())
-			->method('parse')
-			->with($this->equalTo($in))
-			->will($this->returnValue($items));
-		$this->itemMapper->expects($this->once())
-			->method('findByGuidHash')
-			->with($this->equalTo($savedItem->getGuidHash()),
-				$this->equalTo($savedItem->getFeedId()),
-				$this->equalTo($this->user))
-			->will($this->throwException(new DoesNotExistException('ho')));
-		$this->itemMapper->expects($this->once())
+		$items = array($json, $json2);
+
+		$insertFeed = new Feed();
+		$insertFeed->setLink('http://owncloud/nofeed');
+		$insertFeed->setUrl('http://owncloud/nofeed');
+		$insertFeed->setUserId($this->user);
+		$insertFeed->setTitle('Articles without feed');
+		$insertFeed->setAdded($this->time);
+		$insertFeed->setPreventUpdate(true);
+		$insertFeed->setFolderId(0);
+
+		$trans = $this->getMock('trans', array('t'));
+		$trans->expects($this->once())
+			->method('t')
+			->will($this->returnValue('Articles without feed'));
+		$this->feedMapper->expects($this->once())
+			->method('findAllFromUser')
+			->with($this->equalTo($this->user))
+			->will($this->returnValue($feeds));
+		$this->api->expects($this->once())
+			->method('getTrans')
+			->will($this->returnValue($trans));
+		$this->feedMapper->expects($this->once())
 			->method('insert')
-			->with($this->equalTo($savedItem));
+			->with($this->equalTo($insertFeed))
+			->will($this->returnValue($insertFeed));
 
-		$result = $this->feedBusinessLayer->importGoogleReaderJSON($in, $this->user);
+
+		$this->itemMapper->expects($this->at(0))
+			->method('findByGuidHash')
+			->will($this->throwException(new DoesNotExistException('yo')));
+		$this->itemMapper->expects($this->at(1))
+			->method('insert')
+			->with($this->equalTo($item));
+			
+		$this->itemMapper->expects($this->at(2))
+			->method('findByGuidHash')
+			->will($this->returnValue($item));
+		$this->itemMapper->expects($this->at(3))
+			->method('update')
+			->with($this->equalTo($item));
+
+		$this->feedMapper->expects($this->once())
+			->method('findByUrlHash')
+			->will($this->returnValue($feed));
+
+		$result = $this->feedBusinessLayer->importArticles($items, $this->user);
 
 		$this->assertEquals($feed, $result);
 	}

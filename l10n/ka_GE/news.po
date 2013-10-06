@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-21 07:04-0400\n"
-"PO-Revision-Date: 2013-08-19 18:22+0000\n"
+"POT-Creation-Date: 2013-09-24 11:51-0400\n"
+"PO-Revision-Date: 2013-09-24 15:51+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Georgian (Georgia) (http://www.transifex.com/projects/p/owncloud/language/ka_GE/)\n"
 "MIME-Version: 1.0\n"
@@ -18,68 +18,85 @@ msgstr ""
 "Language: ka_GE\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: appinfo/app.php:52
+#: appinfo/app.php:52 templates/main.php:38
 msgid "News"
 msgstr "სიახლეები"
 
-#: businesslayer/feedbusinesslayer.php:95
+#: businesslayer/feedbusinesslayer.php:101
 msgid "Can not add feed: Exists already"
 msgstr "ფიდის დამატება შეუძლებელია: უკვე არსებობს"
 
-#: businesslayer/feedbusinesslayer.php:133
+#: businesslayer/feedbusinesslayer.php:138
 msgid "Can not add feed: URL does not exist or has invalid xml"
 msgstr "ფიდის დამატება შეუძლებელია: ასეთი URL არ არსებობს ან არ შეიცავს მართებულ xml–ს"
+
+#: businesslayer/feedbusinesslayer.php:267
+msgid "Articles without feed"
+msgstr ""
 
 #: businesslayer/folderbusinesslayer.php:66
 msgid "Can not add folder: Exists already"
 msgstr "ფოლდერის დამატება შეუძლებელია: უკვე არსებობს"
 
-#: templates/main.php:26
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid " "
+msgstr ""
+
+#: js/vendor/angular-ui/build/angular-ui.min.js:7
+msgid "_"
+msgstr ""
+
+#: js/vendor/jquery-ui/ui/minified/jquery-ui.min.js:8
+#: js/vendor/jquery-ui/ui/minified/jquery.ui.autocomplete.min.js:4
+msgid "status"
+msgstr ""
+
+#: templates/main.php:34
 #, php-format
 msgid "Undo deletion of %s"
 msgstr ""
 
-#: templates/part.addnew.php:11
+#: templates/part.addnew.php:13
 msgid "Add Website"
 msgstr "დაამატე ვებგვერდი"
 
-#: templates/part.addnew.php:16
+#: templates/part.addnew.php:21
 msgid "Error: address exists already!"
 msgstr "შეცდომა: მისამართი უკვე არსებობს!"
 
-#: templates/part.addnew.php:19
+#: templates/part.addnew.php:24
 msgid "Error: folder exists already"
 msgstr "შეცდომა: ფოლდერი უკვე არსებობს!"
 
-#: templates/part.addnew.php:26
+#: templates/part.addnew.php:31
 msgid "Address"
 msgstr "მისამართი"
 
-#: templates/part.addnew.php:30 templates/part.addnew.php:33
+#: templates/part.addnew.php:34 templates/part.addnew.php:37
 msgid "Add"
 msgstr "დამატება"
 
-#: templates/part.addnew.php:37 templates/part.addnew.php:45
+#: templates/part.addnew.php:41 templates/part.addnew.php:48
 msgid "New folder"
 msgstr "ახალი ფოლდერი"
 
-#: templates/part.addnew.php:38
+#: templates/part.addnew.php:42
 msgid "Folder"
 msgstr "საქაღალდე"
 
-#: templates/part.addnew.php:43
+#: templates/part.addnew.php:46
 msgid "Choose folder"
 msgstr "აირჩიეთ ფოლდერი"
 
-#: templates/part.addnew.php:55
+#: templates/part.addnew.php:57
 msgid "Folder name"
 msgstr "ფოლდერის სახელი"
 
-#: templates/part.addnew.php:58
+#: templates/part.addnew.php:60
 msgid "Back to folder selection"
 msgstr "უკან ფოლდერის ასარჩევად"
 
-#: templates/part.addnew.php:63
+#: templates/part.addnew.php:64
 msgid "Create folder"
 msgstr "ფოლდერის შექმნა"
 
@@ -100,19 +117,23 @@ msgstr "ყველა არტიკლი"
 msgid "Mark read"
 msgstr "მონიშნე წაკითხულად"
 
-#: templates/part.items.php:32
+#: templates/part.firstrun.php:2
+msgid "Welcome to the ownCloud News app!"
+msgstr ""
+
+#: templates/part.items.php:34
 msgid "from"
 msgstr "დან"
 
-#: templates/part.items.php:37
+#: templates/part.items.php:39
 msgid "by"
 msgstr "მიერ"
 
-#: templates/part.items.php:44
+#: templates/part.items.php:46
 msgid "Download"
 msgstr "ჩამოტვირთვა"
 
-#: templates/part.items.php:57
+#: templates/part.items.php:59
 msgid "Keep unread"
 msgstr "მხოლოდ წაუკითხავი"
 
@@ -133,41 +154,37 @@ msgid "Rename folder"
 msgstr "ფოლდერის სახელის გადარქმევა"
 
 #: templates/part.settings.php:13
-msgid "Import / Export OPML"
-msgstr "OPML–ის იმპორტ / ექსპორტი"
+msgid "Subscriptions (OPML)"
+msgstr ""
 
-#: templates/part.settings.php:17 templates/part.settings.php:19
-#: templates/part.settings.php:47 templates/part.settings.php:49
+#: templates/part.settings.php:17 templates/part.settings.php:20
+#: templates/part.settings.php:48 templates/part.settings.php:53
 msgid "Import"
 msgstr "იმპორტი"
 
-#: templates/part.settings.php:23 templates/part.settings.php:27
-#: templates/part.settings.php:30 templates/part.settings.php:32
+#: templates/part.settings.php:24 templates/part.settings.php:28
+#: templates/part.settings.php:32 templates/part.settings.php:34
+#: templates/part.settings.php:56 templates/part.settings.php:60
+#: templates/part.settings.php:64 templates/part.settings.php:66
 msgid "Export"
 msgstr "ექსპორტი"
 
-#: templates/part.settings.php:36
+#: templates/part.settings.php:38
 msgid "Error when importing: file does not contain valid OPML"
 msgstr "შეცდომა იმპორტირების დროს: ფაილი არ უნდა შეიცავდეს მართებულ OPML–ს"
 
-#: templates/part.settings.php:42
-msgid "Import Google Reader JSON"
-msgstr "Google წამკითხავი JSON–ის იმპორტირება"
+#: templates/part.settings.php:44
+msgid "Unread/Starred Articles"
+msgstr ""
 
-#: templates/part.settings.php:43
-msgid ""
-"To import starred and shared articles from Google \n"
-"\t\t\tReader please upload the .json files from the Google Takeout archive"
-msgstr "ვარსკვლავმონიშნული და გაზიარებული არტიკლების Google–დან დასაიმპორტებლად »»» გთხოვთ ატვირთეთ  .json წამკითხავი ფაილები Google Takeout არქივიდან"
-
-#: templates/part.settings.php:53
+#: templates/part.settings.php:70
 msgid "Error when importing: file does not contain valid JSON"
 msgstr "შეცდომა იმპორტირებისას: ფაილი არ უნდა შეიცავდეს მართებულ  JSON–ს"
 
 #: templates/part.showall.php:5
-msgid "Show all"
-msgstr "ყველაფრის გამოჩენა"
+msgid "Show read articles"
+msgstr ""
 
 #: templates/part.showall.php:11
-msgid "Show only unread"
-msgstr "გამოაჩინე მხოლოდ წაუკითხავი"
+msgid "Hide read articles"
+msgstr ""
