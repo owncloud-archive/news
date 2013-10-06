@@ -31,20 +31,25 @@ use \OCA\AppFramework\Utility\TimeFactory;
 use \OCA\News\Db\Folder;
 use \OCA\News\Db\FolderMapper;
 
+use \OCA\News\Utility\AttachementCaching;
+
 
 class FolderBusinessLayer extends BusinessLayer {
 
 	private $api;
 	private $timeFactory;
+	private $attachementCaching;
 	private $autoPurgeMinimumInterval;
 
 	public function __construct(FolderMapper $folderMapper,
 	                            API $api,
 	                            TimeFactory $timeFactory,
+	                        	AttachementCaching $attachementCaching,
 	                            $autoPurgeMinimumInterval){
 		parent::__construct($folderMapper);
 		$this->api = $api;
 		$this->timeFactory = $timeFactory;
+		$this->attachementCaching = $attachementCaching;
 		$this->autoPurgeMinimumInterval = $autoPurgeMinimumInterval;
 	}
 
@@ -166,7 +171,12 @@ class FolderBusinessLayer extends BusinessLayer {
 		$toDelete = $this->mapper->getToDelete($deleteOlderThan, $userId);
 
 		foreach ($toDelete as $folder) {
-			$this->mapper->delete($folder);
+			$deletedFeedIds = $this->mapper->delete($folder);
+
+			// delete the attachments of the appropriate feeds
+			foreach ($deletedFeedIds as $deletedFeedId) {
+				$this->attachementCaching->purgeDeleted($deletedFeedId);
+			}	
 		}
 	}
 

@@ -40,6 +40,7 @@ use \OCA\News\Fetcher\Fetcher;
 use \OCA\News\Fetcher\FetcherException;
 use \OCA\News\ArticleEnhancer\Enhancer;
 
+
 class FeedBusinessLayer extends BusinessLayer {
 
 	private $feedFetcher;
@@ -47,6 +48,7 @@ class FeedBusinessLayer extends BusinessLayer {
 	private $api;
 	private $timeFactory;
 	private $attachementCaching;
+	private $prefetchImages;
 	private $autoPurgeMinimumInterval;
 	private $enhancer;
 
@@ -54,6 +56,7 @@ class FeedBusinessLayer extends BusinessLayer {
 		                        ItemMapper $itemMapper, API $api,
 		                        TimeFactory $timeFactory,
 		                        AttachementCaching $attachementCaching,
+		                        $prefetchImages,
 		                        $autoPurgeMinimumInterval,
 		                        Enhancer $enhancer){
 
@@ -63,6 +66,7 @@ class FeedBusinessLayer extends BusinessLayer {
 		$this->api = $api;
 		$this->timeFactory = $timeFactory;
 		$this->attachementCaching = $attachementCaching;
+		$this->prefetchImages = $prefetchImages;
 		$this->autoPurgeMinimumInterval = $autoPurgeMinimumInterval;
 		$this->enhancer = $enhancer;
 	}
@@ -73,7 +77,17 @@ class FeedBusinessLayer extends BusinessLayer {
 	 * @return array of feeds
 	 */
 	public function findAll($userId){
-		return $this->mapper->findAllFromUser($userId);
+		$feeds = $this->mapper->findAllFromUser($userId);
+
+		// set absolute path of favicon
+		foreach($feeds as $feed) {
+			$faviconUrl = $feed->getFaviconLink();
+			if(!filter_var($faviconUrl, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+				$feed->setFaviconLink( $this->api->getAbsoluteURL( $faviconUrl ) );
+			}
+		}
+
+		return $feeds;
 	}
 
 
@@ -82,7 +96,17 @@ class FeedBusinessLayer extends BusinessLayer {
 	 * @return array of feeds
 	 */
 	public function findAllFromAllUsers() {
-		return $this->mapper->findAll();
+		$feeds = $this->mapper->findAll();
+
+		// set absolute path of favicon
+		foreach($feeds as $feed) {
+			$faviconUrl = $feed->getFaviconLink();
+			if(!filter_var($faviconUrl, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+				$feed->setFaviconLink( $this->api->getAbsoluteURL( $faviconUrl ) );
+			}
+		}
+
+		return $feeds;
 	}
 
 
@@ -115,7 +139,7 @@ class FeedBusinessLayer extends BusinessLayer {
 
 
 			// download the favicon
-			if(true || $feed->getFaviconLink()) {
+			if($this->prefetchImages && $feed->getFaviconLink()) {
 				$feed->setFaviconLink(
 					$this->attachementCaching->replaceFavicon(
 						$feed->getFaviconLink(), $feed->getId()
@@ -145,9 +169,10 @@ class FeedBusinessLayer extends BusinessLayer {
 					$this->itemMapper->insert($item);
 
 					// we have the id now, save the images locally and replace their url
-					$item = $this->attachementCaching->replaceAttachements($item);
-					$this->itemMapper->update($item);
-				
+					if($this->prefetchImages) {
+						$item = $this->attachementCaching->replaceAttachements($item);
+						$this->itemMapper->update($item);
+					}
 
 				}
 			}
@@ -221,8 +246,10 @@ class FeedBusinessLayer extends BusinessLayer {
 						$this->itemMapper->insert($item);
 
 						// we have the id now, save the images locally and replace their url
-						$item = $this->attachementCaching->replaceAttachements($item);
-						$this->itemMapper->update($item);
+						if($this->prefetchImages) {
+							$item = $this->attachementCaching->replaceAttachements($item);
+							$this->itemMapper->update($item);
+						}
 
 					}
 				}
@@ -365,6 +392,7 @@ class FeedBusinessLayer extends BusinessLayer {
 		$toDelete = $this->mapper->getToDelete($deleteOlderThan, $userId);
 
 		foreach ($toDelete as $feed) {
+			$this->attachementCaching->purgeDeleted($feed->getId());
 			$this->mapper->delete($feed);
 		}
 	}

@@ -106,6 +106,7 @@ class DIContainer extends BaseContainer {
 		$this['simplePieCacheDuration'] = $this['Config']->getSimplePieCacheDuration();
 		$this['feedFetcherTimeout'] = $this['Config']->getFeedFetcherTimeout();
 		$this['useCronUpdates'] = $this['Config']->getUseCronUpdates();
+		$this['prefetchImages'] = $this['Config']->getPrefetchImages();
 
 
 		$this['simplePieCacheDirectory'] = $this->share(function($c) {
@@ -117,6 +118,20 @@ class DIContainer extends BaseContainer {
 			}
 			return $directory;
 		});
+
+
+		/**
+		 * Attachement Caching values
+		 */
+		$this['imgCacheView'] = $this->share(function($c) {
+			$view = new View('/news/imgcache');
+			if (!$view->file_exists('')) {
+				$view->mkdir('');
+			}
+
+			return $view;
+		});
+
 
 		$this['HTMLPurifier'] = $this->share(function($c) {
 			$directory = $c['API']->getSystemValue('datadirectory') .
@@ -186,6 +201,7 @@ class DIContainer extends BaseContainer {
 				$c['FolderMapper'],
 				$c['API'],
 				$c['TimeFactory'],
+				$c['AttachementCaching'],
 				$c['autoPurgeMinimumInterval']);
 		});
 
@@ -197,6 +213,7 @@ class DIContainer extends BaseContainer {
 				$c['API'],
 				$c['TimeFactory'],
 				$c['AttachementCaching'],
+				$c['prefetchImages'],
 				$c['autoPurgeMinimumInterval'],
 				$c['Enhancer']);
 
@@ -207,6 +224,7 @@ class DIContainer extends BaseContainer {
 				$c['ItemMapper'],
 				$c['StatusFlag'],
 				$c['TimeFactory'],
+				$c['AttachementCaching'],
 				$c['autoPurgeCount']);
 		});
 
@@ -219,15 +237,15 @@ class DIContainer extends BaseContainer {
 		});
 
 		$this['FolderMapper'] = $this->share(function($c){
-			return new FolderMapper($c['API'],$c['AttachementCaching']);
+			return new FolderMapper($c['API']);
 		});
 
 		$this['FeedMapper'] = $this->share(function($c){
-			return new FeedMapper($c['API'],$c['AttachementCaching']);
+			return new FeedMapper($c['API']);
 		});
 
 		$this['ItemMapper'] = $this->share(function($c){
-			return $c['MapperFactory']->getItemMapper($c['API'], $c['AttachementCaching']);
+			return $c['MapperFactory']->getItemMapper($c['API']);
 		});
 
 
@@ -248,12 +266,14 @@ class DIContainer extends BaseContainer {
 			return new FeedAPI($c['API'], $c['Request'],
 			                   $c['FolderBusinessLayer'],
 			                   $c['FeedBusinessLayer'],
-			                   $c['ItemBusinessLayer']);
+			                   $c['ItemBusinessLayer'],
+			                   $c['imgCacheView']);
 		});
 
 		$this['ItemAPI'] = $this->share(function($c){
 			return new ItemAPI($c['API'], $c['Request'],
-			                   $c['ItemBusinessLayer']);
+			                   $c['ItemBusinessLayer'],
+			                   $c['imgCacheView']);
 		});
 
 		/**
@@ -314,7 +334,7 @@ class DIContainer extends BaseContainer {
 
 
 		$this['AttachementCaching'] = $this->share(function($c){
-			return new AttachementCaching($c['API']);
+			return new AttachementCaching($c['API'], $c['imgCacheView'], $c['SimplePieFileFactory'] );
 		});
 
 

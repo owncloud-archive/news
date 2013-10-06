@@ -28,10 +28,15 @@ use \OCA\AppFramework\Core\API;
 class AttachementCaching {
 
 	private $api;
+	private $fileSystem;
+	private $fileFactory;
+	private $maximumTimeout;
 
-	public function __construct(API $api) {
+	public function __construct(API $api, $fileSystem, SimplePieFileFactory $fileFactory, $maximumTimeout=10) {
 		$this->api = $api;
-		$this->imgCacheDir = $this->api->getSystemValue('datadirectory') . '/news/imgcache/';
+		$this->fileSystem = $fileSystem;
+		$this->fileFactory = $fileFactory;
+		$this->maximumTimeout = $maximumTimeout;
 	}
 
 
@@ -41,13 +46,27 @@ class AttachementCaching {
 	* @return Item item with replaced (relative) image URLs, if the download was successfull
 	*/
 	public function replaceAttachements($item){
+		$dom = new \DOMDocument();
+		$dom->preserveWhiteSpace = false;
 
-		// wrap it in an element, so it is a xml-"file", we will strip it later
-		$bodyXml = simplexml_load_string("<body>".$item->getBody()."</body>");
+		$body = mb_convert_encoding($item->getBody(), 'HTML-ENTITIES', 'UTF-8, ISO-8859-1');
 
-		foreach ($bodyXml->xpath('//img') as $imgElement) {
-			$imgSrc = $imgElement->attributes()->src;
+		// return, if body is empty or loading the HTML fails
+		if( trim($body) == "" || !@$dom->loadHTML($body) ) {
+			return $item;
+		}
 
+		// remove <!DOCTYPE 
+		$dom->removeChild($dom->firstChild);            
+		// remove <html></html> 
+		$dom->replaceChild($dom->firstChild->firstChild, $dom->firstChild);
+
+		$xpath = new \DOMXpath($dom);
+		$xpathResult = $xpath->query('//img[@src]');
+
+		foreach ($xpathResult as $imgElement) {
+			$urlElement = $imgElement->attributes->getNamedItem("src");
+			$imgSrc = $urlElement->nodeValue;
 
 			// check if it is an absolute URL
 			if(!filter_var($imgSrc, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
@@ -66,51 +85,48 @@ class AttachementCaching {
 			// a unique, "secret" id for the item
 			$secretId = md5($item->getId() . $item->getFeedId() . $item->getGuidHash());
 
-			$filePath = $this->imgCacheDir . $item->getFeedId() . "/" . $secretId . "/";
+			$filePath = $item->getFeedId() . "/" . $secretId . "/";
 
-			if(is_file($filePath . $filename)) continue;
+			if( $this->fileSystem->is_file($filePath . $filename) ) continue;
 
-			if (!is_dir($filePath)) {
-				mkdir($filePath, 0755, true);
+			if ( !$this->fileSystem->is_dir($filePath) ) {
+				if ( !$this->fileSystem->is_dir($item->getFeedId()) ) {
+					$this->fileSystem->mkdir($item->getFeedId());
+				}
+				$this->fileSystem->mkdir($filePath);
 			}
-			
+
 			// let's download the image
-			if( !file_put_contents( $filePath . $filename , file_get_contents($imgSrc) ) ) continue;
+			$file = $this->fileFactory->getFile($imgSrc, $this->maximumTimeout, "Mozilla/5.0 AppleWebKit");
+			if( !$this->fileSystem->file_put_contents( $filePath . $filename , $file->body ) ) continue;
 
-			// compress the file
-			$image = imagecreatefromjpeg($filePath . $filename);
+			// compress if the image is > 5 kByte
+			if( $this->fileSystem->filesize($filePath . $filename) > 5000 ) {
+				
+				$image = new \OC_Image( $this->fileSystem->file_get_contents( $filePath . $filename ) );
+				$this->fileSystem->unlink($filePath . $filename);
+				
+				if( !$image || !$image->valid() ) continue;
 
-			$imgInfo = getimagesize($filePath . $filename);
-			$width = $imgInfo[0];
-			$height = $imgInfo[1];
+				if($image->width() > 500) {
+					$image->resize(500);
+				}			
 
-			if($width > 500) {
-				$newwidth=500;
-				$newheight=($height/$width)*500;
-				$tmp=imagecreatetruecolor($newwidth,$newheight);
-				imagecopyresampled($tmp,$image,0,0,0,0,$newwidth,$newheight,$width,$height);
-				$image = $tmp;
+				$info = pathinfo($filename);
+				if(isset($info['extension'])) $filename = basename($filename, '.'.$info['extension']) . ".jpg";
+
+				imagejpeg($image->resource(), $this->fileSystem->getLocalFile($filePath . $filename), 65);
+
+				$image->destroy();
 			}
 
-			$imgInfo = getimagesize($filePath . $filename);
-			if ($imgInfo['mime'] == 'image/jpeg') {
-				imagejpeg($image, $filePath . $filename, 55);
-			} elseif ($imgInfo['mime'] == 'image/png') {
-				unlink($filePath . $filename);
-				$filename = substr($filename, 0, -4) . ".jpg";
-				imagejpeg($image, $filePath . $filename, 70);
-				//imagepng($image, $this->imgCacheDir . $item->guidHash . "/0" . basename($imgSrc), 9);
-			}
-			imagedestroy($image);
-			imagedestroy($tmp);
-
-			$imgElement->attributes()->src = '/owncloud/index.php/apps/news/api/v1-2/items/'.$item->getFeedId().'/'.$secretId.'/'.$filename;
+			$urlElement->nodeValue = '/owncloud/index.php/apps/news/api/v1-2/items/'.$item->getFeedId().'/'.$secretId.'/'.$filename;
 		}
 
-		// remove the wrapper and attach the new body
-		$body = strstr($bodyXml->asXML(), "<body>");
-		$body = substr($body, 6, -8);
-		$item->setBody( $body );
+		// save dom to string and remove <body></body>
+		$xmlString = substr(trim($dom->saveHTML()), 6, -7);
+
+		$item->setBody( $xmlString );
 
 		return $item;
 	}
@@ -127,53 +143,70 @@ class AttachementCaching {
 		$filename = strtolower(trim(preg_replace('/[^A-Za-z0-9-.]+/', '-', $filename)));
 
 		// add some extra to the filename
-		$filename = md5(time()) . "_" . $filename;
+		$filename = time() . "_" . $filename;
 
-		$filePath = $this->imgCacheDir . $feedId;
-
-		if (!is_dir($filePath)) {
-			mkdir($filePath, 0755, true);
+		if (!$this->fileSystem->is_dir($feedId)) {
+			$this->fileSystem->mkdir($feedId);
 		}
 
 		// let's download the image
-		file_put_contents( $filePath . "/" . $filename , file_get_contents($url) );
+		$this->fileSystem->file_put_contents( $feedId . "/" . $filename, file_get_contents($url) );
 		return "/owncloud/index.php/apps/news/api/v1-2/feeds/" . $feedId . "/" . $filename;
 	}
 
 
 
-	/**
-	* @IsAdminExemption
-	* @IsSubAdminExemption
-	* @IsLoggedInExemption
-	* @CSRFExemption
-	* @Ajax
-	* @API
-	*/
-	public function purgeDeleted($feedId, $secretId=null) {
-		if(is_null($secretId)) {
-			if( is_dir( $this->imgCacheDir . $feedId ) )
-				$this->delTree( $this->imgCacheDir . $feedId );
-		} else {
-			if( is_dir( $this->imgCacheDir . $feedId . "/" . $secretId ) )
-				$this->delTree( $this->imgCacheDir . $feedId . "/" . $secretId );
+
+	public function convertRelativeImgUrls($body) {
+		$dom = new \DOMDocument();
+		$dom->preserveWhiteSpace = false;
+
+		$body = mb_convert_encoding($body, 'HTML-ENTITIES', 'UTF-8, ISO-8859-1');
+
+		// return, if body is empty or loading the HTML fails
+		if( trim($body) == "" || !@$dom->loadHTML($body) ) {
+			return $body;
 		}
+
+		// remove <!DOCTYPE 
+		$dom->removeChild($dom->firstChild);            
+		// remove <html></html> 
+		$dom->replaceChild($dom->firstChild->firstChild, $dom->firstChild);
+
+		$xpath = new \DOMXpath($dom);
+		$xpathResult = $xpath->query('//img[@src and not(starts-with(@src, "http"))]');
+
+		foreach ($xpathResult as $imgElement) {
+			$urlElement = $imgElement->attributes->getNamedItem("src");
+			$imgSrc = $urlElement->nodeValue;
+
+			if(!filter_var($imgSrc, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+				$urlElement->nodeValue = $this->api->getAbsoluteURL( $imgSrc );
+			}
+		}
+
+		// save dom to string and remove <body></body>
+		$body = substr(trim($dom->saveHTML()), 6, -7);
+
+		return $body;
 	}
 
 
 
+	public function purgeDeletedItem($item) {
+		$secretId = md5($item->getId() . $item->getFeedId() . $item->getGuidHash());
+		$this->purgeDeleted($item->getFeedId(), $secretId);
+	}
 
 
-	/**
-	* Delete a whole directory.
-	* http://php.net/manual/de/function.rmdir.php
-	*/
-	private function delTree($dir) {
-		$files = array_diff(scandir($dir), array('.','..')); 
-		foreach ($files as $file) { 
-			(is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file"); 
-		} 
-		return rmdir($dir); 
+	public function purgeDeleted($feedId, $secretId=null) {
+		if(is_null($secretId)) {
+			//if( is_dir( $this->imgCacheDirectory . $feedId ) )
+				$this->fileSystem->deleteAll($feedId);
+		} else {
+			//if( is_dir( $this->imgCacheDirectory . $feedId . "/" . $secretId ) )
+				$this->fileSystem->deleteAll($feedId . "/" . $secretId);
+		}
 	}
 
 }
