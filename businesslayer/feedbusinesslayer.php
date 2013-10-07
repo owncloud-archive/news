@@ -145,9 +145,8 @@ class FeedBusinessLayer extends BusinessLayer {
 						$feed->getFaviconLink(), $feed->getId()
 					)
 				);
+				$this->mapper->update($feed);
 			}
-			$this->mapper->update($feed);
-
 
 			// insert items in reverse order because the first one is usually the
 			// newest item
