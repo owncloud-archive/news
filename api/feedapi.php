@@ -241,23 +241,7 @@ class FeedAPI extends Controller {
 		$feedId = (int) $this->params('feedId');
 		$imageFile = $this->params('imageFile');
 
-		if($this->imgCachefileSystem->file_exists( $feedId . "/" . $imageFile )) {
-
-			$image = new \OC_Image( $this->imgCachefileSystem->file_get_contents( $feedId . "/" . $imageFile) );
-			if($image->valid()) {
-				$response = new ImageResponse($image);
-			} else {
-				$response = new ImageResponse();
-				$response->setContentType("image/ico");
-				$response->setImageData( $this->imgCachefileSystem->file_get_contents( $feedId . "/" . $imageFile) );
-			}
-
-		} else {
-			$response = new Response();
-			$response->setStatus(400);
-			
-		}
-
+		$response = new ImageResponse( $this->imgCachefileSystem->getLocalFile( $feedId . "/" . $imageFile ) );
 		return $response;
 	}
 

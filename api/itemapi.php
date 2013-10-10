@@ -315,16 +315,8 @@ class ItemAPI extends Controller {
 		$secretId = $this->params('secretId');
 		$imageFile = $this->params('imageFile');
 
-		$image = new \OC_Image( $this->imgCachefileSystem->getLocalFile( $feedId . "/". $secretId . "/" . $imageFile) );
-		if($image->valid()) {
-			$response = new ImageResponse($image);
-			return $response;
-		} else {
-			$response = new Response();
-			$response->setStatus(400);
-			return $response;
-		}
+		$response = new ImageResponse( $this->imgCachefileSystem->getLocalFile( $feedId . "/". $secretId . "/" . $imageFile) );
+		return $response;
 	}
-
 
 }

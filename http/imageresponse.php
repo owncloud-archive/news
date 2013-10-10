@@ -30,42 +30,17 @@ use \OCA\AppFramework\Http\Response;
 */
 class ImageResponse extends Response {
 	/**
-	* @var Image data
+	* @var String path to the image
 	*/
-	protected $image;
+	protected $imagePath;
 
 	/**
 	* @param OCP\Image $image
 	*/
-	public function __construct($image = null) {
-		if(!is_null($image)) {
-			$this->setImage($image);
+	public function __construct($imagePath = null) {
+		if(is_string($imagePath) && file_exists($imagePath)) {
+			$this->imagePath = $imagePath;
 		}
-	}
-
-	/**
-	* @param OCP\Image $image
-	*/
-	public function setImage(\OC_Image $image) {
-		if(!$image->valid()) {
-			throw new InvalidArgumentException(__METHOD__. ' The image resource is not valid.');
-		}
-		$this->image = $image->data();
-		$this->addHeader('Content-Type', $image->mimeType());
-	}
-
-	/**
-	* @param String $contentType
-	*/
-	public function setContentType(String $contentType) {
-		$this->addHeader('Content-Type', $contentType);
-	}
-
-	/**
-	* @param Image $image
-	*/
-	public function setImageData(String $imageData) {
-		$this->image = $imageData;
 	}
 
 	/**
@@ -73,10 +48,23 @@ class ImageResponse extends Response {
 	* @return Image data
 	*/
 	public function render() {
-		if(is_null($this->image)) {
-			throw new BadMethodCallException(__METHOD__. ' Image must be set either in constructor or with setImage()');
+
+		if (filesize($this->imagePath) > 11) {
+			$imageType = exif_imagetype($this->imagePath);
 		}
-		return $this->image;
+		else {
+			$imageType = false;
+		}
+		
+		$mimeType = $imageType ? image_type_to_mime_type($imageType) : '';
+
+		if($mimeType) {
+			header("Content-type: " . $mimeType);
+			readfile($this->imagePath);
+		} else {
+			$this->setStatus(404);
+		}
+
 	}
 
 }
