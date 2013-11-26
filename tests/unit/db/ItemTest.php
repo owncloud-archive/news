@@ -213,5 +213,18 @@ class ItemTest extends \PHPUnit_Framework_TestCase {
 			$item->getBody());
 	}
 
+	public function testGetBodyIsPurified() {
+		$purifier = $this->getMock('purifier', array('purify'));
+		$purifier->expects($this->once())
+			->method('purify')
+			->with($this->equalTo('foo'))
+			->will($this->returnValue('bar'));
 
+		$item = new Item();
+		$item->setBody('foo', $purifier);
+		$this->assertEquals('bar', $item->getBody());
+
+		// purify should only be called once per item
+		$this->assertEquals('bar', $item->getBody());
+	}
 }

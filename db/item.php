@@ -179,7 +179,7 @@ class Item extends Entity implements IAPI {
 	}
 
 
-	public function setBody($body, $purifier) {
+	public function setBody($body, $purifier =  null) {
 		// FIXME: this should not happen if the target="_blank" is already on the link
 		parent::setBody(str_replace('<a', '<a target="_blank"',	$body));
 		$this->purifier = $purifier;
@@ -187,7 +187,7 @@ class Item extends Entity implements IAPI {
 
 	public function getBody(){
 		$body = parent::getBody();
-		if (!$this->purified) {
+		if (!$this->purified && $this->purifier) {
 			$body = $this->purifier->purify($body);
 			parent::setBody($body);
 			$this->purified = true;

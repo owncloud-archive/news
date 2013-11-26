@@ -174,7 +174,7 @@ class FeedFetcherTest extends \OCA\AppFramework\Utility\TestUtility {
 
 
 	private function createItem($author=false, $enclosureType=null, $noPubDate=false) {
-		$this->purifier->expects($this->once())
+		$this->purifier->expects($this->any())
 			->method('purify')
 			->with($this->equalTo($this->body))
 			->will($this->returnValue($this->body));
@@ -199,7 +199,7 @@ class FeedFetcherTest extends \OCA\AppFramework\Utility\TestUtility {
 		$item->setTitle('my<\' title');
 		$item->setGuid($this->guid);
 		$item->setGuidHash(md5($this->guid));
-		$item->setBody($this->body);
+		$item->setBody($this->body, $this->purifier);
 		$item->setLastModified($this->time);
 		if($author) {
 			$mock = $this->getMock('author', array('get_name'));
