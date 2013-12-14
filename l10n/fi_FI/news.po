@@ -9,9 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-09-26 22:57-0400\n"
-"PO-Revision-Date: 2013-09-25 10:50+0000\n"
+"Report-Msgid-Bugs-To: translations@owncloud.org\n"
+"POT-Creation-Date: 2013-12-02 16:16-0500\n"
+"PO-Revision-Date: 2013-11-29 19:20+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/owncloud/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -24,15 +24,15 @@ msgstr ""
 msgid "News"
 msgstr "Uutiset"
 
-#: businesslayer/feedbusinesslayer.php:101
+#: businesslayer/feedbusinesslayer.php:100
 msgid "Can not add feed: Exists already"
 msgstr "Syötettä ei voi lisätä: se on jo olemassa"
 
-#: businesslayer/feedbusinesslayer.php:138
+#: businesslayer/feedbusinesslayer.php:137
 msgid "Can not add feed: URL does not exist or has invalid xml"
 msgstr "Syötettä ei voi lisätä: joko osoitetta ei ole olemassa tai siinä on virheellistä XML:ää"
 
-#: businesslayer/feedbusinesslayer.php:267
+#: businesslayer/feedbusinesslayer.php:266
 msgid "Articles without feed"
 msgstr "Vailla syötettä olevat artikkelit"
 
@@ -177,7 +177,7 @@ msgstr "Virhe tuotaessa: tiedostossa ei ole kelvollista OPML:ää"
 
 #: templates/part.settings.php:44
 msgid "Unread/Starred Articles"
-msgstr ""
+msgstr "Lukemattomat/tähdellä varustetut artikkelit"
 
 #: templates/part.settings.php:70
 msgid "Error when importing: file does not contain valid JSON"

@@ -13,7 +13,7 @@
 		"%feeds.penny-arcade.com/~r/pa-mainsite%": "//*[starts-with(@class, \"post\")]"
 	},
 	"leasticoulddo.com": {
-		"%feedproxy.google.com/~r/LICD%": "//*[@id='comic-img']/a/img | //*[@id='comic-img']/img"
+		"%feedproxy.google.com/~r/LICD%": "//*[@id='comic-img']/a/img | //*[@id='comic-img']/img | //*[@id='post']"
 	},
 	"escapistmagazine.com/articles/view/comics/critical-miss": {
 		"%escapistmagazine.com/articles/view/comics/critical-miss%": "//*[@class='body']/span/img"
@@ -85,5 +85,11 @@
 	},
 	"spiegel.de": {
 		"%spiegel.de/(?!.*video).*%": "//p[@class='article-intro'] | //*[@itemprop='description' and not(ancestor::*[contains( normalize-space( @class ), 'article-section' )]) ] | //*[(@class='spPanoImageTeaserPic' or @class='spPanoGalleryTeaserPic' or @class='spPanoPlayerTeaserPic') and not(ancestor::*[contains( normalize-space( @class ), 'article-section' )])] | //*[@class='image-buttons-panel' and not(ancestor::*[contains( normalize-space( @class ), 'article-section' )])]/*[1]/img | //*[@class='article-image-description' and not(ancestor::*[contains( normalize-space( @class ), 'article-section' )]) ]/p | //*[@id='content-main']/*[@id='js-article-column']/div[contains( normalize-space( @class ), 'article-section' )]"
+	},
+	"eqcomics.com": {
+		"%feedproxy.google.com/~r/eqcomics%": "//div[@id=\"comic\"]/div/a/img"
+	},
+	"loadingartist.com": {
+		"%feedproxy.google.com/~r/LoadingArtist%": "//div[@id=\"comic\"]"
 	}
 }
