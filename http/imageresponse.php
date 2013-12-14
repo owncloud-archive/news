@@ -59,10 +59,11 @@ class ImageResponse extends Response {
 		$mimeType = $imageType ? image_type_to_mime_type($imageType) : '';
 
 		if($mimeType) {
-			header("Content-type: " . $mimeType);
-			readfile($this->imagePath);
+			$this->addHeader("Content-type", $mimeType);
+			return file_get_contents($this->imagePath);
 		} else {
 			$this->setStatus(404);
+			return;
 		}
 
 	}
