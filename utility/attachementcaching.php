@@ -70,7 +70,7 @@ class AttachementCaching {
 
 			// check if it is an absolute URL
 			if(!filter_var($imgSrc, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
-				$itemURL = parse_url($item->getUrl() );
+				$itemURL = parse_url($item->getUrl());
 				$imgURL = parse_url($imgSrc);
 
 				if( $imgURL["path"][0] != "/" )
@@ -120,7 +120,7 @@ class AttachementCaching {
 				$image->destroy();
 			}
 
-			$urlElement->nodeValue = '/owncloud/index.php/apps/news/api/v1-2/items/'.$item->getFeedId().'/'.$secretId.'/'.$filename;
+			$urlElement->nodeValue = $this->api->linkToRoute("news_api_items_image", array('feedId' => $item->getFeedId(),'secretId' => $secretId, 'imageFile' => $filename));
 		}
 
 		// save dom to string and remove <body></body>
@@ -151,7 +151,7 @@ class AttachementCaching {
 
 		// let's download the image
 		$this->fileSystem->file_put_contents( $feedId . "/" . $filename, file_get_contents($url) );
-		return "/owncloud/index.php/apps/news/api/v1-2/feeds/" . $feedId . "/" . $filename;
+		return $this->api->linkToRoute("news_api_feeds_image", array('feedId' => $feedId,'imageFile' => $filename));
 	}
 
 
