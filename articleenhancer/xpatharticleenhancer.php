@@ -75,18 +75,29 @@ class XPathArticleEnhancer implements ArticleEnhancer {
 				@$dom->loadHTML($body);
 
 				$xpath = new \DOMXpath($dom);
-				$xpathResult = $xpath->evaluate($search);
-
-				// in case it wasnt a text query assume its a single 
-				if(!is_string($xpathResult)) {
-					$xpathResult = $this->domToString($xpathResult);
+				$xpathResults = array();
+				if (is_array($search)) {
+					foreach ($search as $singleSearch) {
+						$xpathResults[] = $xpath->evaluate($singleSearch);
+					}
+				} else {
+					$xpathResults[] = $xpath->evaluate($search);
 				}
-				
-				// convert all relative to absolute URLs
-				$xpathResult = $this->substituteRelativeLinks($xpathResult, $item->getUrl());
 
-				$sanitizedResult = $this->purifier->purify($xpathResult);
-				if( $sanitizedResult ) {
+				$sanitizedResult = '';
+				foreach ($xpathResults as $xpathResult) {
+					// in case it wasnt a text query assume its a single
+					if(!is_string($xpathResult)) {
+						$xpathResult = $this->domToString($xpathResult);
+					}
+
+					// convert all relative to absolute URLs
+					$xpathResult = $this->substituteRelativeLinks($xpathResult, $item->getUrl());
+
+					$sanitizedResult .= $this->purifier->purify($xpathResult);
+				}
+
+				if ($sanitizedResult) {
 					$item->setBody($sanitizedResult);
 				}
 			}
