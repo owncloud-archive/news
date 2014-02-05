@@ -269,6 +269,8 @@ class ItemMapper extends Mapper implements IMapper {
 		$params = array($status, $threshold);
 		$result = $this->execute($sql, $params);
 
+		$deletedItems = array();
+
 		while($row = $result->fetchRow()) {
 
 			$size = (int) $row['size'];
@@ -276,6 +278,21 @@ class ItemMapper extends Mapper implements IMapper {
 
 			if($limit > 0) {
 				$params = array($status, $row['feed_id']);
+
+				// get the news items, that will be deleted
+				$sql = 'SELECT * FROM `*PREFIX*news_items`' .
+				'WHERE NOT ((`status` & ?) > 0) ' .
+				'AND `feed_id` = ? ' .
+				'ORDER BY `id` ASC';
+				$item_result = $this->execute($sql, $params, $limit);
+				
+				while($item_row = $item_result->fetchRow()) {
+					$item = new Item();
+					$item->fromRow($item_row);
+
+					array_push($deletedItems, $item);
+				}
+
 
 				$sql = 'DELETE FROM `*PREFIX*news_items` ' .
 				'WHERE NOT ((`status` & ?) > 0) ' .
@@ -285,6 +302,8 @@ class ItemMapper extends Mapper implements IMapper {
 				$this->execute($sql, $params, $limit);
 			}
 		}
+
+		return $deletedItems;
 	}
 
 

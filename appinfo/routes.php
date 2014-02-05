@@ -360,6 +360,13 @@ $this->create('news_api_feeds_read', '/api/v1-2/feeds/{feedId}/read')->put()->ac
 	}
 );
 
+$this->create('news_api_feeds_image', '/api/v1-2/feeds/{feedId}/{imageFile}')->get()->action(
+	function($params) {
+		return App::main('FeedAPI', 'getImage', $params, new DIContainer());
+	}
+);
+
+
 /**
  * Item API
  */
@@ -426,5 +433,11 @@ $this->create('news_api_items_star_multiple', '/api/v1-2/items/star/multiple')->
 $this->create('news_api_items_unstar_multiple', '/api/v1-2/items/unstar/multiple')->put()->action(
 	function($params) {
 		return App::main('ItemAPI', 'unstarMultiple', $params, new DIContainer());
+	}
+);
+
+$this->create('news_api_items_image', '/api/v1-2/items/{feedId}/{secretId}/{imageFile}')->get()->action(
+	function($params) {
+		return App::main('ItemAPI', 'getImage', $params, new DIContainer());
 	}
 );

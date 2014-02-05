@@ -39,6 +39,7 @@ class Config {
 	private $simplePieCacheDuration;  // seconds
 	private $feedFetcherTimeout;  // seconds
 	private $useCronUpdates;  // turn off updates run by owncloud cronjob
+	private $prefetchImages; //	prefetch images of feeds
 	private $api;
 
 
@@ -49,6 +50,7 @@ class Config {
 		$this->simplePieCacheDuration = 30*60;
 		$this->feedFetcherTimeout = 60;
 		$this->useCronUpdates = true;
+		$this->prefetchImages = false;
 		$this->api = $api;
 	}
 
@@ -76,6 +78,11 @@ class Config {
 	public function getUseCronUpdates() {
 		return $this->useCronUpdates;
 	}
+	
+
+	public function getPrefetchImages() {
+		return $this->prefetchImages;
+	}
 
 
 	public function setAutoPurgeMinimumInterval($value) {
@@ -100,6 +107,10 @@ class Config {
 
 	public function setUseCronUpdates($value) {
 		$this->useCronUpdates = $value;
+	}
+
+	public function setPrefetchImages($value) {
+		$this->prefetchImages = $value;
 	}
 
 
@@ -139,7 +150,8 @@ class Config {
 			"autoPurgeCount = " . $this->autoPurgeCount . "\n" .
 			"simplePieCacheDuration = " . $this->simplePieCacheDuration . "\n" .
 			"feedFetcherTimeout = " . $this->feedFetcherTimeout . "\n" .
-			"useCronUpdates = " . var_export($this->useCronUpdates, true)
+			"useCronUpdates = " . var_export($this->useCronUpdates, true) . "\n" .
+			"prefetchImages = " . var_export($this->prefetchImages, true)
 		;
 
 		$this->fileSystem->file_put_contents($configPath, $ini);

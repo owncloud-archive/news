@@ -29,7 +29,6 @@ use \OCA\AppFramework\Core\API;
 use \OCA\AppFramework\Db\Mapper;
 use \OCA\AppFramework\Db\Entity;
 
-
 class FolderMapper extends Mapper implements IMapper {
 
 	public function __construct(API $api) {
@@ -86,6 +85,17 @@ class FolderMapper extends Mapper implements IMapper {
 	public function delete(Entity $entity){
 		parent::delete($entity);
 
+		// get the feeds of that folder, that will be deleted
+		$sql = 'SELECT `id` FROM `*PREFIX*news_feeds` WHERE `folder_id` = ?';
+		$params = array($entity->getId());
+		$result = $this->execute($sql, $params);
+
+		$deletedFeedIds = array();
+		while($row = $result->fetchRow()) {
+			array_push($deletedFeedIds, $row['id']);
+		}
+		
+
 		// someone please slap me for doing this manually :P
 		// we needz CASCADE + FKs please
 		$sql = 'DELETE FROM `*PREFIX*news_feeds` WHERE `folder_id` = ?';
@@ -97,6 +107,8 @@ class FolderMapper extends Mapper implements IMapper {
 			'`items`.`feed_id` = `feeds`.`id` WHERE `feeds`.`id` IS NULL';
 		
 		$this->execute($sql);
+
+		return $deletedFeedIds;
 	}
 
 

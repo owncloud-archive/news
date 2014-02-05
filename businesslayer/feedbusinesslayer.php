@@ -33,9 +33,13 @@ use \OCA\News\Db\Feed;
 use \OCA\News\Db\Item;
 use \OCA\News\Db\FeedMapper;
 use \OCA\News\Db\ItemMapper;
+
+use \OCA\News\Utility\AttachementCaching;
+
 use \OCA\News\Fetcher\Fetcher;
 use \OCA\News\Fetcher\FetcherException;
 use \OCA\News\ArticleEnhancer\Enhancer;
+
 
 class FeedBusinessLayer extends BusinessLayer {
 
@@ -43,19 +47,26 @@ class FeedBusinessLayer extends BusinessLayer {
 	private $itemMapper;
 	private $api;
 	private $timeFactory;
+	private $attachementCaching;
+	private $prefetchImages;
 	private $autoPurgeMinimumInterval;
 	private $enhancer;
 
 	public function __construct(FeedMapper $feedMapper, Fetcher $feedFetcher,
 		                        ItemMapper $itemMapper, API $api,
 		                        TimeFactory $timeFactory,
+		                        AttachementCaching $attachementCaching,
+		                        $prefetchImages,
 		                        $autoPurgeMinimumInterval,
 		                        Enhancer $enhancer){
+
 		parent::__construct($feedMapper);
 		$this->feedFetcher = $feedFetcher;
 		$this->itemMapper = $itemMapper;
 		$this->api = $api;
 		$this->timeFactory = $timeFactory;
+		$this->attachementCaching = $attachementCaching;
+		$this->prefetchImages = $prefetchImages;
 		$this->autoPurgeMinimumInterval = $autoPurgeMinimumInterval;
 		$this->enhancer = $enhancer;
 	}
@@ -66,7 +77,17 @@ class FeedBusinessLayer extends BusinessLayer {
 	 * @return array of feeds
 	 */
 	public function findAll($userId){
-		return $this->mapper->findAllFromUser($userId);
+		$feeds = $this->mapper->findAllFromUser($userId);
+
+		// set absolute path of favicon
+		foreach($feeds as $feed) {
+			$faviconUrl = $feed->getFaviconLink();
+			if(!filter_var($faviconUrl, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+				$feed->setFaviconLink( $this->api->getAbsoluteURL( $faviconUrl ) );
+			}
+		}
+
+		return $feeds;
 	}
 
 
@@ -75,7 +96,17 @@ class FeedBusinessLayer extends BusinessLayer {
 	 * @return array of feeds
 	 */
 	public function findAllFromAllUsers() {
-		return $this->mapper->findAll();
+		$feeds = $this->mapper->findAll();
+
+		// set absolute path of favicon
+		foreach($feeds as $feed) {
+			$faviconUrl = $feed->getFaviconLink();
+			if(!filter_var($faviconUrl, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+				$feed->setFaviconLink( $this->api->getAbsoluteURL( $faviconUrl ) );
+			}
+		}
+
+		return $feeds;
 	}
 
 
@@ -106,6 +137,17 @@ class FeedBusinessLayer extends BusinessLayer {
 			$feed->setArticlesPerUpdate(count($items));
 			$feed = $this->mapper->insert($feed);
 
+
+			// download the favicon
+			if($this->prefetchImages && $feed->getFaviconLink()) {
+				$feed->setFaviconLink(
+					$this->attachementCaching->replaceFavicon(
+						$feed->getFaviconLink(), $feed->getId()
+					)
+				);
+				$this->mapper->update($feed);
+			}
+
 			// insert items in reverse order because the first one is usually the
 			// newest item
 			$unreadCount = 0;
@@ -121,8 +163,16 @@ class FeedBusinessLayer extends BusinessLayer {
 					continue;
 				} catch(DoesNotExistException $ex){
 					$unreadCount += 1;
+
 					$item = $this->enhancer->enhance($item, $feed->getLink());
 					$this->itemMapper->insert($item);
+
+					// we have the id now, save the images locally and replace their url
+					if($this->prefetchImages) {
+						$item = $this->attachementCaching->replaceAttachements($item);
+						$this->itemMapper->update($item);
+					}
+
 				}
 			}
 
@@ -193,6 +243,13 @@ class FeedBusinessLayer extends BusinessLayer {
 						$item = $this->enhancer->enhance($item, 
 							$existingFeed->getLink());
 						$this->itemMapper->insert($item);
+
+						// we have the id now, save the images locally and replace their url
+						if($this->prefetchImages) {
+							$item = $this->attachementCaching->replaceAttachements($item);
+							$this->itemMapper->update($item);
+						}
+
 					}
 				}
 
@@ -348,6 +405,7 @@ class FeedBusinessLayer extends BusinessLayer {
 		$toDelete = $this->mapper->getToDelete($deleteOlderThan, $userId);
 
 		foreach ($toDelete as $feed) {
+			$this->attachementCaching->purgeDeleted($feed->getId());
 			$this->mapper->delete($feed);
 		}
 	}

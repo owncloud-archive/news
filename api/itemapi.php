@@ -25,11 +25,16 @@
 
 namespace OCA\News\API;
 
+use \OC\Files\View;
+
 use \OCA\AppFramework\Core\API;
 use \OCA\AppFramework\Controller\Controller;
 use \OCA\AppFramework\Http\Request;
 use \OCA\AppFramework\Http\JSONResponse;
 use \OCA\AppFramework\Http\Http;
+use \OCA\AppFramework\Http\Response;
+
+use \OCA\News\Http\ImageResponse;
 
 use \OCA\News\BusinessLayer\ItemBusinessLayer;
 use \OCA\News\BusinessLayer\BusinessLayerException;
@@ -38,12 +43,15 @@ use \OCA\News\BusinessLayer\BusinessLayerException;
 class ItemAPI extends Controller {
 
 	private $itemBusinessLayer;
+	private $imgCachefileSystem;
 
 	public function __construct(API $api,
 	                            Request $request,
-	                            ItemBusinessLayer $itemBusinessLayer){
+	                            ItemBusinessLayer $itemBusinessLayer,
+	                            $imgCachefileSystem){
 		parent::__construct($api, $request);
 		$this->itemBusinessLayer = $itemBusinessLayer;
+		$this->imgCachefileSystem = $imgCachefileSystem;
 	}
 
 
@@ -293,5 +301,22 @@ class ItemAPI extends Controller {
 		return $this->setMultipleStarred(false);
 	}
 
+
+	/**
+	 * @IsAdminExemption
+	 * @IsSubAdminExemption
+	 * @IsLoggedInExemption
+	 * @CSRFExemption
+	 * @Ajax
+	 * @API
+	 */
+	public function getImage() {
+		$feedId = (int) $this->params('feedId');
+		$secretId = $this->params('secretId');
+		$imageFile = $this->params('imageFile');
+
+		$response = new ImageResponse( $this->imgCachefileSystem->getLocalFile( $feedId . "/". $secretId . "/" . $imageFile) );
+		return $response;
+	}
 
 }

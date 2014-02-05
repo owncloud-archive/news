@@ -53,9 +53,13 @@ class FolderBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 			'\OCA\News\Db\FolderMapper')
 			->disableOriginalConstructor()
 			->getMock();
+		$attachementCaching = $this->getMockBuilder(
+			'\OCA\News\Utility\AttachementCaching')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->autoPurgeMinimumInterval = 10;
 		$this->folderBusinessLayer = new FolderBusinessLayer(
-			$this->folderMapper, $this->api, $timeFactory, 
+			$this->folderMapper, $this->api, $timeFactory, $attachementCaching,
 			$this->autoPurgeMinimumInterval);
 		$this->user = 'hi';
 	}
@@ -245,8 +249,10 @@ class FolderBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 	public function testPurgeDeleted(){
 		$folder1 = new Folder();
 		$folder1->setId(3);
+		$folder1_deletedFeedIds = array(0, 1);
 		$folder2 = new Folder();
 		$folder2->setId(5);
+		$folder2_deletedFeedIds = array(2);
 		$feeds = array($folder1, $folder2);
 
 		$time = $this->time - $this->autoPurgeMinimumInterval;
@@ -256,10 +262,12 @@ class FolderBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 			->will($this->returnValue($feeds));
 		$this->folderMapper->expects($this->at(1))
 			->method('delete')
-			->with($this->equalTo($folder1));
+			->with($this->equalTo($folder1))
+			->will($this->returnValue($folder1_deletedFeedIds));
 		$this->folderMapper->expects($this->at(2))
 			->method('delete')
-			->with($this->equalTo($folder2));
+			->with($this->equalTo($folder2))
+			->will($this->returnValue($folder2_deletedFeedIds));
 
 		$this->folderBusinessLayer->purgeDeleted($this->user);
 	}
@@ -268,8 +276,10 @@ class FolderBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 	public function testPurgeDeletedNoInterval(){
 		$folder1 = new Folder();
 		$folder1->setId(3);
+		$folder1_deletedFeedIds = array(0, 1);
 		$folder2 = new Folder();
 		$folder2->setId(5);
+		$folder2_deletedFeedIds = array(2);
 		$feeds = array($folder1, $folder2);
 
 		$this->folderMapper->expects($this->once())
@@ -278,10 +288,12 @@ class FolderBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 			->will($this->returnValue($feeds));
 		$this->folderMapper->expects($this->at(1))
 			->method('delete')
-			->with($this->equalTo($folder1));
+			->with($this->equalTo($folder1))
+			->will($this->returnValue($folder1_deletedFeedIds));
 		$this->folderMapper->expects($this->at(2))
 			->method('delete')
-			->with($this->equalTo($folder2));
+			->with($this->equalTo($folder2))
+			->will($this->returnValue($folder2_deletedFeedIds));
 
 		$this->folderBusinessLayer->purgeDeleted($this->user, false);
 	}

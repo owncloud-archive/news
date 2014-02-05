@@ -62,13 +62,16 @@ class ItemBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$statusFlag = $this->getMockBuilder('\OCA\News\Db\StatusFlag')
 			->disableOriginalConstructor()
 			->getMock();
+		$attachementCaching = $this->getMockBuilder('\OCA\News\Utility\AttachementCaching')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->status = StatusFlag::STARRED;
 		$statusFlag->expects($this->any())
 			->method('typeToStatus')
 			->will($this->returnValue($this->status));
 		$this->threshold = 2;
 		$this->itemBusinessLayer = new ItemBusinessLayer($this->mapper,
-			$statusFlag, $timeFactory, $this->threshold);
+			$statusFlag, $timeFactory, $attachementCaching, $this->threshold);
 		$this->user = 'jack';
 		$response = 'hi';
 		$this->id = 3;
@@ -81,6 +84,8 @@ class ItemBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 
 
 	public function testFindAllNewFeed(){
+		$deletedItems = array(new Item(), new Item());
+		
 		$type = FeedType::FEED;
 		$this->mapper->expects($this->once())
 			->method('findAllNewFeed')
@@ -88,16 +93,18 @@ class ItemBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 					$this->equalTo($this->updatedSince),
 					$this->equalTo($this->status),
 					$this->equalTo($this->user))
-			->will($this->returnValue($this->response));
+			->will($this->returnValue($deletedItems));
 
 		$result = $this->itemBusinessLayer->findAllNew(
 			$this->id, $type, $this->updatedSince, $this->showAll,
 			$this->user);
-		$this->assertEquals($this->response, $result);
+		$this->assertEquals($deletedItems, $result);
 	}
 
 
 	public function testFindAllNewFolder(){
+		$deletedItems = array(new Item(), new Item());
+
 		$type = FeedType::FOLDER;
 		$this->mapper->expects($this->once())
 			->method('findAllNewFolder')
@@ -105,32 +112,36 @@ class ItemBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 					$this->equalTo($this->updatedSince),
 					$this->equalTo($this->status),
 					$this->equalTo($this->user))
-			->will($this->returnValue($this->response));
+			->will($this->returnValue($deletedItems));
 
 		$result = $this->itemBusinessLayer->findAllNew(
 			$this->id, $type, $this->updatedSince, $this->showAll,
 			$this->user);
-		$this->assertEquals($this->response, $result);
+		$this->assertEquals($deletedItems, $result);
 	}
 
 
 	public function testFindAllNew(){
+		$deletedItems = array(new Item(), new Item());
+
 		$type = FeedType::STARRED;
 		$this->mapper->expects($this->once())
 			->method('findAllNew')
 			->with(	$this->equalTo($this->updatedSince),
 					$this->equalTo($this->status),
 					$this->equalTo($this->user))
-			->will($this->returnValue($this->response));
+			->will($this->returnValue($deletedItems));
 
 		$result = $this->itemBusinessLayer->findAllNew(
 			$this->id, $type, $this->updatedSince, $this->showAll,
 			$this->user);
-		$this->assertEquals($this->response, $result);
+		$this->assertEquals($deletedItems, $result);
 	}
 
 
 	public function testFindAllFeed(){
+		$deletedItems = array(new Item(), new Item());
+
 		$type = FeedType::FEED;
 		$this->mapper->expects($this->once())
 			->method('findAllFeed')
@@ -139,17 +150,19 @@ class ItemBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 					$this->equalTo($this->offset),
 					$this->equalTo($this->status),
 					$this->equalTo($this->user))
-			->will($this->returnValue($this->response));
+			->will($this->returnValue($deletedItems));
 
 		$result = $this->itemBusinessLayer->findAll(
 			$this->id, $type, $this->limit,
 			$this->offset, $this->showAll,
 			$this->user);
-		$this->assertEquals($this->response, $result);
+		$this->assertEquals($deletedItems, $result);
 	}
 
 
 	public function testFindAllFolder(){
+		$deletedItems = array(new Item(), new Item());
+
 		$type = FeedType::FOLDER;
 		$this->mapper->expects($this->once())
 			->method('findAllFolder')
@@ -158,17 +171,19 @@ class ItemBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 					$this->equalTo($this->offset),
 					$this->equalTo($this->status),
 					$this->equalTo($this->user))
-			->will($this->returnValue($this->response));
+			->will($this->returnValue($deletedItems));
 
 		$result = $this->itemBusinessLayer->findAll(
 			$this->id, $type, $this->limit,
 			$this->offset, $this->showAll,
 			$this->user);
-		$this->assertEquals($this->response, $result);
+		$this->assertEquals($deletedItems, $result);
 	}
 
 
 	public function testFindAll(){
+		$deletedItems = array(new Item(), new Item());
+
 		$type = FeedType::STARRED;
 		$this->mapper->expects($this->once())
 			->method('findAll')
@@ -176,13 +191,13 @@ class ItemBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 					$this->equalTo($this->offset),
 					$this->equalTo($this->status),
 					$this->equalTo($this->user))
-			->will($this->returnValue($this->response));
+			->will($this->returnValue($deletedItems));
 
 		$result = $this->itemBusinessLayer->findAll(
 			$this->id, $type, $this->limit,
 			$this->offset, $this->showAll,
 			$this->user);
-		$this->assertEquals($this->response, $result);
+		$this->assertEquals($deletedItems, $result);
 	}
 
 
@@ -303,12 +318,14 @@ class ItemBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 
 
 	public function testAutoPurgeOldWillPurgeOld(){
+		$deletedItems = array(new Item(), new Item());
+
 		$this->mapper->expects($this->once())
 			->method('deleteReadOlderThanThreshold')
-			->with($this->equalTo($this->threshold));
+			->with($this->equalTo($this->threshold))
+			->will($this->returnValue($deletedItems));
 
 		$result = $this->itemBusinessLayer->autoPurgeOld();
-
 	}
 
 

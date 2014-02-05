@@ -47,12 +47,15 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 	private $time;
 	private $importParser;
 	private $autoPurgeMinimumInterval;
+	private $attachementCaching;
+	private $prefetchImages;
 	private $enhancer;
 
 	protected function setUp(){
 		$this->api = $this->getAPIMock();
 		$this->time = 222;
 		$this->autoPurgeMinimumInterval = 10;
+		$this->prefetchImages = false;
 		$timeFactory = $this->getMockBuilder(
 			'\OCA\AppFramework\Utility\TimeFactory')
 			->disableOriginalConstructor()
@@ -72,9 +75,15 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 		$this->enhancer = $this->getMockBuilder('\OCA\News\ArticleEnhancer\Enhancer')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->attachementCaching = $this->getMockBuilder(
+			'\OCA\News\Utility\AttachementCaching')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->feedBusinessLayer = new FeedBusinessLayer($this->feedMapper,
 			$this->fetcher, $this->itemMapper, $this->api,
-			$timeFactory, $this->autoPurgeMinimumInterval,
+			$timeFactory,
+			$this->attachementCaching, $this->prefetchImages,
+			$this->autoPurgeMinimumInterval,
 			$this->enhancer);
 		$this->user = 'jack';
 		$response = 'hi';
@@ -82,13 +91,15 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 
 
 	public function testFindAll(){
+		$expected = array(new Feed(), new Feed());
+
 		$this->feedMapper->expects($this->once())
 			->method('findAllFromUser')
 			->with($this->equalTo($this->user))
-			->will($this->returnValue($this->response));
+			->will($this->returnValue($expected));
 
 		$result = $this->feedBusinessLayer->findAll($this->user);
-		$this->assertEquals($this->response, $result);
+		$this->assertEquals($expected, $result);
 	}
 
 
@@ -698,7 +709,8 @@ class FeedBusinessLayerTest extends \OCA\AppFramework\Utility\TestUtility {
 
 
 	public function testfindAllFromAllUsers() {
-		$expected = 'hi';
+		$expected = array(new Feed(), new Feed());
+
 		$this->feedMapper->expects($this->once())
 			->method('findAll')
 			->will($this->returnValue($expected));

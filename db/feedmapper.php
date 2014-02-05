@@ -29,9 +29,7 @@ use \OCA\AppFramework\Core\API;
 use \OCA\AppFramework\Db\Mapper;
 use \OCA\AppFramework\Db\Entity;
 
-
 class FeedMapper extends Mapper implements IMapper {
-
 
 	public function __construct(API $api) {
 		parent::__construct($api, 'news_feeds');
@@ -72,6 +70,7 @@ class FeedMapper extends Mapper implements IMapper {
 		while($row = $result->fetchRow()){
 			$feed = new Feed();
 			$feed->fromRow($row);
+
 			array_push($feeds, $feed);
 		}
 

@@ -33,19 +33,22 @@ use \OCA\News\Db\ItemMapper;
 use \OCA\News\Db\StatusFlag;
 use \OCA\News\Db\FeedType;
 
+use \OCA\News\Utility\AttachementCaching;
 
 class ItemBusinessLayer extends BusinessLayer {
 
 	private $statusFlag;
 	private $autoPurgeCount;
 	private $timeFactory;
+	private $attachementCaching;
 
 	public function __construct(ItemMapper $itemMapper, StatusFlag $statusFlag,
-								TimeFactory $timeFactory, $autoPurgeCount=0){
+								TimeFactory $timeFactory, AttachementCaching $attachementCaching, $autoPurgeCount=0){
 		parent::__construct($itemMapper);
 		$this->statusFlag = $statusFlag;
 		$this->autoPurgeCount = $autoPurgeCount;
 		$this->timeFactory = $timeFactory;
+		$this->attachementCaching = $attachementCaching;
 	}
 
 
@@ -74,6 +77,12 @@ class ItemBusinessLayer extends BusinessLayer {
 			default:
 				$items = $this->mapper->findAllNew($updatedSince, $status,
 					                               $userId);
+		}
+
+		// convert relative img URLs to absolute URLs
+		foreach ($items as $item) {
+			$convertedBody = $this->attachementCaching->convertRelativeImgUrls( $item->getBody() );
+			$item->setBody( $convertedBody );
 		}
 
 		return $items;
@@ -105,6 +114,12 @@ class ItemBusinessLayer extends BusinessLayer {
 			default:
 				$items = $this->mapper->findAll($limit, $offset, $status,
 					                               $userId);
+		}
+
+		// convert relative img URLs to absolute URLs
+		foreach ($items as $item) {
+			$convertedBody = $this->attachementCaching->convertRelativeImgUrls( $item->getBody() );
+			$item->setBody( $convertedBody );
 		}
 
 		return $items;
@@ -199,7 +214,11 @@ class ItemBusinessLayer extends BusinessLayer {
 	 * old, the id is taken
 	 */
 	public function autoPurgeOld(){
-		$this->mapper->deleteReadOlderThanThreshold($this->autoPurgeCount);
+		$deletedItems = $this->mapper->deleteReadOlderThanThreshold($this->autoPurgeCount);
+
+		foreach ($deletedItems as $item) {
+			$this->attachementCaching->purgeDeletedItem($item);
+		}
 	}
 
 
