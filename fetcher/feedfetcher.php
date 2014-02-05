@@ -143,9 +143,8 @@ class FeedFetcher implements IFeedFetcher {
 
 		// links should always open in a new window
 		$item->setBody(
-			$this->purifier->purify(
-				$simplePieItem->get_content()
-			)
+			$simplePieItem->get_content(),
+			$this->purifier
 		);
 
 		// pubdate is not required. if not given use the current date

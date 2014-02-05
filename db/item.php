@@ -43,6 +43,9 @@ class Item extends Entity implements IAPI {
 	public $status = 0;
 	public $lastModified;
 
+	protected $purifier;
+	protected $purified = false;
+
 
 	public function __construct(){
 		$this->addType('pubDate', 'int');
@@ -176,10 +179,20 @@ class Item extends Entity implements IAPI {
 	}
 
 
-	public function setBody($body) {
+	public function setBody($body, $purifier =  null) {
 		// FIXME: this should not happen if the target="_blank" is already on the link
 		parent::setBody(str_replace('<a', '<a target="_blank"',	$body));
+		$this->purifier = $purifier;
 	}
 
+	public function getBody(){
+		$body = parent::getBody();
+		if (!$this->purified && $this->purifier) {
+			$body = $this->purifier->purify($body);
+			parent::setBody($body);
+			$this->purified = true;
+		}
+		return $body;
+	}
 }
 
