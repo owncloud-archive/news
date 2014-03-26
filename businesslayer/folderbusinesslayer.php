@@ -114,8 +114,6 @@ class FolderBusinessLayer extends BusinessLayer {
 	 * @return Folder the updated folder
 	 */
 	public function rename($folderId, $folderName, $userId){
-		$this->validateFolder($folderName, $userId);
-
 		$folder = $this->find($folderId, $userId);
 		$folder->setName($folderName);
 		return $this->mapper->update($folder);
