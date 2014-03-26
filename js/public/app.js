@@ -2344,14 +2344,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
           			we have an id from the server. Once the server returns
           			an id, we have to update the existing item without id
            */
-          data.name = this._transformName(data.name);
-          item = this._nameCache[data.name];
+          data.ident = this._transformName(data.name);
+          item = this._nameCache[data.ident];
           updateById = angular.isDefined(data.id) && angular.isDefined(this.getById(data.id));
           updateByName = angular.isDefined(item) && angular.isUndefined(item.id);
           if (updateById || updateByName) {
             return this.update(data, clearCache);
           } else {
-            this._nameCache[data.name] = data;
+            this._nameCache[data.ident] = data;
             if (angular.isDefined(data.id)) {
               return FolderModel.__super__.add.call(this, data, clearCache);
             } else {
@@ -2368,8 +2368,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
           if (clearCache == null) {
             clearCache = true;
           }
-          data.name = this._transformName(data.name);
-          item = this._nameCache[data.name];
+          data.ident = this._transformName(data.name);
+          item = this._nameCache[data.ident];
           if (angular.isUndefined(data.id) && angular.isDefined(item)) {
             return angular.extend(item, data);
           } else {
@@ -2378,9 +2378,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
               this._dataMap[data.id] = item;
             }
             itemWithId = this.getById(data.id);
-            if (angular.isDefined(itemWithId) && itemWithId.name !== data.name) {
-              delete this._nameCache[itemWithId.name];
-              this._nameCache[data.name] = itemWithId;
+            if (angular.isDefined(itemWithId) && itemWithId.ident !== data.ident) {
+              delete this._nameCache[itemWithId.ident];
+              this._nameCache[data.ident] = itemWithId;
             }
             return FolderModel.__super__.update.call(this, data, clearCache);
           }
@@ -2402,7 +2402,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
             clearCache = true;
           }
           item = this.getById(id);
-          delete this._nameCache[this._transformName(item.name)];
+          delete this._nameCache[this._transformName(item.ident)];
           return FolderModel.__super__.removeById.call(this, id, clearCache);
         };
 
@@ -3238,7 +3238,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
             onSuccess: onSuccess,
             onFailure: onFailure
           };
-          return this._request.post('/apps/news/folders', params);
+          return this._request.post('/apps/news/folders/create', params);
         };
 
         Persistence.prototype.deleteFolder = function(folderId) {
