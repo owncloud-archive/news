@@ -36,9 +36,9 @@ angular.module('News').factory 'FolderModel',
 			we have an id from the server. Once the server returns
 			an id, we have to update the existing item without id
 			###
-			data.name = @_transformName(data.name)
+			data.ident = @_transformName(data.name)
 
-			item = @_nameCache[data.name]
+			item = @_nameCache[data.ident]
 
 			# update in the following cases:
 			# * the id is defined and the item exists
@@ -53,7 +53,7 @@ angular.module('News').factory 'FolderModel',
 				@update(data, clearCache)
 			else
 				# if the item is not yet in the name cache it must be added
-				@_nameCache[data.name] = data
+				@_nameCache[data.ident] = data
 				
 				# in case there is an id it can go through the normal add method
 				if angular.isDefined(data.id)
@@ -69,9 +69,9 @@ angular.module('News').factory 'FolderModel',
 		update: (data, clearCache=true) ->
 			# only when the id on the updated item does not exist we wish
 			# to update by name, otherwise we always update by id
-			data.name = @_transformName(data.name)
+			data.ident = @_transformName(data.name)
 
-			item = @_nameCache[data.name]
+			item = @_nameCache[data.ident]
 			# update by name
 			if angular.isUndefined(data.id)	and angular.isDefined(item)
 				angular.extend(item, data)
@@ -88,9 +88,9 @@ angular.module('News').factory 'FolderModel',
 				# if an update comes in and we update because of the id
 				# we need to fix the name cache if the name was changed
 				itemWithId = @getById(data.id)
-				if angular.isDefined(itemWithId) and itemWithId.name != data.name
-					delete @_nameCache[itemWithId.name]
-					@_nameCache[data.name] = itemWithId
+				if angular.isDefined(itemWithId) and itemWithId.ident != data.ident
+					delete @_nameCache[itemWithId.ident]
+					@_nameCache[data.ident] = itemWithId
 
 				super(data, clearCache)
 				
@@ -108,7 +108,7 @@ angular.module('News').factory 'FolderModel',
 
 		removeById: (id, clearCache=true) ->
 			item = @getById(id)
-			delete @_nameCache[@_transformName(item.name)]
+			delete @_nameCache[@_transformName(item.ident)]
 			super(id, clearCache)
 
 
