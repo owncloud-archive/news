@@ -36,6 +36,7 @@ class ItemMapper extends \OCA\News\Db\ItemMapper {
 
 	public function __construct(API $api){
 		parent::__construct($api);
+		$this->entityClass = '\OCA\News\Db\Item';
 	}
 
 
@@ -78,6 +79,4 @@ class ItemMapper extends \OCA\News\Db\ItemMapper {
 		}
 
 	}
-
-
 }
