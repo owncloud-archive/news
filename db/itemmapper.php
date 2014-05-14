@@ -33,7 +33,7 @@ class ItemMapper extends Mapper implements IMapper {
 				'ON `folders`.`id` = `feeds`.`folder_id` ' .
 			'WHERE `feeds`.`folder_id` = 0 ' .
 				'OR `folders`.`deleted_at` = 0 ' .
-			'ORDER BY `items`.`id` DESC';
+			'ORDER BY `items`.`pub_date` DESC, `items`.`id` DESC';
 	}
 
 	private function makeSelectQueryStatus($prependTo, $status) {
