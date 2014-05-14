@@ -3,7 +3,7 @@
 <ul>
 	<li class="feed_item"
 
-		ng-repeat="item in itemBusinessLayer.getAll() | orderBy:['-id'] "
+		ng-repeat="item in itemBusinessLayer.getAll() | orderBy:['-pubDate'] "
 		ng-class="{ read: item.isRead(), compact: isCompactView(), open: item.active}"
 		data-id="{{ item.id }}"
 		ng-click="itemBusinessLayer.setRead(item.id)">
