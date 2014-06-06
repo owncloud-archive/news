@@ -69,7 +69,7 @@ class FeedFetcher implements IFeedFetcher {
 	public function fetch($url, $getFavicon=true) {
 		$simplePie = $this->simplePieFactory->getCore();
 		$simplePie->set_feed_url($url);
-        $simplePie->set_useragent('ownCloud News/' . \OCP\Util::getVersion() . ' (Feed Parser; ' . SIMPLEPIE_URL . '; Allow like Gecko) SimplePie/' . SIMPLEPIE_VERSION);
+		$simplePie->set_useragent('ownCloud News/' . \OCP\Util::getVersion() . ' (Feed Parser; ' . SIMPLEPIE_URL . '; Allow like Gecko) SimplePie/' . SIMPLEPIE_VERSION);
 		$simplePie->enable_cache(true);
 		$simplePie->set_stupidly_fast(true);  // disable simple pie sanitation
 		                                      // we use htmlpurifier
