@@ -13,6 +13,7 @@
 
 namespace OCA\News\Fetcher;
 
+use OCA\News\Config\AppConfig;
 use \OCA\News\Db\Item;
 use \OCA\News\Db\Feed;
 use \OCA\News\Utility\FaviconFetcher;
@@ -31,12 +32,14 @@ class FeedFetcher implements IFeedFetcher {
 	private $proxyHost;
 	private $proxyPort;
 	private $proxyAuth;
+	private $appConfig;
 
 	public function __construct(SimplePieAPIFactory $simplePieFactory,
-				    FaviconFetcher $faviconFetcher,
-				    $time,
-				    $cacheDirectory,
-				    Config $config){
+					FaviconFetcher $faviconFetcher,
+					$time,
+					$cacheDirectory,
+					Config $config,
+					AppConfig $appConfig){
 		$this->cacheDirectory = $cacheDirectory;
 		$this->cacheDuration = $config->getSimplePieCacheDuration();
 		$this->fetchTimeout = $config->getFeedFetcherTimeout();
@@ -46,6 +49,7 @@ class FeedFetcher implements IFeedFetcher {
 		$this->proxyHost = $config->getProxyHost();
 		$this->proxyPort = $config->getProxyPort();
 		$this->proxyAuth = $config->getProxyAuth();
+		$this->appConfig = $appConfig;
 	}
 
 
@@ -69,10 +73,10 @@ class FeedFetcher implements IFeedFetcher {
 	public function fetch($url, $getFavicon=true) {
 		$simplePie = $this->simplePieFactory->getCore();
 		$simplePie->set_feed_url($url);
-		$simplePie->set_useragent('ownCloud News/' . \OCP\Util::getVersion() . ' (Feed Parser; ' . SIMPLEPIE_URL . '; Allow like Gecko) SimplePie/' . SIMPLEPIE_VERSION);
+		$simplePie->set_useragent('ownCloud News/' . $this->appConfig->getConfig('version') . ' (+https://owncloud.org/; 1 subscriber; feed-url=' . $url . ') SimplePie/' . SIMPLEPIE_VERSION);
 		$simplePie->enable_cache(true);
 		$simplePie->set_stupidly_fast(true);  // disable simple pie sanitation
-		                                      // we use htmlpurifier
+											  // we use htmlpurifier
 		$simplePie->set_timeout($this->fetchTimeout);
 		$simplePie->set_cache_location($this->cacheDirectory);
 		$simplePie->set_cache_duration($this->cacheDuration);
