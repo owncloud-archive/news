@@ -13,7 +13,7 @@
 
 namespace OCA\News\Fetcher;
 
-use OCA\News\Config\AppConfig;
+use \OCA\News\Config\AppConfig;
 use \OCA\News\Db\Item;
 use \OCA\News\Db\Feed;
 use \OCA\News\Utility\FaviconFetcher;
@@ -35,11 +35,11 @@ class FeedFetcher implements IFeedFetcher {
 	private $appConfig;
 
 	public function __construct(SimplePieAPIFactory $simplePieFactory,
-					FaviconFetcher $faviconFetcher,
-					$time,
-					$cacheDirectory,
-					Config $config,
-					AppConfig $appConfig){
+				    FaviconFetcher $faviconFetcher,
+				    $time,
+				    $cacheDirectory,
+				    Config $config,
+				    AppConfig $appConfig){
 		$this->cacheDirectory = $cacheDirectory;
 		$this->cacheDuration = $config->getSimplePieCacheDuration();
 		$this->fetchTimeout = $config->getFeedFetcherTimeout();
@@ -76,7 +76,7 @@ class FeedFetcher implements IFeedFetcher {
 		$simplePie->set_useragent('ownCloud News/' . $this->appConfig->getConfig('version') . ' (+https://owncloud.org/; 1 subscriber; feed-url=' . $url . ') SimplePie/' . SIMPLEPIE_VERSION);
 		$simplePie->enable_cache(true);
 		$simplePie->set_stupidly_fast(true);  // disable simple pie sanitation
-											  // we use htmlpurifier
+		                                      // we use htmlpurifier
 		$simplePie->set_timeout($this->fetchTimeout);
 		$simplePie->set_cache_location($this->cacheDirectory);
 		$simplePie->set_cache_duration($this->cacheDuration);
