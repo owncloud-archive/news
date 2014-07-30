@@ -161,6 +161,7 @@
 	.feed_item.compact .item_body,
 	.feed_item.compact .item_title,
 	.feed_item.compact .item_author,
+	.feed_item.compact .enclosure,
 	.feed_item.compact .item_date,
 	.feed_item.compact .item_utils,
 	.feed_item.compact .item_bottom_utils,
@@ -170,6 +171,7 @@
 	}
 	.feed_item.compact.open .item_body,
 	.feed_item.compact.open .item_author,
+	.feed_item.compact.open .enclosure,
 	.feed_item.compact.open .item_bottom_utils,
 	.feed_item.compact .item_heading,
 	.feed_item .item_link {
