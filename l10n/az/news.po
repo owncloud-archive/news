@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-08-26 01:01-0400\n"
-"PO-Revision-Date: 2014-08-25 05:22+0000\n"
+"POT-Creation-Date: 2014-08-27 01:01-0400\n"
+"PO-Revision-Date: 2014-08-26 15:31+0000\n"
 "Last-Translator: unixidzero <unixidzero@gmail.com>\n"
 "Language-Team: Azerbaijani (http://www.transifex.com/projects/p/owncloud/language/az/)\n"
 "MIME-Version: 1.0\n"
@@ -46,12 +46,12 @@ msgstr "_"
 
 #: js/vendor/jquery-ui/ui/minified/jquery-ui.min.js:8
 msgid "status"
-msgstr ""
+msgstr "cari vəziyyət"
 
 #: templates/main.php:32
 #, php-format
 msgid "Undo deletion of %s"
-msgstr ""
+msgstr "%s-in silinməsini geri qaytar"
 
 #: templates/main.php:36
 msgid "News"
@@ -95,7 +95,7 @@ msgstr "Qovluq adı"
 
 #: templates/part.addnew.php:59
 msgid "Back to folder selection"
-msgstr ""
+msgstr "Qovluq seçimi üçün geri qayıt"
 
 #: templates/part.addnew.php:63
 msgid "Create folder"
@@ -103,40 +103,40 @@ msgstr "Qovluq yarat"
 
 #: templates/part.feed.starred.php:11
 msgid "Starred"
-msgstr ""
+msgstr "Ulduzlu"
 
 #: templates/part.feed.unread.php:11
 msgid "Unread articles"
-msgstr ""
+msgstr "Oxunulmamış məqalə"
 
 #: templates/part.feed.unread.php:18
 msgid "All articles"
-msgstr ""
+msgstr "Bütün məqalələr"
 
 #: templates/part.feed.unread.php:27 templates/part.listfeed.php:62
 #: templates/part.listfolder.php:55
 msgid "Mark read"
-msgstr ""
+msgstr "Oxunmuş"
 
 #: templates/part.firstrun.php:2
 msgid "Welcome to the ownCloud News app!"
-msgstr ""
+msgstr "ownCloud Xəbərlər proqram təmnatına xoş gəlmisiniz!"
 
 #: templates/part.items.php:20
 msgid "read on website"
-msgstr ""
+msgstr "veb səhifədə oxu"
 
 #: templates/part.items.php:40
 msgid "star"
-msgstr ""
+msgstr "ulduz"
 
 #: templates/part.items.php:56
 msgid "from"
-msgstr ""
+msgstr "ondan"
 
 #: templates/part.items.php:61
 msgid "by"
-msgstr ""
+msgstr "onunla"
 
 #: templates/part.items.php:68
 msgid "Download"
@@ -144,7 +144,7 @@ msgstr "Yüklə"
 
 #: templates/part.items.php:79
 msgid "Keep unread"
-msgstr ""
+msgstr "Oxunulmamış saxla"
 
 #: templates/part.listfeed.php:22 templates/part.listfolder.php:19
 msgid "Cancel"
@@ -156,23 +156,23 @@ msgstr "Saxlamaq"
 
 #: templates/part.listfeed.php:50 templates/part.listfeed.php:74
 msgid "Delete website"
-msgstr ""
+msgstr "Veb saytı sil"
 
 #: templates/part.listfeed.php:69
 msgid "Rename feed"
-msgstr ""
+msgstr "Kanalın adını dəyiş"
 
 #: templates/part.listfolder.php:15
 msgid "Collapse"
-msgstr ""
+msgstr "Yığılma"
 
 #: templates/part.listfolder.php:44 templates/part.listfolder.php:60
 msgid "Delete folder"
-msgstr ""
+msgstr "Qovluğu sil"
 
 #: templates/part.listfolder.php:67
 msgid "Rename folder"
-msgstr ""
+msgstr "Qovluğun adını dəyiş"
 
 #: templates/part.settings.php:13
 msgid "Settings"
@@ -180,7 +180,7 @@ msgstr "Quraşdırmalar"
 
 #: templates/part.settings.php:15
 msgid "Use compact view"
-msgstr ""
+msgstr "Yığcam görünüşü istifadə et"
 
 #: templates/part.settings.php:17
 msgid "Subscriptions (OPML)"
