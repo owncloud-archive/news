@@ -2,6 +2,7 @@
 "News" => "חדשות",
 "Address" => "כתובת",
 "Add" => "הוספה",
+"New folder" => "תיקייה חדשה",
 "Folder" => "תיקייה",
 "Choose folder" => "נא לבחור בתיקייה",
 "Folder name" => "שם התיקייה",

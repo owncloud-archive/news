@@ -4,6 +4,7 @@
 "New folder" => "Ny mappe",
 "Folder" => "Mappe",
 "Folder name" => "Mappenamn",
+"from" => "frå",
 "by" => "av",
 "Download" => "Last ned",
 "Cancel" => "Avbryt",
