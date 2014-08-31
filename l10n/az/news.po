@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-08-30 01:01-0400\n"
-"PO-Revision-Date: 2014-08-29 05:23+0000\n"
+"POT-Creation-Date: 2014-08-31 11:32-0400\n"
+"PO-Revision-Date: 2014-08-30 06:50+0000\n"
 "Last-Translator: unixidzero <unixidzero@gmail.com>\n"
 "Language-Team: Azerbaijani (http://www.transifex.com/projects/p/owncloud/language/az/)\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "Qovluğu əlave etmək mümkün deyil: Artıq movcuddur"
 
 #: js/vendor/angular-ui/build/angular-ui.min.js:7
 msgid " "
-msgstr ""
+msgstr "       "
 
 #: js/vendor/angular-ui/build/angular-ui.min.js:7
 msgid "_"
@@ -184,7 +184,7 @@ msgstr "Yığcam görünüşü istifadə et"
 
 #: templates/part.settings.php:17
 msgid "Subscriptions (OPML)"
-msgstr ""
+msgstr "Abunəliklər(OPML)"
 
 #: templates/part.settings.php:21 templates/part.settings.php:24
 #: templates/part.settings.php:52 templates/part.settings.php:57
@@ -200,20 +200,20 @@ msgstr "Çıxarış"
 
 #: templates/part.settings.php:42
 msgid "Error when importing: file does not contain valid OPML"
-msgstr ""
+msgstr "Yüklənmədə səhv: faylda düzgün OPML yoxdur"
 
 #: templates/part.settings.php:48
 msgid "Unread/Starred Articles"
-msgstr ""
+msgstr "Oxunulmamış/Ulduzlanmış məqalələr"
 
 #: templates/part.settings.php:74
 msgid "Error when importing: file does not contain valid JSON"
-msgstr ""
+msgstr "Yüklənmədə səhv: faylda düzgün JSON yoxdur"
 
 #: templates/part.showall.php:5
 msgid "Show read articles"
-msgstr ""
+msgstr "Oxunulmuş məqalələri göstər"
 
 #: templates/part.showall.php:11
 msgid "Hide read articles"
-msgstr ""
+msgstr "Oxunulmuş məqalələri gizlət"

@@ -3,6 +3,7 @@
 "Can not add feed: URL does not exist, SSL Certificate can not be validated or feed has invalid xml" => "Ötürücünü əlavə etmək mümkün olmadı: URL mövcud deyil, SSL sertifikat yoxlanıla bilmir yada ötürücüdə XML yalnışdır",
 "Articles without feed" => "Ötürməsiz məqalələr",
 "Can not add folder: Exists already" => "Qovluğu əlave etmək mümkün deyil: Artıq movcuddur",
+" " => "       ",
 "_" => "_",
 "status" => "cari vəziyyət",
 "Undo deletion of %s" => "%s-in silinməsini geri qaytar",
@@ -38,6 +39,12 @@
 "Rename folder" => "Qovluğun adını dəyiş",
 "Settings" => "Quraşdırmalar",
 "Use compact view" => "Yığcam görünüşü istifadə et",
+"Subscriptions (OPML)" => "Abunəliklər(OPML)",
 "Import" => "Əlavə et",
-"Export" => "Çıxarış"
+"Export" => "Çıxarış",
+"Error when importing: file does not contain valid OPML" => "Yüklənmədə səhv: faylda düzgün OPML yoxdur",
+"Unread/Starred Articles" => "Oxunulmamış/Ulduzlanmış məqalələr",
+"Error when importing: file does not contain valid JSON" => "Yüklənmədə səhv: faylda düzgün JSON yoxdur",
+"Show read articles" => "Oxunulmuş məqalələri göstər",
+"Hide read articles" => "Oxunulmuş məqalələri gizlət"
 );
