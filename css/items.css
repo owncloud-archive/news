@@ -19,6 +19,11 @@
  *
  */
 
+.app-news em {
+	opacity: 1;
+	font-style: italic;
+}
+
 #app-content:after {
 	content: '';
 	display: block;
