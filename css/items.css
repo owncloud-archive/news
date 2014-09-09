@@ -407,6 +407,17 @@
 			font-style: italic;
 		}
 
+			/**
+			 * Fix for images with captions in span - heise RSS feed
+			 * TODO fix this with proper feed related CSS rules
+			 */
+			.feed_item .item_body p > span:first-child {
+				display: inline-block;
+				float: left;
+				margin-right: 10px;
+				padding: 6px 0;
+			}
+
 
 /**
  * Line with utils at the bottom
