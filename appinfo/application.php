@@ -247,9 +247,10 @@ class Application extends App {
 			// $config = $c->query('ServerContainer')->getAppConfig(); oc7 only
 			$installedApps = \OC_Appconfig::getApps();
 			$apps = array();
-			foreach($installedApps as $app) {
+			$versions = \OC_App::getAppVersions();
+			foreach ($installedApps as $app) {
 				$apps[] = array(
-					$app => \OC_Appconfig::getValue($app, 'installed_version', '0')
+					$app => $versions[$app]
 				);
 			}
 
