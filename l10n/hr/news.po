@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-09-03 01:01-0400\n"
-"PO-Revision-Date: 2014-09-02 05:22+0000\n"
+"POT-Creation-Date: 2014-09-11 01:01-0400\n"
+"PO-Revision-Date: 2014-09-10 12:30+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Croatian (http://www.transifex.com/projects/p/owncloud/language/hr/)\n"
 "MIME-Version: 1.0\n"
@@ -78,7 +78,7 @@ msgstr "Dodaj"
 
 #: templates/part.addnew.php:39 templates/part.addnew.php:46
 msgid "New folder"
-msgstr ""
+msgstr "Nova mapa"
 
 #: templates/part.addnew.php:40
 msgid "Folder"
@@ -90,7 +90,7 @@ msgstr ""
 
 #: templates/part.addnew.php:55
 msgid "Folder name"
-msgstr ""
+msgstr "Naziv mape"
 
 #: templates/part.addnew.php:59
 msgid "Back to folder selection"
@@ -131,7 +131,7 @@ msgstr ""
 
 #: templates/part.items.php:56
 msgid "from"
-msgstr ""
+msgstr "od"
 
 #: templates/part.items.php:61
 msgid "by"
