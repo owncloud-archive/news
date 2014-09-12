@@ -31,6 +31,7 @@
 "Delete folder" => "Șterge director",
 "Rename folder" => "Redenumește director",
 "Settings" => "Setări",
+"Use compact view" => "Folosește modul de vizualizare compact",
 "Subscriptions (OPML)" => "Subscripţii (OPLM)",
 "Import" => "Importă",
 "Export" => "Exportă",
