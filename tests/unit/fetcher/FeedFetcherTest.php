@@ -36,6 +36,7 @@ class FeedFetcherTest extends \PHPUnit_Framework_TestCase {
 	private $getProxyPort;
 	private $proxyAuth;
 	private $config;
+	private $appConfig;
 
 	// items
 	private $permalink;
@@ -58,6 +59,7 @@ class FeedFetcherTest extends \PHPUnit_Framework_TestCase {
 			'\SimplePie_Core', array(
 				'set_timeout',
 				'set_feed_url',
+				'set_useragent',
 				'enable_cache',
 				'set_stupidly_fast',
 				'set_cache_location',
@@ -120,7 +122,8 @@ class FeedFetcherTest extends \PHPUnit_Framework_TestCase {
 						 $this->faviconFetcher,
 						 $timeFactory,
 						 $this->cacheDirectory,
-						 $this->config);
+						 $this->config,
+						 $this->appConfig);
 		$this->url = 'http://tests';
 
 		$this->permalink = 'http://permalink';
@@ -164,6 +167,9 @@ class FeedFetcherTest extends \PHPUnit_Framework_TestCase {
 		$this->core->expects($this->once())
 			->method('set_feed_url')
 			->with($this->equalTo($this->url));
+		$this->core->expects($this->once())
+			->method('set_useragent')
+			->with($this->equalTo('ownCloud News/' . $this->appConfig->getConfig('version') . ' (+https://owncloud.org/; 1 subscriber; feed-url=' . $this->url . ')'));
 		$this->core->expects($this->once())
 			->method('enable_cache')
 			->with($this->equalTo(true));

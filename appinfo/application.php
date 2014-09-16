@@ -396,7 +396,8 @@ class Application extends App {
 				$c->query('FaviconFetcher'),
 				$c->query('TimeFactory'),
 				$c->query('simplePieCacheDirectory'),
-				$c->query('Config')
+				$c->query('Config'),
+				$c->query('AppConfig')
 			);
 		});
 
