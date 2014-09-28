@@ -46,4 +46,23 @@ class GlobalArticleEnhancerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected, $result->getBody());
 	}
 
+	public function testMultipleParagraphs() {
+		$body = '<p>paragraph 1</p><p>paragraph 2</p>';
+		$expected = $body;
+		$item = new Item();
+		$item->setBody($body);
+
+		$result = $this->enhancer->enhance($item);
+		$this->assertEquals($expected, $result->getBody());
+	}
+
+	public function testMultipleParagraphsInDiv() {
+		$body = '<div><p>paragraph 1</p><p>paragraph 2</p></div>';
+		$expected = $body;
+		$item = new Item();
+		$item->setBody($body);
+
+		$result = $this->enhancer->enhance($item);
+		$this->assertEquals($expected, $result->getBody());
+	}
 }
