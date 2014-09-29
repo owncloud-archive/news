@@ -24,8 +24,8 @@ class GlobalArticleEnhancer implements ArticleEnhancer {
 	 */
 	public function enhance(Item $item) {
 		$dom = new \DOMDocument();
-		if(PHP_VERSION_ID >= 50400 && LIBXML_VERSION >= 20708) { // major * 10000 + minor * 1000 + release
-			// these options are available since 5.4.0
+		if(LIBXML_VERSION >= 20708) { // major * 10000 + minor * 1000 + release
+			// these options are available since libxml 2.7.8
 			@$dom->loadHTML($item->getBody(), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 		} else {
 			// fallback
@@ -51,7 +51,7 @@ class GlobalArticleEnhancer implements ArticleEnhancer {
 			}
 		}
 
-		if(PHP_VERSION_ID < 50400 || LIBXML_VERSION < 20708) { // major * 10000 + minor * 1000 + release
+		if(LIBXML_VERSION < 20708) { // major * 10000 + minor * 1000 + release
 			// we need to do this, because the options to load HTML without them wasn't available
 
 			// remove <!DOCTYPE
