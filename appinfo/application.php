@@ -409,12 +409,7 @@ class Application extends App {
 		});
 
 		$container->registerService('YoutubeFeedFetcher', function($c) {
-			return new YoutubeFeedFetcher($c->query('SimplePieAPIFactory'),
-				$c->query('FaviconFetcher'),
-				$c->query('TimeFactory'),
-				$c->query('simplePieCacheDirectory'),
-				$c->query('Config'),
-				$c->query('AppConfig')
+			return new YoutubeFeedFetcher($c->query('FeedFetcher')
 			);
 		});
 

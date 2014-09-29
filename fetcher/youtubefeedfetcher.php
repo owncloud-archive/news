@@ -14,17 +14,7 @@
 
 namespace OCA\News\Fetcher;
 
-class YoutubeFeedFetcher extends FeedFetcher {
-
-	public function __construct(SimplePieAPIFactory $simplePieFactory,
-				    FaviconFetcher $faviconFetcher,
-				    $time,
-				    $cacheDirectory,
-				    Config $config,
-				    AppConfig $appConfig) {
-		parent::__construct($simplePieFactory, $faviconFetcher, $time, $cacheDirectory, $config, $appConfig);
-	}
-
+class YoutubeFeedFetcher implements IFeedFetcher {
 
 	/**
 	 * This fetcher handles youtube urls
@@ -36,7 +26,7 @@ class YoutubeFeedFetcher extends FeedFetcher {
 
 	private function checkForPlaylist($url) {
 		//Playlist
-		$matches = array();
+		$matches = [];
 		$pattern = "/[(http:\/\/|https:\/\/|\/\/)](www.)?youtube.com.*?list=([^&]*)/";
 		if(preg_match($pattern, $url, $matches)) {
 			return "http://gdata.youtube.com/feeds/api/playlists/" . $matches[2];
@@ -46,7 +36,7 @@ class YoutubeFeedFetcher extends FeedFetcher {
 
 	private function checkForChannel($url) {
 		//Channel
-		$matches = array();
+		$matches = [];
 		$pattern = "/[(http:\/\/|https:\/\/|\/\/)](www.)?youtube.com/channel/(.*)/";
 		if(preg_match($pattern, $url, $matches)) {
 			return "http://gdata.youtube.com/feeds/users/" . $matches[2] . "/uploads";
@@ -71,9 +61,8 @@ class YoutubeFeedFetcher extends FeedFetcher {
 		if(!$url) {
 			$url = $this->checkForChannel($url);
 		}
-				
 
-		return parent::fetch($url, $getFavIcon);
+		return $this->feedFetcher->fetch($url, $getFavicon);
 	}
 
 
