@@ -18,6 +18,10 @@
             <div class="utils" ng-click="Content.toggleItem(item)">
                 <ul>
                     <li class="util-spacer"></li>
+                    <li ng-click="Content.toggleStar(item.id)" class="util" news-stop-propagation>
+                        <button class="star svg" ng-hide="item.starred" title="<?php p($l->t('Star article')); ?>"></button>
+                        <button class="starred svg" ng-show="item.starred" title="<?php p($l->t('Unstar article')); ?>"></button>
+                    </li>
                     <li class="title only-in-compact"
                         title="{{ item.title }}"
                         ng-class="{'icon-rss': !Content.getFeed(item.feedId).faviconLink }"
@@ -29,28 +33,18 @@
                             datetime="{{ item.pubDate*1000|date:'yyyy-MM-ddTHH:mm:ssZ' }}">{{ Content.getRelativeDate(item.pubDate) }}
                         </time>
                     </li>
-                    <li ng-click="Content.toggleStar(item.id)" class="util" news-stop-propagation>
-                        <button class="star svg" ng-hide="item.starred" title="<?php p($l->t('Star article')); ?>"></button>
-                        <button class="starred svg" ng-show="item.starred" title="<?php p($l->t('Unstar article')); ?>"></button>
-                    </li>
+
                     <li ng-click="Content.toggleKeepUnread(item.id)" class="util" news-stop-propagation>
                         <button class="icon-toggle toggle-keep-unread" ng-hide="item.keepUnread" title="<?php p($l->t('Keep article unread')); ?>"></button>
                         <button class="icon-toggle toggle-keep-unread keep-unread" ng-show="item.keepUnread" title="<?php p($l->t('Remove keep article unread')); ?>"></button>
                     </li>
-                    <li class="util only-in-compact">
-                        <a class="external icon-link"
-                            target="_blank"
-                            ng-href="{{ item.url }}"
-                            title="<?php p($l->t('Open website')) ?>"
-                            news-stop-propagation>
-                        </a>
-                    </li>
+
                 </ul>
             </div>
 
             <div class="article">
 
-                <div class="heading only-in-expanded">
+                <div class="heading">
                     <time class="date" title="{{ item.pubDate*1000|date:'yyyy-MM-dd HH:mm:ss' }}"
                         datetime="{{ item.pubDate*1000|date:'yyyy-MM-ddTHH:mm:ssZ' }}">{{ Content.getRelativeDate(item.pubDate) }}</time>
                     <h1>
