@@ -24,7 +24,9 @@ class GlobalArticleEnhancer implements ArticleEnhancer {
 	 */
 	public function enhance(Item $item) {
 		$dom = new \DOMDocument();
-		@$dom->loadHTML($item->getBody());
+		// wrap everything inside a <div> because otherwise multi sibling documents are broken (<p>ABC</p><p>DEF</p>
+		// will become <p>ABC</p>)
+		@$dom->loadHTML('<div>' . $item->getBody() . '</div>');
 		$xpath = new \DOMXpath($dom);
 
 		// remove youtube autoplay

@@ -24,26 +24,27 @@ class GlobalArticleEnhancerTest extends \PHPUnit_Framework_TestCase {
 		$this->enhancer = new GlobalArticleEnhancer();
 	}
 
-
-	public function testNoReplaceYoutubeAutoplay() {
-		$body = '<iframe width="728" height="410" src="//www.youtube.com/embed/autoplay=1/AWE6UpXQoGU" frameborder="0" allowfullscreen=""></iframe>';
-		$expected = '<iframe width="728" height="410" src="//www.youtube.com/embed/autoplay=1/AWE6UpXQoGU" frameborder="0" allowfullscreen=""></iframe>';
+	/**
+	 * @dataProvider libXMLDataProvider
+	 */
+	public function testLibXMLHandler($input, $expected) {
 		$item = new Item();
-		$item->setBody($body);
+		$item->setBody($input);
 
 		$result = $this->enhancer->enhance($item);
 		$this->assertEquals($expected, $result->getBody());
 	}
 
-
-	public function testReplaceYoutubeAutoplay() {
-		$body = 'test <iframe width="728" height="410" src="//www.youtube.com/embed/AWE6UpXQoGU?tst=1&autoplay=1&abc=1" frameborder="0" allowfullscreen=""></iframe>';
-		$expected = '<p>test <iframe width="728" height="410" src="//www.youtube.com/embed/AWE6UpXQoGU?tst=1&amp;autoplay=0&amp;abc=1" frameborder="0" allowfullscreen=""></iframe></p>';
-		$item = new Item();
-		$item->setBody($body);
-
-		$result = $this->enhancer->enhance($item);
-		$this->assertEquals($expected, $result->getBody());
+	public function libXMLDataProvider() {
+		return array(
+			array(	'<p>paragraph 1</p><p>paragraph 2</p>',
+					'<div><p>paragraph 1</p><p>paragraph 2</p></div>'),
+			array(	'<div><p>paragraph 1</p><p>paragraph 2</p></div>',
+					'<div><div><p>paragraph 1</p><p>paragraph 2</p></div></div>'),
+			array(	'test <iframe width="728" height="410" src="//www.youtube.com/embed/AWE6UpXQoGU?tst=1&autoplay=1&abc=1" frameborder="0" allowfullscreen=""></iframe>',
+					'<div>test <iframe width="728" height="410" src="//www.youtube.com/embed/AWE6UpXQoGU?tst=1&amp;autoplay=0&amp;abc=1" frameborder="0" allowfullscreen=""></iframe></div>'),
+			array(	'<iframe width="728" height="410" src="//www.youtube.com/embed/autoplay=1/AWE6UpXQoGU" frameborder="0" allowfullscreen=""></iframe>',
+					'<div><iframe width="728" height="410" src="//www.youtube.com/embed/autoplay=1/AWE6UpXQoGU" frameborder="0" allowfullscreen=""></iframe></div>')
+		);
 	}
-
 }
