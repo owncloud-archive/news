@@ -15,6 +15,13 @@
 namespace OCA\News\Fetcher;
 
 class YoutubeFeedFetcher implements IFeedFetcher {
+	
+	private $feedFetcher;
+
+	public function __construct(FeedFetcher $feedFetcher) {
+		$this->feedFetcher = $feedFetcher;
+	}
+
 
 	/**
 	 * This fetcher handles youtube urls
