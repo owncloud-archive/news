@@ -24,7 +24,13 @@ class GlobalArticleEnhancer implements ArticleEnhancer {
 	 */
 	public function enhance(Item $item) {
 		$dom = new \DOMDocument();
-		@$dom->loadHTML($item->getBody());
+		if(LIBXML_VERSION >= 20708) { // major * 10000 + minor * 1000 + release
+			// these options are available since libxml 2.7.8
+			@$dom->loadHTML($item->getBody(), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		} else {
+			// fallback
+			@$dom->loadHTML($item->getBody());
+		}
 		$xpath = new \DOMXpath($dom);
 
 		// remove youtube autoplay
@@ -45,11 +51,15 @@ class GlobalArticleEnhancer implements ArticleEnhancer {
 			}
 		}
 
-		// remove <!DOCTYPE
-		$dom->removeChild($dom->firstChild);
+		if(LIBXML_VERSION < 20708) { // major * 10000 + minor * 1000 + release
+			// we need to do this, because the options to load HTML without them wasn't available
 
-		// remove <html><body></body></html>
-		$dom->replaceChild($dom->firstChild->firstChild->firstChild, $dom->firstChild);
+			// remove <!DOCTYPE
+			$dom->removeChild($dom->firstChild);
+
+			// remove <html><body></body></html>
+			$dom->replaceChild($dom->firstChild->firstChild->firstChild, $dom->firstChild);
+		}
 
 		// save all changes back to the item
 		$item->setBody(trim($dom->saveHTML()));
