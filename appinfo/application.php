@@ -47,7 +47,6 @@ use \OCA\News\Utility\FaviconFetcher;
 
 use \OCA\News\Fetcher\Fetcher;
 use \OCA\News\Fetcher\FeedFetcher;
-use \OCA\News\Fetcher\YoutubeFeedFetcher;
 
 use \OCA\News\ArticleEnhancer\Enhancer;
 use \OCA\News\ArticleEnhancer\GlobalArticleEnhancer;
@@ -402,16 +401,11 @@ class Application extends App {
 
 			// register fetchers in order
 			// the most generic fetcher should be the last one
-			$fetcher->registerFetcher($c->query('YoutubeFeedFetcher'));
 			$fetcher->registerFetcher($c->query('FeedFetcher'));
 
 			return $fetcher;
 		});
 
-		$container->registerService('YoutubeFeedFetcher', function($c) {
-			return new YoutubeFeedFetcher($c->query('FeedFetcher')
-			);
-		});
 
 		$container->registerService('FeedFetcher', function($c) {
 			return new FeedFetcher($c->query('SimplePieAPIFactory'),
