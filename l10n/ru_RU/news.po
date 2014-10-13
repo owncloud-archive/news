@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # AnnaSch <cdewqazxsqwe@gmail.com>, 2013
 # AnnaSch <cdewqazxsqwe@gmail.com>, 2012
@@ -22,23 +22,23 @@ msgstr ""
 
 #: appinfo/app.php:52 templates/main.php:38
 msgid "News"
-msgstr ""
+msgstr "Новости"
 
 #: businesslayer/feedbusinesslayer.php:100
 msgid "Can not add feed: Exists already"
-msgstr ""
+msgstr "Невозможно добавить ленту: уже добавлена"
 
 #: businesslayer/feedbusinesslayer.php:137
 msgid "Can not add feed: URL does not exist or has invalid xml"
-msgstr ""
+msgstr "Невозможно добавить ленту: URL не существует или некорректный XML"
 
 #: businesslayer/feedbusinesslayer.php:280
 msgid "Articles without feed"
-msgstr ""
+msgstr "Статьи вне ленты"
 
 #: businesslayer/folderbusinesslayer.php:66
 msgid "Can not add folder: Exists already"
-msgstr ""
+msgstr "Невозможно добавить папку: уже добавлена"
 
 #: js/vendor/angular-ui/build/angular-ui.min.js:7
 msgid " "
@@ -46,90 +46,90 @@ msgstr ""
 
 #: js/vendor/angular-ui/build/angular-ui.min.js:7
 msgid "_"
-msgstr ""
+msgstr "_"
 
 #: js/vendor/jquery-ui/ui/minified/jquery-ui.min.js:8
 #: js/vendor/jquery-ui/ui/minified/jquery.ui.autocomplete.min.js:4
 msgid "status"
-msgstr ""
+msgstr "статус"
 
 #: templates/main.php:34
 #, php-format
 msgid "Undo deletion of %s"
-msgstr ""
+msgstr "Отменить удаление %s"
 
 #: templates/part.addnew.php:13
 msgid "Add Website"
-msgstr ""
+msgstr "Добавить сайт"
 
 #: templates/part.addnew.php:21
 msgid "Error: address exists already!"
-msgstr ""
+msgstr "Ошибка: адрес уже существует!"
 
 #: templates/part.addnew.php:24
 msgid "Error: folder exists already"
-msgstr ""
+msgstr "Ошибка: папка уже существует"
 
 #: templates/part.addnew.php:31
 msgid "Address"
-msgstr ""
+msgstr "Адрес"
 
 #: templates/part.addnew.php:34 templates/part.addnew.php:37
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
 #: templates/part.addnew.php:41 templates/part.addnew.php:48
 msgid "New folder"
-msgstr ""
+msgstr "Новая папка"
 
 #: templates/part.addnew.php:42
 msgid "Folder"
-msgstr ""
+msgstr "Папка"
 
 #: templates/part.addnew.php:46
 msgid "Choose folder"
-msgstr ""
+msgstr "Выберите папку"
 
 #: templates/part.addnew.php:57
 msgid "Folder name"
-msgstr ""
+msgstr "Имя папки"
 
 #: templates/part.addnew.php:60
 msgid "Back to folder selection"
-msgstr ""
+msgstr "Вернуться к выбору папки"
 
 #: templates/part.addnew.php:64
 msgid "Create folder"
-msgstr ""
+msgstr "Создать папку"
 
 #: templates/part.feed.starred.php:11
 msgid "Starred"
-msgstr ""
+msgstr "Отмеченное"
 
 #: templates/part.feed.unread.php:10
 msgid "Unread articles"
-msgstr ""
+msgstr "Непрочитанные статьи"
 
 #: templates/part.feed.unread.php:17
 msgid "All articles"
-msgstr ""
+msgstr "Все статьи"
 
 #: templates/part.feed.unread.php:26 templates/part.listfeed.php:65
 #: templates/part.listfolder.php:43
 msgid "Mark read"
-msgstr ""
+msgstr "Отметить прочитанным"
 
 #: templates/part.firstrun.php:2
 msgid "Welcome to the ownCloud News app!"
-msgstr ""
+msgstr "Добро пожаловать в приложение Новости"
 
 #: templates/part.items.php:20
 msgid "read on website"
-msgstr ""
+msgstr "причитать на сайте"
 
 #: templates/part.items.php:40
 msgid "star"
-msgstr ""
+msgstr "отметить"
 
 #: templates/part.items.php:56
 msgid "from"
@@ -145,7 +145,7 @@ msgstr "Загрузка"
 
 #: templates/part.items.php:79
 msgid "Keep unread"
-msgstr ""
+msgstr "Оставить непрочитанным"
 
 #: templates/part.listfeed.php:22
 msgid "Cancel"
@@ -157,23 +157,23 @@ msgstr "Сохранить"
 
 #: templates/part.listfeed.php:51 templates/part.listfeed.php:78
 msgid "Delete website"
-msgstr ""
+msgstr "Удалить сайт"
 
 #: templates/part.listfeed.php:73
 msgid "Rename feed"
-msgstr ""
+msgstr "Переименовать ленту"
 
 #: templates/part.listfolder.php:14
 msgid "Collapse"
-msgstr ""
+msgstr "Свернуть"
 
 #: templates/part.listfolder.php:32 templates/part.listfolder.php:48
 msgid "Delete folder"
-msgstr ""
+msgstr "Удалить папку"
 
 #: templates/part.listfolder.php:54
 msgid "Rename folder"
-msgstr ""
+msgstr "Переименовать папку"
 
 #: templates/part.settings.php:13
 msgid "Settings"
@@ -181,40 +181,40 @@ msgstr "Настройки"
 
 #: templates/part.settings.php:15
 msgid "Use compact view"
-msgstr ""
+msgstr "Использовать компактный просмотр"
 
 #: templates/part.settings.php:17
 msgid "Subscriptions (OPML)"
-msgstr ""
+msgstr "Подписки (OPML)"
 
 #: templates/part.settings.php:21 templates/part.settings.php:24
 #: templates/part.settings.php:52 templates/part.settings.php:57
 msgid "Import"
-msgstr ""
+msgstr "Импортировать"
 
 #: templates/part.settings.php:28 templates/part.settings.php:32
 #: templates/part.settings.php:36 templates/part.settings.php:38
 #: templates/part.settings.php:60 templates/part.settings.php:64
 #: templates/part.settings.php:68 templates/part.settings.php:70
 msgid "Export"
-msgstr ""
+msgstr "Экспортировать"
 
 #: templates/part.settings.php:42
 msgid "Error when importing: file does not contain valid OPML"
-msgstr ""
+msgstr "Ошибка импортирования: файл не содержит корректный OPML"
 
 #: templates/part.settings.php:48
 msgid "Unread/Starred Articles"
-msgstr ""
+msgstr "Непрочитанные/Отмеченные статьи"
 
 #: templates/part.settings.php:74
 msgid "Error when importing: file does not contain valid JSON"
-msgstr ""
+msgstr "Ошибка импортирования: файл не содержит корректный JSON"
 
 #: templates/part.showall.php:5
 msgid "Show read articles"
-msgstr ""
+msgstr "Показать прочтенные статьи"
 
 #: templates/part.showall.php:11
 msgid "Hide read articles"
-msgstr ""
+msgstr "Скрыть прочтенные статьи"
