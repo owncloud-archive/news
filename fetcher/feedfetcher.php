@@ -71,12 +71,16 @@ class FeedFetcher implements IFeedFetcher {
 	 * element being the Feed and second element being an array of Items
 	 */
 	public function fetch($url, $getFavicon=true) {
+
+		//Convert youtube link if necessary
+		$modifiedUrl = $this->convertYoutubeUrl($url);
+
 		$simplePie = $this->simplePieFactory->getCore();
-		$simplePie->set_feed_url($url);
+		$simplePie->set_feed_url($modifiedUrl);
 		$simplePie->enable_cache(true);
 		$simplePie->set_useragent('ownCloud News/' .
 				$this->appConfig->getConfig('version') .
-				' (+https://owncloud.org/; 1 subscriber; feed-url=' . $url . ')');
+				' (+https://owncloud.org/; 1 subscriber; feed-url=' . $modifiedUrl . ')');
 		$simplePie->set_stupidly_fast(true);  // disable simple pie sanitation
 		                                      // we use htmlpurifier
 		$simplePie->set_timeout($this->fetchTimeout);
@@ -91,7 +95,7 @@ class FeedFetcher implements IFeedFetcher {
 
 		try {
 			if (!$simplePie->init()) {
-				throw new \Exception('Could not initialize simple pie on feed with url ' . $url);
+				throw new \Exception('Could not initialize simple pie on feed with url ' . $modifiedUrl);
 			}
 
 			// somehow $simplePie turns into a feed after init
@@ -111,6 +115,24 @@ class FeedFetcher implements IFeedFetcher {
 			throw new FetcherException($ex->getMessage());
 		}
 
+	}
+
+
+	/**
+	 * Converts the url to a youtube feed into valid youtube api link
+	 * @param string $feedUrl the url to the feed
+	 * @return Url of the feed (If none of the regex matched it's the one passed into the function)
+	 */
+	private function convertYoutubeUrl($url) {
+		$matches = [];
+		$pattern_playlist = "/[(http:\/\/|https:\/\/|\/\/)](www.)?youtube.com.*?list=([^&]*)/";
+		$pattern_channel = "/[(http:\/\/|https:\/\/|\/\/)](www.)?youtube.com/channel/(.*)/";
+		if(preg_match($pattern_playlist, $url, $matches)) {
+			return "http://gdata.youtube.com/feeds/api/playlists/" . $matches[2];
+		} else if(preg_match($pattern_channel, $url, $matches)) {
+			return "http://gdata.youtube.com/feeds/users/" . $matches[2] . "/uploads";
+		}
+		return $url;
 	}
 
 

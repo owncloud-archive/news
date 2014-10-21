@@ -417,6 +417,7 @@ class Application extends App {
 			return $fetcher;
 		});
 
+
 		$container->registerService('FeedFetcher', function($c) {
 			return new FeedFetcher($c->query('SimplePieAPIFactory'),
 				$c->query('FaviconFetcher'),
