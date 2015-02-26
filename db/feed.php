@@ -66,6 +66,7 @@ class Feed extends Entity implements IAPI, \JsonSerializable {
     protected $lastModified;
     protected $etag;
     protected $location;
+    protected $ordering;
 
     public function __construct(){
         $this->addType('parentId', 'integer');
