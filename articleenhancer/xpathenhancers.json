@@ -2,36 +2,20 @@
     "leasticoulddo.com": {
         "%feedproxy.google.com/~r/LICD%": "//*[@id='comic-img']/a/img | //*[@id='comic-img']/img | //*[@id='post']"
     },
-    "lfgcomic.com": {
-        "%(lfgcomic.com/page)|(feedproxy.google.com/~r/LookingForGroup)%": "//*[@id=\"comic\"]/img | //*[@class=\"content\"]"
-    },
     "sandraandwoo.com": {
         "%feedproxy.google.com/~r/sandraandwoo%": "//*[@id=\"comic\"]/img | //*[@class=\"post\"]/div[@class=\"entry\"] | //*[@class=\"transcript\"]"
     },
     "sandraandwoo.com/gaia": {
         "%feedproxy.google.com/~r/gaiacomic%": "//*[@id=\"comic\"]/img | //*[@class=\"post\"]/div[@class=\"entry\"] | //*[@class=\"transcript\"]"
     },
-    "theoatmeal.com": {
-        "%theoatmeal.com/blog%": "//*[@class=\"post_body\"]",
-        "%theoatmeal.com/comics%": "//*[@id=\"comic\"] | //*[@class=\"super_vacum\"] | //*[@class=\"pad\"]"
-    },
     "forlackofabettercomic.com/archive.php": {
         "%forlackofabettercomic.com/\\?id=%": "//div[@id=\"comicset\"]/a/img"
-    },
-    "eqcomics.com": {
-        "%feedproxy.google.com/~r/eqcomics%": "//div[@id=\"comic\"]/div/a/img"
-    },
-    "loadingartist.com": {
-        "%feedproxy.google.com/~r/LoadingArtist%": "//div[@id=\"comic\"]"
     },
     "niebezpiecznik.pl": {
         "%feedproxy.google.com/~r/niebezpiecznik%": "//div[@class=\"entry\"]"
     },
     "omgubuntu.co.uk": {
         "%www.omgubuntu.co.uk%": "//div[@class=\"entry-content\"]"
-    },
-    "satwcomic.com": {
-        "%feedproxy.google.com/~r/satwcomic%": "//div[@class=\"comicmid\"]/center/a/img"
     },
     "androidpolice.com": {
         "%rss.feedsportal.com/c/33941/f/615677/p/1/s/%": "//div[@class=\"post_content\"]"
@@ -42,7 +26,4 @@
     "mydealz.de": {
         "%http://feedproxy.google.com/~r/myDealZ%": "//div[@class='section-hub'] | //div[contains(@class,'thread-deal')]"
     },
-    "lifehacker.com": {
-        "%lifehacker.com%": "//div[contains(@class,'entry-content')]"
-    }
 }
