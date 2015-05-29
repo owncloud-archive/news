@@ -88,6 +88,7 @@ class FeedFetcher implements IFeedFetcher {
             $lastModified = $resource->getLastModified();
 
             $parser = $this->reader->getParser($location, $content, $encoding);
+            $parser->enableContentGrabber();
 
             $parsedFeed = $parser->execute();
 

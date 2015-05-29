@@ -33,7 +33,6 @@ use OCA\News\Fetcher\FeedFetcher;
 
 use OCA\News\ArticleEnhancer\Enhancer;
 use OCA\News\ArticleEnhancer\XPathArticleEnhancer;
-use OCA\News\ArticleEnhancer\RegexArticleEnhancer;
 
 use OCA\News\Explore\RecommendedSites;
 
@@ -144,18 +143,6 @@ class Application extends App {
                     $config
                 );
                 $enhancer->registerEnhancer($feed, $articleEnhancer);
-            }
-
-            $regexEnhancerConfig = file_get_contents(
-                __DIR__ . '/../articleenhancer/regexenhancers.json'
-            );
-            $regexEnhancerConfig = json_decode($regexEnhancerConfig, true);
-            foreach($regexEnhancerConfig as $feed => $config) {
-                foreach ($config as $matchArticleUrl => $regex) {
-                    $articleEnhancer =
-                        new RegexArticleEnhancer($matchArticleUrl, $regex);
-                    $enhancer->registerEnhancer($feed, $articleEnhancer);
-                }
             }
 
             return $enhancer;
