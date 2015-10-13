@@ -4,12 +4,12 @@ return array(
         '%.*%' => array(
             'test_url' => 'http://www.nba.com/2015/news/09/25/knicks-jackson-to-spend-more-time-around-coaching-staff.ap/index.html?rss=true',
             'body' => array(
-	    '//section[@id="nbaArticleContent"]',
-	    ),
-	    'strip' => array(
-	    '//div[@id="nbaArticleSocialWrapper_bot"]',
-	    '//h5',
-	    ),
-	 )
+            '//section[@id="nbaArticleContent"]',
+            ),
+            'strip' => array(
+            '//div[@id="nbaArticleSocialWrapper_bot"]',
+            '//h5',
+            ),
+         )
     )
 );

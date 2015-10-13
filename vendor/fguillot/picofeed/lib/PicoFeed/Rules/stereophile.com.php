@@ -4,8 +4,8 @@ return array(
         '%.*%' => array(
             'test_url' => 'http://www.stereophile.com/content/2015-rocky-mountain-audio-fest-starts-friday',
             'body' => array(
-	    '//div[@class="content clear-block"]',
-	    ),
+            '//div[@class="content clear-block"]',
+            ),
         )
     )
 );

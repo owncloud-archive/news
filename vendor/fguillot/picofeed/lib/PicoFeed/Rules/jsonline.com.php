@@ -4,11 +4,11 @@ return array(
         '%.*%' => array(
             'test_url' => 'http://www.jsonline.com/news/usandworld/as-many-as-a-million-expected-for-popes-last-mass-in-us-b99585180z1-329688131.html',
             'body' => array(
-	    '//div[@id="article"]',
-	    '//div[@id="mainContent"]',
-	    ),
+            '//div[@id="article"]',
+            '//div[@id="mainContent"]',
+            ),
             'strip' => array(
-	    '//div[@class="storyTimestamp"]',
+            '//div[@class="storyTimestamp"]',
             '//img[@class="floatLeft"]',
             '//div[@class="overlineUpper"]',
             '//div[@class="updated"]',
@@ -20,8 +20,8 @@ return array(
             '//h4',
             '//ul',
             '//div[contains(@class, "footer-pkg")]',
-	    '//img[contains(@src,"analytics")]',
-	    ),
+            '//img[contains(@src,"analytics")]',
+            ),
         )
     )
 );
