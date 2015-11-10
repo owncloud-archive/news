@@ -49,6 +49,9 @@ def main():
         help='The URL where owncloud is installed. Must be specified on the \
         command line or in the config file.',
         nargs='?')
+    parser.add_argument('--selfsigned',
+        help='Trust self signed certificate.',
+        action='store_false')
     args = parser.parse_args()
 
     # read config file if given
@@ -73,6 +76,10 @@ def main():
             args.interval = int(config_values['interval'])
         if 'url' in config_values:
             args.url = config_values['url']
+        if 'selfsigned' in config_values:
+            args.ssltrust = config_values.getboolean('selfsigned')
+        else
+            args.ssltrust = True
 
     # url and user must be specified either from the command line or in the
     # config file
@@ -82,7 +89,7 @@ def main():
 
     # create the updater and run the threads
     updater = Updater(args.url, args.threads, args.interval, args.user,
-                      args.password, args.timeout, args.testrun)
+                      args.password, args.timeout, args.testrun, args.ssltrust)
     updater.run()
 
 
