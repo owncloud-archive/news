@@ -16,7 +16,7 @@ def check_status_code(response):
 class Updater:
 
     def __init__(self, base_url, thread_num, interval, user, password, timeout,
-                 run_once):
+                 run_once, ssltrust):
         self.thread_num = thread_num
         self.interval = interval
         self.base_url = base_url
@@ -24,6 +24,7 @@ class Updater:
         self.password = password
         self.timeout = timeout
         self.run_once = run_once
+        self.ssltrust = ssltrust 
 
         if self.base_url[-1] != '/':
             self.base_url += '/'
@@ -49,10 +50,10 @@ class Updater:
                 # run the cleanup request and get all the feeds to update
                 auth = (self.user, self.password)
 
-                before = requests.get(self.before_cleanup_url, auth=auth)
+                before = requests.get(self.before_cleanup_url, verify=ssltrust, auth=auth)
                 check_status_code(before)
 
-                feeds_response = requests.get(self.all_feeds_url, auth=auth)
+                feeds_response = requests.get(self.all_feeds_url, verify=ssltrust, auth=auth)
                 check_status_code(feeds_response)
 
                 feeds_json = feeds_response.text
@@ -69,7 +70,7 @@ class Updater:
                 for thread in threads:
                     thread.join()
 
-                after = requests.get(self.after_cleanup_url, auth=auth)
+                after = requests.get(self.after_cleanup_url, verify=ssltrust, auth=auth)
                 check_status_code(after)
 
                 if self.run_once:
@@ -121,7 +122,7 @@ class UpdateThread(threading.Thread):
 
             try:
                 auth = (self.user, self.password)
-                request = requests.get(url, auth=auth, timeout=self.timeout)
+                request = requests.get(url, verify=ssltrust, auth=auth, timeout=self.timeout)
                 check_status_code(request)
             except (Exception) as e:
                 self.logger.error('%s: %s' % (url, e))
