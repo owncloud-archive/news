@@ -181,6 +181,33 @@ class ItemMapperTest extends NewsIntegrationTest {
     }
 
 
+    public function atestRead () {
+        $itemId = $this->items['third feed'][0]->getId();
+        $this->itemMapper->read($itemId, 10, $this->userId);
+
+        $status = StatusFlag::UNREAD;
+        $items = $this->itemMapper->findAll(
+            30, 0, $status, false, $this->userId
+        );
+
+        $this->assertEquals(2, count($items));
+
+        $item = $this->items['a title9'];
+        $item = $this->itemMapper->find($item->getId(), $this->userId);
+
+        $this->assertEquals(10, $item->getLastModified());
+
+        $item = $this->items['a title3'];
+        $item = $this->itemMapper->find($item->getId(), $this->userId);
+        $this->assertTrue($item->isUnread());
+
+
+        $item = $this->items['a title1'];
+        $item = $this->itemMapper->find($item->getId(), $this->userId);
+        $this->assertTrue($item->isUnread());
+    }
+
+
     public function testDeleteUser () {
         $this->itemMapper->deleteUser($this->userId);
         $id = $this->itemMapper->getNewestItemId($this->userId);
