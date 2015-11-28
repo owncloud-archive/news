@@ -76,7 +76,6 @@ class ItemMapper extends NewsMapper {
         return $this->findEntity($sql, [$userId, $id]);
     }
 
-
     public function starredCount($userId){
         $sql = 'SELECT COUNT(*) AS size FROM `*PREFIX*news_items` `items` '.
             'JOIN `*PREFIX*news_feeds` `feeds` ' .
@@ -141,6 +140,24 @@ class ItemMapper extends NewsMapper {
         $params = [~StatusFlag::UNREAD, $time, $feedId, $highestItemId,
             $userId, $feedId];
 
+        $this->execute($sql, $params);
+    }
+
+    public function read($itemId, $time, $userId) {
+        $sql = 'UPDATE `*PREFIX*news_items`
+            SET `status` = `status` & ?,
+                `last_modified` = ?
+            WHERE `id` IN (
+                SELECT `b`.`id` FROM `*PREFIX*news_items` `a`,
+                                     `*PREFIX*news_items` `b`
+                WHERE  `a`.`id` = ?
+                    AND `a`.`fingerprint` = `b`.`fingerprint`
+                    AND `b`.`feed_id` IN (
+                        SELECT `id` FROM `*PREFIX*news_feeds`
+                        WHERE `user_id` = ?
+                    )
+            )';
+        $params = [~StatusFlag::UNREAD, $time, $itemId, $userId];
         $this->execute($sql, $params);
     }
 
