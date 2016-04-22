@@ -102,7 +102,8 @@ app.config(function ($routeProvider, $provide, $httpProvider) {
                         limit: ITEM_BATCH_SIZE,
                         showAll: showAll,
                         oldestFirst: oldestFirst,
-                        search: search
+                        search: search,
+                        id: undefined
                     };
 
                     if ($route.current !== undefined &&

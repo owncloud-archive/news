@@ -1,6 +1,7 @@
 #specific to news app
 composer.phar
 node_modules/
+js/node_modules/
 vendor/
 js/vendor/
 js/build
@@ -64,3 +65,4 @@ nbproject
 # Mac OS
 .DS_Store
 *.iml
+js/typings

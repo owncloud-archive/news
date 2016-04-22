@@ -1,0 +1,11 @@
+{
+  "name": "owncloud-news",
+  "version": false,
+  "dependencies": {},
+  "ambientDependencies": {
+    "angularjs/legacy/angular": "registry:dt/angularjs/legacy/angular#1.4.0+20160317120654",
+    "jquery": "registry:dt/jquery#1.10.0+20160316155526",
+    "js-url": "registry:dt/js-url#0.0.0+20160316155526",
+    "underscore": "registry:dt/underscore#1.7.0+20160412141459"
+  }
+}
