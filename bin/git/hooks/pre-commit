@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# exit if any test fails
-set -e
-
-make test
-
-php -f bin/tools/generate_authors.php
-git add AUTHORS.md
