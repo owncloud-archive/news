@@ -1,0 +1,51 @@
+{
+  "name": "owncloud-news",
+  "description": "An RSS/Atom feed reader",
+  "main": "build/app.min.js",
+  "scripts": {
+    "test": "node node_modules/gulp-cli/bin/gulp.js karma",
+    "prebuild": "npm install && npm update && node_modules/bower/bin/bower install && node_modules/bower/bin/bower update",
+    "build": "node node_modules/gulp-cli/bin/gulp.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/owncloud/news"
+  },
+  "keywords": [
+    "rss",
+    "atom",
+    "feed",
+    "reader",
+    "owncloud",
+    "app"
+  ],
+  "author": "Bernhard Posselt",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/owncloud/news/issues"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "private": true,
+  "homepage": "https://github.com/owncloud/news",
+  "devDependencies": {
+    "bower": "~1.7.9",
+    "gulp": "~3.9.1",
+    "gulp-cli": "~1.2.1",
+    "gulp-concat": "~2.6.0",
+    "gulp-jshint": "~2.0.0",
+    "gulp-ng-annotate": "~2.0.0",
+    "gulp-phpunit": "~0.14.0",
+    "gulp-sourcemaps": "~1.6.0",
+    "gulp-uglify": "~1.5.3",
+    "jasmine-core": "~2.4.1",
+    "jshint": "~2.9.1",
+    "karma": "~0.13.22",
+    "karma-chrome-launcher": "~0.2.3",
+    "karma-coverage": "~0.5.5",
+    "karma-firefox-launcher": "~0.1.7",
+    "karma-jasmine": "~0.3.8"
+  },
+  "dependencies": {}
+}
