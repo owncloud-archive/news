@@ -47,6 +47,7 @@ $TRANSLATIONS = array(
 "Close" => "Zapri",
 "Ajax or Web cron mode detected! Your feeds will not be updated!" => "Zaznano je način opravila cron Ajax oziroma Web! Vira ne bo mogoče posodobiti!",
 "How to set up the operating system cron" => "Kako nastaviti opravila cron operacijskega sistema",
+"Install and set up a faster parallel updater that uses the News app's update API" => "Namesti in nastavi hitrejši vzporedni posodabljalnik, ki za posodobitev uporablja  API programa  News",
 "filter" => "filter",
 "Language" => "Jezik",
 "Subscribe" => "Naročilo",
