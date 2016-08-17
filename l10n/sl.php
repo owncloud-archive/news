@@ -93,6 +93,7 @@ $TRANSLATIONS = array(
 "Folder exists already!" => "Mapa že obstaja!",
 "Advanced settings" => "Napredne nastavitve",
 "Credentials" => "Poverila",
+"HTTP Basic Auth credentials must be stored unencrypted! Everyone with access to the server or database will be able to access them!" => "Osnovna poverila HTTP so shranjena nešifrirano! Vsakdo z dostopom do strežnika oziroma do podatkovne zbirke, lahko dostopa do njih!",
 "Username" => "Uporabniško ime",
 "Password" => "Geslo",
 "New Folder" => "Nova Mapa",
