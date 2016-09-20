@@ -42,6 +42,7 @@ OC.L10N.register(
     "Feed fetcher timeout" : "Čas nalaganja vira",
     "Maximum number of seconds to wait for an RSS or Atom feed to load; if it takes longer the update will be aborted" : "Čas, ki je namenjen za nalaganje virov RSS ali Atom. Po tem času je nalaganje virov prekinjeno.",
     "Explore Service URL" : "Razišči spletni naslov storitve",
+    "If given, this service's URL will be queried for displaying the feeds in the explore feed section. To fall back to the built in explore service, leave this input empty" : "Če je podana, se po URL povezavi te storitve povprašuje za prikaz spletnih virov v raziskovalnem odseku virov. Za povrnitev na vgrajeno raziskovalno storitev pustite ta vnos prazen.",
     "For more information check the Wiki" : "Za več podrobnosti obiščite Wiki",
     "Saved" : "Shranjeno",
     "Download" : "Prejmi",
