@@ -11,7 +11,7 @@ OC.L10N.register(
     "Required credentials for feed were either missing or incorrect" : "ข้อมูลประจำตัวที่จำเป็นสำหรับฟีด ขาดหายไปหรือไม่ถูกต้อง",
     "Forbidden to access feed" : "การเข้าถึงฟีดถูกปฏิเสธ",
     "Certificate error: A problem occurred somewhere in the SSL/TLS handshake. Could be certificates (file formats, paths, permissions), passwords, and others." : "ข้อผิดพลาดใบรับรอง: มีปัญหาเกิดขึ้นที่ไหนสักแห่งใน SSL/TLS อาจจะเป็นใบรับรอง รูปแบบไฟล์ เส้นทาง สิทธิ์ รหัสผ่าน, และอื่นๆ",
-    "Certificate error: The remote server's SSL certificate or SSH md5 fingerprint was deemed not OK." : "ข้อผิดพลาดใบรับรอง: ใบรับรอง SSL หรือ SSH md5 fingerprint ไม่ถูกต้อง",
+    "Certificate error: The remote server's SSL certificate or SSH md5 fingerprint was deemed not OK." : "ข้อผิดพลาดใบรับรอง: ใบรับรอง SSL หรือ SSH ที่เข้ารหัสด้วย md5 หรือ fingerprint ไม่ถูกต้อง",
     "Certificate error: Problem with the local client certificate." : "ข้อผิดพลาดใบรับรอง: ปัญหาเกี่ยวกับใบรับรองไคลเอ็นต์ต้นทาง",
     "Certificate error: Couldn't use specified cipher." : "ข้อผิดพลาดใบรับรอง: ไม่สามารถใช้การเข้ารหัสที่เฉพาะเจาะจง",
     "Certificate error: Peer certificate cannot be authenticated with known CA certificates." : "ข้อผิดพลาดใบรับรอง: ใบรับรองเพียร์ไม่สามารถรับรองความถูกต้องด้วยใบรับรอง CA ที่รู้จักกัน",
