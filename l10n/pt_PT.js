@@ -5,7 +5,7 @@ OC.L10N.register(
     "Feed not found: either the website does not provide a feed or blocks access. To rule out blocking, try to download the feed on your server's command line using curl: curl " : "Feed não encontrado: o site da Web ou proporciona o feed ou bloqueia o acesso. Para contornar o bloqueio, tente transferir o feed usando curl na linha de comandos do seu servidor: curl",
     "Detected feed format is not supported" : "O formato do feed detetado não é suportado",
     "Website not found" : "Site da Web não encontrado",
-    "More redirects than allowed, aborting" : "Mais redirecionamentos do que o permitido. A abortar ...",
+    "More redirects than allowed, aborting" : "Mais redirecionamentos do que o permitido, a abortar",
     "Bigger than maximum allowed size" : "Maior do que o tamanho máximo permitido",
     "Request timed out" : "O pedido expirou",
     "Required credentials for feed were either missing or incorrect" : "As credenciais necessárias para o feed estão ausentes ou incorrectas",
