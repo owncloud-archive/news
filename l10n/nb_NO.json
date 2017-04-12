@@ -7,7 +7,7 @@
     "Bigger than maximum allowed size" : "Større enn maksimalt tillatt størrelse",
     "Request timed out" : "Forespørsel ga tidsavbrudd",
     "Required credentials for feed were either missing or incorrect" : "Nødvendige påloggingsdetaljer for kilden manglet eller var feil",
-    "Forbidden to access feed" : "Forbudt å aksessere kilden",
+    "Forbidden to access feed" : "Tilgang til kilden forbys",
     "Certificate error: A problem occurred somewhere in the SSL/TLS handshake. Could be certificates (file formats, paths, permissions), passwords, and others." : "Sertifikatfeil: Et problem oppstod et sted i SSL/TLS handshake. Kan være sertifikater (filformat, stier, tillatelser), passord eller noe annet.",
     "Certificate error: The remote server's SSL certificate or SSH md5 fingerprint was deemed not OK." : "Sertifikatfeil: Den eksterne serverens SSL-sertifikat eller SSH md5 fingerprint ble vurdert som ikke OK.",
     "Certificate error: Problem with the local client certificate." : "Sertifikatfeil: Problem med det lokale klientsertifikatet",
