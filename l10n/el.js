@@ -95,6 +95,7 @@ OC.L10N.register(
     "Folder exists already!" : "Ο φάκελος υπάρχει ήδη!",
     "Advanced settings" : "Ρυθμίσεις για προχωρημένους",
     "Credentials" : "Πιστοποιητικά",
+    "HTTP Basic Auth credentials must be stored unencrypted! Everyone with access to the server or database will be able to access them!" : "Τα διαπιστευτήρια βασικής πιστοποίησης HTTP πρέπει να αποθηκεύονται χωρίς κρυπτογράφηση! Όλοι με πρόσβαση στον διακομιστή ή τη βάση δεδομένων θα έχουν πρόσβαση σε αυτές",
     "Username" : "Όνομα χρήστη",
     "Password" : "Κωδικός πρόσβασης",
     "New Folder" : "Νέος φάκελος",
