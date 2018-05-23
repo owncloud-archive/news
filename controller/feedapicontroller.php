@@ -15,7 +15,7 @@ namespace OCA\News\Controller;
 
 use \OCP\IRequest;
 use \OCP\ILogger;
-use \OCP\AppFramework\ApiController;
+use \OCP\IUserSession;
 use \OCP\AppFramework\Http;
 
 use \OCA\News\Service\FeedService;
@@ -30,7 +30,6 @@ class FeedApiController extends ApiController {
 
     private $itemService;
     private $feedService;
-    private $userId;
     private $logger;
     private $loggerParams;
     private $serializer;
@@ -40,12 +39,11 @@ class FeedApiController extends ApiController {
                                 FeedService $feedService,
                                 ItemService $itemService,
                                 ILogger $logger,
-                                $UserId,
+                                IUserSession $userSession,
                                 $LoggerParameters){
-        parent::__construct($AppName, $request);
+        parent::__construct($AppName, $request, $userSession);
         $this->feedService = $feedService;
         $this->itemService = $itemService;
-        $this->userId = $UserId;
         $this->logger = $logger;
         $this->loggerParams = $LoggerParameters;
         $this->serializer = new EntityApiSerializer('feeds');
@@ -60,14 +58,14 @@ class FeedApiController extends ApiController {
     public function index() {
 
         $result = [
-            'starredCount' => $this->itemService->starredCount($this->userId),
-            'feeds' => $this->feedService->findAll($this->userId)
+            'starredCount' => $this->itemService->starredCount($this->getUserId()),
+            'feeds' => $this->feedService->findAll($this->getUserId())
         ];
 
 
         try {
             $result['newestItemId'] =
-                $this->itemService->getNewestItemId($this->userId);
+                $this->itemService->getNewestItemId($this->getUserId());
 
         // in case there are no items, ignore
         } catch(ServiceNotFoundException $ex) {}
@@ -87,14 +85,14 @@ class FeedApiController extends ApiController {
      */
     public function create($url, $folderId=0) {
         try {
-            $this->feedService->purgeDeleted($this->userId, false);
+            $this->feedService->purgeDeleted($this->getUserId(), false);
 
-            $feed = $this->feedService->create($url, $folderId, $this->userId);
+            $feed = $this->feedService->create($url, $folderId, $this->getUserId());
             $result = ['feeds' => [$feed]];
 
             try {
                 $result['newestItemId'] =
-                    $this->itemService->getNewestItemId($this->userId);
+                    $this->itemService->getNewestItemId($this->getUserId());
 
             // in case there are no items, ignore
             } catch(ServiceNotFoundException $ex) {}
@@ -119,7 +117,7 @@ class FeedApiController extends ApiController {
      */
     public function delete($feedId) {
         try {
-            $this->feedService->delete($feedId, $this->userId);
+            $this->feedService->delete($feedId, $this->getUserId());
         } catch(ServiceNotFoundException $ex) {
             return $this->error($ex, Http::STATUS_NOT_FOUND);
         }
@@ -137,7 +135,7 @@ class FeedApiController extends ApiController {
      * @param int $newestItemId
      */
     public function read($feedId, $newestItemId) {
-        $this->itemService->readFeed($feedId, $newestItemId, $this->userId);
+        $this->itemService->readFeed($feedId, $newestItemId, $this->getUserId());
     }
 
 
@@ -153,7 +151,7 @@ class FeedApiController extends ApiController {
     public function move($feedId, $folderId) {
         try {
             $this->feedService->patch(
-                $feedId, $this->userId, ['folderId' => $folderId]
+                $feedId, $this->getUserId(), ['folderId' => $folderId]
             );
         } catch(ServiceNotFoundException $ex) {
             return $this->error($ex, Http::STATUS_NOT_FOUND);
@@ -175,7 +173,7 @@ class FeedApiController extends ApiController {
     public function rename($feedId, $feedTitle) {
         try {
             $this->feedService->patch(
-                $feedId, $this->userId, ['title' => $feedTitle]
+                $feedId, $this->getUserId(), ['title' => $feedTitle]
             );
         } catch(ServiceNotFoundException $ex) {
             return $this->error($ex, Http::STATUS_NOT_FOUND);

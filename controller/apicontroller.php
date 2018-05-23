@@ -14,13 +14,25 @@
 namespace OCA\News\Controller;
 
 use OCP\IRequest;
+use OCP\IUserSession;
 use OCP\AppFramework\ApiController as BaseApiController;
 
 class ApiController extends BaseApiController {
+    private $userSession;
 
     public function __construct($appName,
-                                IRequest $request){
+                                IRequest $request,
+                                IUserSession $userSession){
         parent::__construct($appName, $request);
+        $this->userSession = $userSession;
+    }
+
+    protected function getUser() {
+        return $this->userSession->getUser();
+    }
+
+    protected function getUserId() {
+        return $this->getUser()->getUID();
     }
 
     /**

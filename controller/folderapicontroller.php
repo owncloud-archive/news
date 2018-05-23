@@ -14,7 +14,7 @@
 namespace OCA\News\Controller;
 
 use \OCP\IRequest;
-use \OCP\AppFramework\ApiController;
+use \OCP\IUserSession;
 use \OCP\AppFramework\Http;
 
 use \OCA\News\Service\FolderService;
@@ -37,11 +37,10 @@ class FolderApiController extends ApiController {
                                 IRequest $request,
                                 FolderService $folderService,
                                 ItemService $itemService,
-                                $UserId){
-        parent::__construct($AppName, $request);
+                                IUserSession $userSession){
+        parent::__construct($AppName, $request, $userSession);
         $this->folderService = $folderService;
         $this->itemService = $itemService;
-        $this->userId = $UserId;
         $this->serializer = new EntityApiSerializer('folders');
     }
 
@@ -53,7 +52,7 @@ class FolderApiController extends ApiController {
      */
     public function index() {
         return $this->serializer->serialize(
-            $this->folderService->findAll($this->userId)
+            $this->folderService->findAll($this->getUserId())
         );
     }
 
@@ -68,9 +67,9 @@ class FolderApiController extends ApiController {
      */
     public function create($name) {
         try {
-            $this->folderService->purgeDeleted($this->userId, false);
+            $this->folderService->purgeDeleted($this->getUserId(), false);
             return $this->serializer->serialize(
-                $this->folderService->create($name, $this->userId)
+                $this->folderService->create($name, $this->getUserId())
             );
         } catch(ServiceValidationException $ex) {
             return $this->error($ex, Http::STATUS_UNPROCESSABLE_ENTITY);
@@ -90,7 +89,7 @@ class FolderApiController extends ApiController {
      */
     public function delete($folderId) {
         try {
-            $this->folderService->delete($folderId, $this->userId);
+            $this->folderService->delete($folderId, $this->getUserId());
         } catch(ServiceNotFoundException $ex) {
             return $this->error($ex, Http::STATUS_NOT_FOUND);
         }
@@ -109,7 +108,7 @@ class FolderApiController extends ApiController {
      */
     public function update($folderId, $name) {
         try {
-            $this->folderService->rename($folderId, $name, $this->userId);
+            $this->folderService->rename($folderId, $name, $this->getUserId());
 
         } catch(ServiceValidationException $ex) {
             return $this->error($ex, Http::STATUS_UNPROCESSABLE_ENTITY);
@@ -132,7 +131,7 @@ class FolderApiController extends ApiController {
      * @param int $newestItemId
      */
     public function read($folderId, $newestItemId) {
-        $this->itemService->readFolder($folderId, $newestItemId, $this->userId);
+        $this->itemService->readFolder($folderId, $newestItemId, $this->getUserId());
     }
 
 
